@@ -843,7 +843,7 @@
           "description": "Create the core battle simulation algorithm that calculates battle outcomes based on ant stats, formations, and terrain factors.",
           "dependencies": [],
           "details": "Create a new module `battleSimulator.js` in the backend that exports a function to simulate battles. Implement logic to: 1) Compare colony strengths based on ant types and quantities, 2) Apply modifiers for terrain types stored in the database, 3) Calculate casualties on both sides, 4) Determine victor based on remaining strength. The algorithm should be deterministic but include some controlled randomness for battle outcomes. Store battle parameters in a configuration object for easy balancing.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write unit tests with Jest to verify battle outcomes are consistent and reasonable. Create test cases for various colony compositions and terrain types to ensure balance."
         },
         {

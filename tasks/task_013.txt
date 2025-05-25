@@ -22,7 +22,7 @@
 Test battle calculations with various colony compositions. Verify that stats, formation, and terrain correctly affect outcomes. Test scheduled AI attacks trigger appropriately. Verify resource rewards scale with battle difficulty. Test battle history logging. Verify retreat mechanics function correctly.
 
 # Subtasks:
-## 1. Implement Battle Simulation Algorithm Core [pending]
+## 1. Implement Battle Simulation Algorithm Core [done]
 ### Dependencies: None
 ### Description: Create the core battle simulation algorithm that calculates battle outcomes based on ant stats, formations, and terrain factors.
 ### Details:
