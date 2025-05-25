@@ -4,6 +4,7 @@ import LeftPanel from './LeftPanel';
 import CenterPanel from './CenterPanel';
 import RightPanel from './RightPanel';
 import AccessibilityPanel from '../accessibility/AccessibilityPanel';
+import AccessibilityGuide from '../accessibility/AccessibilityGuide';
 import { useAccessibility } from '../../store/AccessibilityContext';
 import useKeyboardNavigation from '../../hooks/useKeyboardNavigation';
 import './GameLayout.css';
@@ -18,6 +19,7 @@ const GameLayout = ({ colonyId, colonyData }) => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showAccessibilityPanel, setShowAccessibilityPanel] = useState(false);
+  const [showAccessibilityGuide, setShowAccessibilityGuide] = useState(false);
   const [panelSizes, setPanelSizes] = useState({
     left: 320,
     right: 320
@@ -104,12 +106,19 @@ const GameLayout = ({ colonyId, colonyData }) => {
             setShowStatsModal(true);
           }
           break;
+        case 'F1':
+          event.preventDefault();
+          setShowAccessibilityGuide(true);
+          announceToScreenReader('Accessibility guide opened', 'polite');
+          break;
         case 'Escape':
           // Close modals or restore panels if in fullscreen
-          if (showSettingsModal || showHelpModal || showStatsModal) {
+          if (showSettingsModal || showHelpModal || showStatsModal || showAccessibilityPanel || showAccessibilityGuide) {
             setShowSettingsModal(false);
             setShowHelpModal(false);
             setShowStatsModal(false);
+            setShowAccessibilityPanel(false);
+            setShowAccessibilityGuide(false);
           } else if (leftPanelCollapsed && rightPanelCollapsed) {
             setLeftPanelCollapsed(false);
             setRightPanelCollapsed(false);
@@ -265,6 +274,14 @@ const GameLayout = ({ colonyId, colonyData }) => {
               <div className="shortcut-item">
                 <kbd>Ctrl+I</kbd>
                 <span>Colony Stats</span>
+              </div>
+              <div className="shortcut-item">
+                <kbd>Ctrl+Shift+A</kbd>
+                <span>Accessibility Settings</span>
+              </div>
+              <div className="shortcut-item">
+                <kbd>F1</kbd>
+                <span>Accessibility Guide</span>
               </div>
               <div className="shortcut-item">
                 <kbd>Esc</kbd>
@@ -508,6 +525,15 @@ const GameLayout = ({ colonyId, colonyData }) => {
             onClose={() => {
               setShowAccessibilityPanel(false);
               announceToScreenReader('Accessibility settings closed', 'polite');
+            }}
+          />
+        )}
+        {showAccessibilityGuide && (
+          <AccessibilityGuide 
+            isOpen={showAccessibilityGuide}
+            onClose={() => {
+              setShowAccessibilityGuide(false);
+              announceToScreenReader('Accessibility guide closed', 'polite');
             }}
           />
         )}

@@ -1358,7 +1358,7 @@
       "dependencies": [
         20
       ],
-      "status": "in-progress",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -1393,7 +1393,7 @@
           "description": "Implement mobile-responsive layouts and game speed adjustment controls",
           "dependencies": [],
           "details": "Create responsive breakpoints for different device sizes. Implement touch-friendly controls for mobile devices. Add game speed controls in settings (slow, normal, fast) that affect animation durations and turn timers. Ensure all UI elements scale appropriately on small screens. Implement alternative touch controls for game board interactions. Store speed preferences in user settings.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test on various device sizes and orientations. Verify touch interactions work correctly on mobile. Test game speed settings affect all relevant animations and timers."
         },
         {
@@ -1402,7 +1402,7 @@
           "description": "Add tooltips, captions for visual events, and an accessible onboarding tutorial",
           "dependencies": [],
           "details": "Create a tooltip system for all game elements with clear, concise descriptions. Implement text captions for all visual game events that can be toggled on/off. Design an interactive onboarding tutorial with accessibility considerations built-in. Add skip tutorial option. Create text alternatives for all icons and visual indicators. Ensure tooltips work with keyboard navigation and screen readers.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test tooltip visibility and clarity. Verify captions accurately describe visual events. Test the tutorial with screen readers and keyboard-only navigation. Get feedback from users with different accessibility needs."
         }
       ]

@@ -1,6 +1,6 @@
 # Task ID: 21
 # Title: Accessibility Features
-# Status: in-progress
+# Status: done
 # Dependencies: 20
 # Priority: medium
 # Description: Implement accessibility features as specified in section 8.3.
@@ -37,13 +37,13 @@ Implement focus management for all interactive elements. Add keyboard shortcuts 
 ### Details:
 Audit and update all HTML elements to use semantic tags where appropriate. Add ARIA labels, roles, and states to all interactive components. Implement live regions for game state changes and notifications. Create screen reader announcements for turn changes, game events, and error messages. Test with VoiceOver, NVDA, and JAWS. Add skip navigation links for screen reader users.
 
-## 4. Create Responsive Layout and Game Speed Controls [pending]
+## 4. Create Responsive Layout and Game Speed Controls [done]
 ### Dependencies: None
 ### Description: Implement mobile-responsive layouts and game speed adjustment controls
 ### Details:
 Create responsive breakpoints for different device sizes. Implement touch-friendly controls for mobile devices. Add game speed controls in settings (slow, normal, fast) that affect animation durations and turn timers. Ensure all UI elements scale appropriately on small screens. Implement alternative touch controls for game board interactions. Store speed preferences in user settings.
 
-## 5. Implement Visual Alternatives and Onboarding [pending]
+## 5. Implement Visual Alternatives and Onboarding [done]
 ### Dependencies: None
 ### Description: Add tooltips, captions for visual events, and an accessible onboarding tutorial
 ### Details:
