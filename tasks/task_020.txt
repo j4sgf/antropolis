@@ -1,6 +1,6 @@
 # Task ID: 20
 # Title: Main Game UI Layout Implementation
-# Status: pending
+# Status: done
 # Dependencies: 3, 7, 10, 11
 # Priority: high
 # Description: Implement the main game UI layout as specified in section 8.2.
@@ -21,31 +21,31 @@
 Test UI layout on various screen sizes. Verify panels display correct information. Test modal overlays appear and dismiss properly. Verify navigation between screens works correctly. Test collapsible panels. Verify UI themes apply correctly. Test keyboard shortcuts function as expected.
 
 # Subtasks:
-## 1. Implement Base Three-Panel Layout Structure [pending]
+## 1. Implement Base Three-Panel Layout Structure [done]
 ### Dependencies: None
 ### Description: Create the foundational three-panel layout structure with proper CSS Grid/Flexbox for the main game UI, including responsive breakpoints.
 ### Details:
 Create React components for the main layout container and three panels (LeftPanel, CenterPanel, RightPanel). Use CSS Grid for the overall layout with appropriate sizing. Implement media queries for responsive design at standard breakpoints (mobile, tablet, desktop). Set up the basic styling variables for theming support later. Create placeholder content for each panel to verify layout.
 
-## 2. Implement Left Panel Colony Stats and Ant Assignments [pending]
+## 2. Implement Left Panel Colony Stats and Ant Assignments [done]
 ### Dependencies: 20.1
 ### Description: Build the left panel UI components for displaying colony statistics and ant assignment controls.
 ### Details:
 Create components for ColonyStats (displaying population, resources, territory) and AntAssignments (showing different ant types and allowing reassignment). Implement stat display with appropriate icons and numerical values. Create assignment controls with increment/decrement buttons and validation. Connect to the game state context/redux store. Style components according to the design system.
 
-## 3. Implement Center Panel Simulation View [pending]
+## 3. Implement Center Panel Simulation View [done]
 ### Dependencies: 20.1
 ### Description: Create the interactive simulation view in the center panel with proper rendering of the colony, environment, and interactive elements.
 ### Details:
 Implement the SimulationView component with canvas/SVG rendering. Create rendering logic for the colony, ants, resources, and territory. Add zoom and pan controls for navigation. Implement click/touch handlers for interaction with game elements. Add visual indicators for active/selected elements. Connect to the simulation state from the game engine.
 
-## 4. Implement Right Panel Evolution Tree and Resources [pending]
+## 4. Implement Right Panel Evolution Tree and Resources [done]
 ### Dependencies: 20.1
 ### Description: Build the right panel UI components for displaying the evolution tree and resource management.
 ### Details:
 Create the EvolutionTree component with visual representation of available and locked upgrades. Implement ResourceDisplay component showing current resources and generation rates. Add interactive elements for selecting upgrades when requirements are met. Create tooltips for displaying upgrade details and requirements. Connect to the game state for resource and upgrade data.
 
-## 5. Implement Modal Overlays and Panel Controls [pending]
+## 5. Implement Modal Overlays and Panel Controls [done]
 ### Dependencies: 20.1, 20.2, 20.3, 20.4
 ### Description: Create modal overlay system for battle results, upgrades, and discoveries, plus implement collapsible panel controls.
 ### Details:

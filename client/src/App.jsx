@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import CreateColony from './pages/CreateColony'
 import ColonyDashboard from './pages/ColonyDashboard'
+import GameLayout from './components/layout/GameLayout'
 
 // Home page component
 function HomePage() {
@@ -173,11 +174,13 @@ function App() {
             <CreateColony 
               onColonyCreated={(colony) => {
                 console.log('Colony created:', colony)
-                // Handle successful colony creation
+                // Navigate to colony dashboard
+                window.location.href = `/colony/${colony.id}`
               }}
               onCancel={() => {
                 console.log('Colony creation cancelled')
-                // Handle cancellation
+                // Navigate back to home
+                window.location.href = '/'
               }}
             />
           } 
@@ -185,6 +188,10 @@ function App() {
         <Route 
           path="/colony/:colonyId" 
           element={<ColonyDashboard />} 
+        />
+        <Route 
+          path="/game/:colonyId" 
+          element={<GameLayout />} 
         />
       </Routes>
     </Router>

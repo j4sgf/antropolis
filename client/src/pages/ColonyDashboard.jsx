@@ -141,7 +141,18 @@ function ColonyDashboard() {
               </p>
             </div>
           </div>
-          <div className="text-4xl">{colony.type === 'warrior' ? '⚔️' : colony.type === 'builder' ? '🏗️' : '🌿'}</div>
+          <div className="flex items-center space-x-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate(`/game/${colonyId}`)}
+              className="bg-forest-600 text-white px-4 py-2 rounded-md font-medium hover:bg-forest-700 transition-colors flex items-center space-x-2"
+            >
+              <span>🎮</span>
+              <span>Enter Game</span>
+            </motion.button>
+            <div className="text-4xl">{colony.type === 'warrior' ? '⚔️' : colony.type === 'builder' ? '🏗️' : '🌿'}</div>
+          </div>
         </motion.header>
 
         {/* Navigation Tabs */}

@@ -417,7 +417,7 @@
         4,
         5
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -425,7 +425,7 @@
           "description": "Design and implement the UI panel component for ant role management that will serve as the container for all role assignment functionality.",
           "dependencies": [],
           "details": "Create a new React component called 'AntRolePanel.jsx' in the components/ant directory. Design the panel layout with sections for different role categories (Worker, Soldier, Scout). Include a header with title, close button, and help icon. Style the component using CSS modules with appropriate colony theme colors. The panel should be responsive and support both desktop and mobile views.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write unit tests using Jest and React Testing Library to verify the component renders correctly with all expected sections and controls."
         },
         {
@@ -436,7 +436,7 @@
             1
           ],
           "details": "Create role assignment components for each role type (Worker, Soldier, Scout) with specific sub-roles (build/forage, guard/fight, explore/detect). Implement radio buttons or dropdown selectors for role selection. Create a 'RoleAssignmentService.js' that handles API calls to '/api/ants/{antId}/role' endpoint for updating ant roles. Add state management to track current selections and implement the submission handler to update roles. Include validation to prevent invalid role combinations.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the role assignment functionality with both unit tests for the UI components and integration tests that mock API calls to verify proper state updates."
         },
         {
@@ -447,7 +447,7 @@
             2
           ],
           "details": "Design and implement icon or color-based indicators for each ant role type. Create a 'RoleIndicator.jsx' component that displays the appropriate visual based on an ant's assigned role. Implement tooltips using a tooltip library or custom component that appear on hover/tap and display role descriptions, benefits, and trade-offs. Create a 'roleData.js' file containing all role descriptions and statistics to be used by the tooltips.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test that indicators correctly display for each role type and that tooltips show the appropriate content when triggered."
         },
         {
@@ -458,7 +458,7 @@
             2
           ],
           "details": "Create an 'AntStatistics.jsx' component that displays detailed statistics for selected ants. Implement data fetching from '/api/ants/{antId}/stats' endpoint. Design visualizations (progress bars, charts) for key metrics like experience and efficiency. Add real-time updates using WebSocket connection to receive stat changes when ant behavior changes. Include comparison functionality to show how stats differ between roles to help with decision making.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the statistics component with mock data to verify correct rendering of all metrics and test WebSocket connection handling for real-time updates."
         },
         {
@@ -471,7 +471,7 @@
             4
           ],
           "details": "Create a selection mechanism in the ant list view to select multiple ants. Implement a batch assignment modal that appears when multiple ants are selected. Add filter controls above the ant list to filter by role type, specific role, and status (idle, busy, etc.). Create a 'BatchAssignmentService.js' to handle the API calls to '/api/ants/batch-assign' endpoint. Implement the UI for confirming batch changes with a preview of affected ants and potential colony impact.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the batch selection UI, filter functionality, and batch assignment process with various combinations of ants and roles to ensure proper handling of all scenarios."
         }
       ]
@@ -554,7 +554,7 @@
       "dependencies": [
         8
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -562,7 +562,7 @@
           "description": "Create a data structure and state management system to track the exploration status of each tile on the game map.",
           "dependencies": [],
           "details": "Create a new ExplorationManager class that maintains a 2D grid matching the game map dimensions. Each cell should store: 1) Boolean for explored status, 2) Timestamp of last visit, 3) Discovery type if applicable. Implement methods for: getExplorationStatus(x,y), setExplored(x,y), and calculateVisibleTiles(antPosition, visibilityRange). Store this data in the game state and ensure it persists between game sessions.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Unit test the ExplorationManager class with mock map data to verify correct tracking of explored/unexplored states. Test edge cases like map boundaries and different visibility ranges."
         },
         {
@@ -573,7 +573,7 @@
             1
           ],
           "details": "Create a FogOfWarRenderer component that overlays the game map. Use HTML Canvas for efficient rendering. Implement three visual states: 1) Unexplored (full fog), 2) Previously explored (partial fog), 3) Currently visible (no fog). Use alpha transparency and gradient effects for smooth transitions. Optimize with layer caching and only redraw when exploration state changes. Add shader effects for fog appearance.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Performance test the rendering system with large maps to ensure frame rate remains stable. Visual regression tests to verify fog appearance in different states."
         },
         {
@@ -585,7 +585,7 @@
             2
           ],
           "details": "Extend the game loop to include visibility calculations. For each scout ant, calculate visible tiles using a radial algorithm with configurable visibility range (stored in ant properties). Implement line-of-sight checks to handle obstacles blocking visibility. Create an efficient update system that only recalculates visibility when scout positions change. Add a subscription system so the FogOfWarRenderer updates only when visibility changes.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test visibility calculations with different map layouts and obstacles. Verify that fog clearing happens correctly when scouts move. Benchmark performance with multiple scouts moving simultaneously."
         },
         {
@@ -597,7 +597,7 @@
             3
           ],
           "details": "Create a DiscoveryManager class that generates discoveries based on map data. Implement different discovery types: ResourceCache, HiddenEnemy, NPCNest, and EnvironmentalHazard. Each should have appropriate data and behavior. Create a NotificationSystem that displays discoveries to the player using toast notifications with appropriate icons and descriptions. Add event handlers to trigger discoveries when tiles change from unexplored to explored state.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test discovery generation logic with mock map data. Verify notifications appear correctly for each discovery type. Test edge cases like multiple simultaneous discoveries."
         },
         {
@@ -610,7 +610,7 @@
             3
           ],
           "details": "Extend the ExplorationManager to include a decay system that gradually returns tiles to unexplored state based on time since last visit. Implement configurable decay rates. Create a scheduler that periodically updates decay status. Modify the FogOfWarRenderer to show partially decayed areas with intermediate fog density. Integrate with the mini-map component to show: 1) Unexplored areas (dark), 2) Explored areas (light), 3) Currently visible areas (highlighted). Add mini-map controls to toggle fog visibility.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test decay mechanics with accelerated time simulation. Verify correct visual representation of decay states. Test mini-map integration to ensure it correctly reflects the exploration state."
         }
       ]
@@ -835,7 +835,7 @@
         4,
         12
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -853,8 +853,8 @@
           "dependencies": [
             1
           ],
-          "details": "Create an `aiAttackScheduler.js` module that runs on a timer to determine when AI attacks occur. Implement difficulty scaling based on player progression. Create database tables to track AI aggression levels and attack cooldowns. Add an endpoint `/api/battles/incoming` for the frontend to check for incoming attacks. Ensure the scheduler uses the battle simulation algorithm to pre-calculate potential outcomes and only launches winnable attacks (with some randomness based on difficulty).",
-          "status": "pending",
+          "details": "Create an `aiAttackScheduler.js` module that runs on a timer to determine when AI attacks occur. Implement difficulty scaling based on player progression. Create database tables to track AI aggression levels and attack cooldowns. Add an endpoint `/api/battles/incoming` for the frontend to check for incoming attacks. Ensure the scheduler uses the battle simulation algorithm to pre-calculate potential outcomes and only launches winnable attacks (with some randomness based on difficulty).\n<info added on 2025-05-25T06:02:43.249Z>\nThe AI Attack Scheduler has been successfully implemented with the following components:\n\nCore Implementation:\n- Created AIAttackScheduler.js (643 lines) with intelligent attack scheduling system\n- Implemented dynamic difficulty-based attack intervals (easy: 5min, normal: 3min, hard: 2min)\n- Added personality-driven target selection (aggressive/opportunist/expansionist)\n- Incorporated distance-based targeting within 50-unit range\n- Integrated pre-battle simulation using existing BattleSimulator\n- Developed real-time attack tracking and battle resolution\n- Implemented concurrent attack limits and cooldown management\n- Added resource reward calculation and transfer mechanics\n\nAPI Enhancements:\n- GET /api/battles/scheduler/status - Get scheduler status\n- POST /api/battles/scheduler/start - Start AI attack scheduler  \n- POST /api/battles/scheduler/stop - Stop AI attack scheduler\n- Enhanced GET /api/battles/incoming - Incoming attacks with AI integration\n- Updated health check endpoint to include scheduler status\n\nDatabase Schema:\n- Created 002_ai_attack_tables.sql migration\n- Added ai_attacks table - Track scheduled/ongoing attacks with status, forces, arrival times\n- Added battle_history table - Store completed battle records with outcomes and forces\n- Added performance indexes on target_id, status, timestamps\n\nTesting:\n- Created test-ai-attack-scheduler.js with 11 comprehensive test scenarios\n- Achieved 100% success rate (11/11 tests passed) in 5.68 seconds\n- Tests cover API health check, scheduler status/start/stop, incoming attacks, battle targets, simulation, execution, history, statistics, and retreat mechanism\n</info added on 2025-05-25T06:02:43.249Z>",
+          "status": "done",
           "testStrategy": "Test the scheduler with different game states to verify attack frequency scales appropriately. Mock time functions to test scheduling without waiting for real-time intervals."
         },
         {
@@ -864,8 +864,8 @@
           "dependencies": [
             1
           ],
-          "details": "Create React components for raid planning (`RaidPlanner.jsx`, `ColonySelector.jsx`, `AntAllocation.jsx`). Implement backend endpoints at `/api/battles/targets` to list attackable colonies and `/api/battles/execute` to process player attacks. Create a database schema to track available targets and their strength. Implement a cooldown system to prevent spam attacks. Use the battle simulation algorithm to determine outcomes when a raid is executed.",
-          "status": "pending",
+          "details": "Create React components for raid planning (`RaidPlanner.jsx`, `ColonySelector.jsx`, `AntAllocation.jsx`). Implement backend endpoints at `/api/battles/targets` to list attackable colonies and `/api/battles/execute` to process player attacks. Create a database schema to track available targets and their strength. Implement a cooldown system to prevent spam attacks. Use the battle simulation algorithm to determine outcomes when a raid is executed.\n<info added on 2025-05-25T06:09:37.254Z>\nThe Player-Initiated Raid System has been successfully implemented with comprehensive frontend and backend integration.\n\n**Frontend Components Created:**\n- **battleService.js** - API service handling all battle-related HTTP requests with error handling\n- **RaidPlanner.jsx** - Main raid planning interface with 4-step wizard (Target Selection → Force Allocation → Battle Preview → Execution)\n- **ColonySelector.jsx** - AI colony target selection with detailed stats, difficulty indicators, and tactical advice\n- **AntAllocation.jsx** - Force allocation interface with ant counters, formation selection, and combat power calculations\n- **BattlePreview.jsx** - Detailed battle simulation preview showing predicted outcomes, casualties, and rewards\n\n**Component Features:**\n- Step-by-step interface with progress indicators and navigation controls\n- Target intelligence with colony strength analysis, terrain effects, and tactical advice\n- Interactive force management with recommended compositions and formation bonuses\n- Pre-battle simulation with outcome predictions, casualty estimates, and phase-by-phase analysis\n- Real-time validation with availability checks and error handling\n\n**Styling Implementation:**\n- Modal-style interface with modern game UI design and responsive layout\n- Card-based target grid with strength indicators and hover effects\n- Interactive allocation controls with formation selection interface\n- Comprehensive battle results display with color-coded outcomes\n\n**Backend Integration:**\n- Successfully integrated with `/api/battles/targets` and `/api/battles/execute` endpoints\n- Implemented BattleSimulator for pre-battle calculations\n- Added real-time battle preview using simulation API\n- Implemented complete error handling and loading states\n\nThe system now provides a fully functional raid planning experience with tactical depth and user-friendly interface.\n</info added on 2025-05-25T06:09:37.254Z>",
+          "status": "done",
           "testStrategy": "Test the API endpoints with various input combinations. Create UI tests to verify the raid planning flow works correctly. Test edge cases like attempting to raid with insufficient ants."
         },
         {
@@ -877,8 +877,8 @@
             2,
             3
           ],
-          "details": "Develop a `BattleResults.jsx` component to display battle outcomes with animations and statistics. Create a rewards calculation function in the backend that determines resources gained based on battle performance. Implement database updates to add resources to the player's colony after successful raids. Add API endpoint `/api/battles/results/:battleId` to fetch detailed battle results. Ensure proper error handling for failed attacks.",
-          "status": "pending",
+          "details": "Develop a `BattleResults.jsx` component to display battle outcomes with animations and statistics. Create a rewards calculation function in the backend that determines resources gained based on battle performance. Implement database updates to add resources to the player's colony after successful raids. Add API endpoint `/api/battles/results/:battleId` to fetch detailed battle results. Ensure proper error handling for failed attacks.\n<info added on 2025-05-25T06:17:50.531Z>\nThe Battle Resolution UI and Rewards System has been successfully implemented with comprehensive components:\n\n1. **BattleResults.jsx**: Features animated intro sequences, dynamic outcome classification, performance ratings, detailed battle summaries, forces comparison, casualty reporting, rewards display, battle timeline, and interactive action buttons.\n\n2. **BattleResults.css**: Includes full-screen overlay animations, outcome-specific styling, responsive layouts, timeline visualization, reward animations, mobile responsiveness, and accessibility support.\n\n3. **Backend API Enhancements**:\n   - GET /api/battles/results/:battleId for detailed battle results\n   - POST /api/battles/rewards/:battleId for reward calculation and distribution\n   - Enhanced battleService.js with new methods\n   - Updated health check endpoint\n\n4. **RewardsCalculator.js**: Advanced reward calculation system with base resource calculations, performance multipliers, victory margin bonuses, terrain bonuses, casualty penalties, colony personality bonuses, special rewards, and comprehensive resource valuation.\n\n5. **BattleManager.jsx**: Three-phase state management, animated execution overlay, battle data processing, force reconstruction, reward distribution integration, error handling, and seamless planning-to-results flow.\n\n6. **BattleManager.css**: Execution phase styling with battle animations, progress indicators, ambience effects, error displays, responsive design, and accessibility features.\n\n7. **Integration Features**: Automatic reward distribution, enhanced battle data, seamless transitions, error handling, and mobile-responsive design.\n</info added on 2025-05-25T06:17:50.531Z>",
+          "status": "done",
           "testStrategy": "Test reward calculations with different battle outcomes. Verify UI correctly displays all battle statistics. Test database transactions to ensure resources are properly awarded."
         },
         {
@@ -889,8 +889,8 @@
             3,
             4
           ],
-          "details": "Create a `battles` table in the database to log all battle events. Implement a `BattleHistory.jsx` component to display past battles with filtering options. Add a retreat button to in-progress battles that calculates partial casualties using the battle algorithm. Create API endpoints `/api/battles/history` and `/api/battles/retreat/:battleId`. Implement consequences for retreating (e.g., resource penalties, cooldown increases). Add notifications for battle events using the existing notification system.",
-          "status": "pending",
+          "details": "Create a `battles` table in the database to log all battle events. Implement a `BattleHistory.jsx` component to display past battles with filtering options. Add a retreat button to in-progress battles that calculates partial casualties using the battle algorithm. Create API endpoints `/api/battles/history` and `/api/battles/retreat/:battleId`. Implement consequences for retreating (e.g., resource penalties, cooldown increases). Add notifications for battle events using the existing notification system.\n<info added on 2025-05-25T06:35:06.394Z>\n**Core Components Created:**\n- **BattleHistory.jsx** (338 lines): Complete battle history interface with filtering options (outcome, type, date range), pagination, battle statistics summary, detailed battle records display, and interactive battle viewing functionality\n- **BattleHistory.css** (571 lines): Full styling system with responsive design, battle-themed UI, loading/error/empty states, filtering interface, battle record cards with outcome-specific styling, pagination controls, and mobile responsiveness\n\n**Backend Enhancements:**\n- Enhanced battle routes with proper database integration for battle history retrieval\n- Updated `/api/battles/history/:colonyId` endpoint to query battle_history table with fallback to mock data\n- Improved battle record storage in `/api/battles/execute` endpoint to save to database\n- Added comprehensive battle data transformation for frontend compatibility\n\n**Retreat Mechanics Implementation:**\n- **RetreatCalculator.js** (348 lines): Advanced retreat calculation service with sophisticated penalty systems including base casualty rates by ant type, terrain/battle phase/enemy pursuit modifiers, resource penalties, cooldown calculations, morale penalties, retreat efficiency ratings, and retreat recommendation logic\n- Enhanced `/api/battles/retreat/:battleId` endpoint with RetreatCalculator integration\n- Added `/api/battles/retreat/recommend` endpoint for tactical retreat recommendations\n- Implemented retreat record storage in battle_history table\n\n**Integration Features:**\n- Updated BattleManager.jsx to include BattleHistory component with seamless navigation\n- Added history button to RaidPlanner.jsx with proper styling\n- Enhanced battleService.js with existing getBattleHistory(), getBattleStats(), and retreatFromBattle() methods\n- Complete error handling and loading states throughout the system\n\n**Advanced Features:**\n- Battle filtering by outcome, type, and date range with real-time updates\n- Battle statistics dashboard with win rates, combat ratings, and performance metrics\n- Sophisticated retreat calculations based on terrain, battle phase, and enemy pursuit\n- Retreat efficiency ratings from \"excellent\" to \"disastrous\" with detailed descriptions\n- Resource penalties, cooldown increases, and morale impacts for retreating\n- Retreat recommendation system analyzing army strength ratios and casualty rates\n</info added on 2025-05-25T06:35:06.394Z>",
+          "status": "done",
           "testStrategy": "Test the history logging system with various battle types. Verify retreat calculations produce reasonable results. Test the UI components display battle history correctly and that retreat functionality works as expected."
         }
       ]
@@ -1288,7 +1288,7 @@
         10,
         11
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -1296,7 +1296,7 @@
           "description": "Create the foundational three-panel layout structure with proper CSS Grid/Flexbox for the main game UI, including responsive breakpoints.",
           "dependencies": [],
           "details": "Create React components for the main layout container and three panels (LeftPanel, CenterPanel, RightPanel). Use CSS Grid for the overall layout with appropriate sizing. Implement media queries for responsive design at standard breakpoints (mobile, tablet, desktop). Set up the basic styling variables for theming support later. Create placeholder content for each panel to verify layout.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test layout rendering at different viewport sizes. Verify panel proportions match design specs. Ensure no overflow issues occur."
         },
         {
@@ -1307,7 +1307,7 @@
             1
           ],
           "details": "Create components for ColonyStats (displaying population, resources, territory) and AntAssignments (showing different ant types and allowing reassignment). Implement stat display with appropriate icons and numerical values. Create assignment controls with increment/decrement buttons and validation. Connect to the game state context/redux store. Style components according to the design system.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test stat display with various game state values. Verify assignment controls correctly increment/decrement values and respect minimum/maximum limits."
         },
         {
@@ -1318,7 +1318,7 @@
             1
           ],
           "details": "Implement the SimulationView component with canvas/SVG rendering. Create rendering logic for the colony, ants, resources, and territory. Add zoom and pan controls for navigation. Implement click/touch handlers for interaction with game elements. Add visual indicators for active/selected elements. Connect to the simulation state from the game engine.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test rendering performance with various colony sizes. Verify zoom/pan functionality works correctly. Ensure interactive elements respond appropriately to user input."
         },
         {
@@ -1329,7 +1329,7 @@
             1
           ],
           "details": "Create the EvolutionTree component with visual representation of available and locked upgrades. Implement ResourceDisplay component showing current resources and generation rates. Add interactive elements for selecting upgrades when requirements are met. Create tooltips for displaying upgrade details and requirements. Connect to the game state for resource and upgrade data.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test evolution tree rendering with various unlock states. Verify tooltips display correct information. Ensure upgrade selection works correctly when requirements are met."
         },
         {
@@ -1343,7 +1343,7 @@
             4
           ],
           "details": "Create a Modal component system with different content types (BattleResult, UpgradeConfirmation, Discovery). Implement panel collapse/expand functionality with smooth animations. Add toggle buttons for each panel. Create keyboard shortcut system for common actions (panel toggle, zoom, etc.). Implement light/dark theme toggle with appropriate styling variables. Add transition animations between UI states.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test modal rendering and dismissal. Verify panel collapse/expand works correctly and maintains layout integrity. Test keyboard shortcuts function as expected. Ensure theme switching applies to all components."
         }
       ]

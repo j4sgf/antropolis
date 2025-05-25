@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Colony = require('../models/Colony');
-const { Ant } = require('../models/Ant');
+const Ant = require('../models/Ant');
 
 // Get all colonies for a user (for testing, we'll use a hardcoded user ID)
 router.get('/', async (req, res) => {
@@ -91,7 +91,7 @@ router.post('/', async (req, res) => {
     
     const colony = result.data;
     
-    // Create initial ants for the colony
+    // Create initial ants for the colony (non-blocking)
     const initialAnts = [
       { colony_id: colony.id, name: 'Queen', role: 'nurse', status: 'adult' },
       { colony_id: colony.id, name: 'Worker-1', role: 'worker', status: 'adult' },
@@ -100,9 +100,14 @@ router.post('/', async (req, res) => {
       { colony_id: colony.id, name: 'Soldier-1', role: 'soldier', status: 'adult' }
     ];
     
-    // Create initial ants
-    for (const antData of initialAnts) {
-      await Ant.create(antData);
+    // Create initial ants (don't block colony creation if this fails)
+    try {
+      for (const antData of initialAnts) {
+        await Ant.create(antData);
+      }
+    } catch (antError) {
+      console.warn('Warning: Failed to create initial ants, but colony was created successfully:', antError.message);
+      // Continue - colony creation should succeed even if ant creation fails
     }
     
     res.status(201).json({
