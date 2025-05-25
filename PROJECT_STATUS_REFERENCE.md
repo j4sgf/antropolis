@@ -25,13 +25,12 @@ Single-player browser-based ant colony simulation game built with:
 12. **Task 12: AI Colony Behavior System** - DONE ✓ *(Major recent achievement!)*
 
 ### 🔄 **IN PROGRESS:**
-*None currently*
+13. **Task 13: Battle Simulation System** - IN PROGRESS *(Subtask 13.1 completed, working on 13.2)*
 
 ### ⏳ **HIGH PRIORITY PENDING TASKS:**
 7. **Task 7: Ant Role Assignment and Management UI** - PENDING
 9. **Task 9: Fog of War and Map Exploration** - PENDING
 11. **Task 11: Evolution and Tech Tree System** - PENDING
-13. **Task 13: Battle Simulation System** - PENDING *(Next logical step after AI)*
 20. **Task 20: Main Game UI Layout Implementation** - PENDING
 
 ### ⏳ **OTHER PENDING TASKS:**
@@ -138,6 +137,20 @@ Single-player browser-based ant colony simulation game built with:
 
 ## 📈 **Recent Achievements:**
 
+### **⚔️ Task 13.1 Completed: Battle Simulation Algorithm Core** *(MAJOR MILESTONE)*
+- **Core Battle Engine**: Comprehensive battle simulation with formations, terrain, and ant-specific combat stats ✓
+- **Multi-Phase Combat**: 3-phase battle system with escalating casualties and strategic depth ✓
+- **Formation System**: Aggressive, defensive, balanced, and guerrilla formations with tactical bonuses ✓
+- **Terrain Effects**: 6 terrain types (forest, desert, mountain, grassland, swamp, cave) with combat modifiers ✓
+- **Battle Efficiency**: Tactical rating system (brilliant, good, fair, poor, disastrous) based on performance ✓
+- **Resource Rewards**: Dynamic reward calculation based on battle efficiency and enemy strength ✓
+- **API Integration**: Complete battle endpoints for simulation, raids, history, and statistics ✓
+
+**Total Implementation**: BattleSimulator class (400+ lines), battle routes, comprehensive test suite
+- **Combat Mechanics**: Ant-specific strengths, survival rates, formation bonuses, terrain modifiers
+- **Battle Phases**: Multi-phase combat with controlled randomness and escalating intensity
+- **Reward System**: Performance-based resource rewards with efficiency multipliers
+
 ### **🤖 Task 12 Completed: AI Colony Behavior System** *(MAJOR MILESTONE)*
 - **12.1**: AI Colony Data Structure and State Management ✓
 - **12.2**: Decision Tree for AI Colony Actions ✓  
@@ -162,7 +175,7 @@ Single-player browser-based ant colony simulation game built with:
 - Real-time structure map with construction progress visualization
 
 ## 🎯 **Next Priority:**
-**Task 13: Battle Simulation System** - High priority task that leverages the completed AI system to implement combat mechanics between player and AI colonies.
+**Task 13.2: AI Attack Scheduling System** - Implement automated AI attacks on player colonies with difficulty scaling and strategic timing, building on the completed battle simulation core.
 
 ## 💾 **Codebase Stats:**
 - **Total Files:** 160+ files
