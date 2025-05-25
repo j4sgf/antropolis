@@ -3,7 +3,7 @@
  * Implements intelligent defensive unit placement and fortification logic
  */
 
-const { PERSONALITY_TRAITS } = require('../../models/AIColony');
+const { PERSONALITY_TRAITS } = require('../../constants/AI');
 
 class DefenseStrategy {
   constructor() {

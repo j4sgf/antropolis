@@ -3,7 +3,7 @@
  * Evaluates game conditions and returns appropriate actions
  */
 
-const { AI_STATES, PERSONALITY_TRAITS } = require('../models/AIColony');
+const { AI_STATES, PERSONALITY_TRAITS } = require('../constants/AI');
 
 class DecisionTree {
   constructor() {

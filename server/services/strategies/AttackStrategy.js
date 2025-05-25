@@ -3,7 +3,7 @@
  * Implements intelligent attack planning with target selection and force calculation
  */
 
-const { PERSONALITY_TRAITS } = require('../../models/AIColony');
+const { PERSONALITY_TRAITS } = require('../../constants/AI');
 
 class AttackStrategy {
   constructor() {

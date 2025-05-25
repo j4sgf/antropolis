@@ -3,7 +3,7 @@
  * Implements intelligent growth priority logic balancing expansion vs. military development
  */
 
-const { PERSONALITY_TRAITS } = require('../../models/AIColony');
+const { PERSONALITY_TRAITS } = require('../../constants/AI');
 
 class GrowthStrategy {
   constructor() {

@@ -3,7 +3,7 @@
  * Implements intelligent resource gathering based on colony traits and needs
  */
 
-const { PERSONALITY_TRAITS } = require('../../models/AIColony');
+const { PERSONALITY_TRAITS } = require('../../constants/AI');
 
 class ResourceStrategy {
   constructor() {

@@ -3,7 +3,8 @@
  * Handles CRUD operations and AI logic for enemy colonies
  */
 
-const { AIColony, AI_STATES, PERSONALITY_TRAITS } = require('../models/AIColony');
+const { AIColony } = require('../models/AIColony');
+const { AI_STATES, PERSONALITY_TRAITS } = require('../constants/AI');
 const ExplorationManager = require('../services/ExplorationManager');
 const VisibilityService = require('../services/VisibilityService');
 const ScoutBehavior = require('../services/ai/units/ScoutBehavior');

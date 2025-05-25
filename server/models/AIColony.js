@@ -5,6 +5,7 @@
 
 const Colony = require('./Colony');
 const { supabase, handleDatabaseError } = require('../config/database');
+const { AI_STATES, PERSONALITY_TRAITS } = require('../constants/AI');
 const DecisionTree = require('../services/DecisionTree');
 const ResourceStrategy = require('../services/strategies/ResourceStrategy');
 const DefenseStrategy = require('../services/strategies/DefenseStrategy');
@@ -19,26 +20,6 @@ const AdaptiveStrategy = require('../services/ai/AdaptiveStrategy');
 const TriggerConditions = require('../services/ai/TriggerConditions');
 const CounterStrategies = require('../services/ai/CounterStrategies');
 const AIEventService = require('../services/AIEventService');
-
-// AI Colony states
-const AI_STATES = {
-  GATHERING: 'gathering',
-  DEFENDING: 'defending', 
-  ATTACKING: 'attacking',
-  GROWING: 'growing',
-  EXPLORING: 'exploring',
-  IDLE: 'idle'
-};
-
-// Personality traits that affect AI behavior
-const PERSONALITY_TRAITS = {
-  AGGRESSIVE: 'aggressive',     // Attacks more frequently
-  DEFENSIVE: 'defensive',       // Focuses on defense and growth
-  EXPANSIONIST: 'expansionist', // Prioritizes territory expansion
-  OPPORTUNIST: 'opportunist',   // Adapts based on circumstances
-  MILITANT: 'militant',         // Military-focused approach
-  BUILDER: 'builder'            // Infrastructure and development focused
-};
 
 class AIColony extends Colony {
   constructor(data = {}) {
@@ -1614,7 +1595,5 @@ class AIColony extends Colony {
 }
 
 module.exports = { 
-  AIColony, 
-  AI_STATES, 
-  PERSONALITY_TRAITS 
+  AIColony
 }; 

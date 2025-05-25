@@ -3,7 +3,7 @@
  * Implements growth functions for resources, population, and territory expansion
  */
 
-const { PERSONALITY_TRAITS } = require('../models/AIColony');
+const { PERSONALITY_TRAITS } = require('../constants/AI');
 
 class GrowthCalculator {
   constructor() {

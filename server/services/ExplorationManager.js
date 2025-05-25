@@ -3,7 +3,7 @@
  * Manages unexplored areas, prioritizes scouting targets, and coordinates exploration activities
  */
 
-const { PERSONALITY_TRAITS } = require('../models/AIColony');
+const { PERSONALITY_TRAITS } = require('../constants/AI');
 
 class ExplorationManager {
   constructor() {

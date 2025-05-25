@@ -6,10 +6,50 @@
 const express = require('express');
 const router = express.Router();
 const BattleSimulator = require('../services/BattleSimulator');
+const AIAttackScheduler = require('../services/AIAttackScheduler');
 const { supabase } = require('../config/database');
 
-// Initialize battle simulator
+// Initialize battle simulator and AI attack scheduler
 const battleSimulator = new BattleSimulator();
+const aiAttackScheduler = new AIAttackScheduler();
+
+/**
+ * GET /api/battles/health
+ * Health check for battles API with scheduler status
+ */
+router.get('/health', (req, res) => {
+    try {
+        const schedulerStatus = aiAttackScheduler.getStatus();
+        
+        res.json({
+            status: 'OK',
+            message: 'Battle API is operational',
+            timestamp: new Date().toISOString(),
+            scheduler: schedulerStatus,
+            endpoints: [
+                'GET /api/battles/health',
+                'POST /api/battles/simulate',
+                'GET /api/battles/targets/:colonyId',
+                'POST /api/battles/execute',
+                'GET /api/battles/incoming/:colonyId',
+                'GET /api/battles/incoming',
+                'GET /api/battles/history/:colonyId',
+                'POST /api/battles/retreat/:battleId',
+                'GET /api/battles/stats/:colonyId',
+                'GET /api/battles/scheduler/status',
+                'POST /api/battles/scheduler/start',
+                'POST /api/battles/scheduler/stop'
+            ]
+        });
+    } catch (error) {
+        console.error('Error in battles health check:', error);
+        res.status(500).json({
+            status: 'ERROR',
+            message: 'Battle API health check failed',
+            error: error.message
+        });
+    }
+});
 
 /**
  * POST /api/battles/simulate
@@ -388,6 +428,134 @@ router.get('/stats/:colonyId', async (req, res) => {
         console.error('Error fetching battle stats:', error);
         res.status(500).json({
             error: 'Failed to fetch battle statistics',
+            details: error.message
+        });
+    }
+});
+
+/**
+ * GET /api/battles/scheduler/status
+ * Get AI attack scheduler status
+ */
+router.get('/scheduler/status', (req, res) => {
+    try {
+        const status = aiAttackScheduler.getStatus();
+        
+        res.json({
+            success: true,
+            scheduler: status,
+            message: `AI Attack Scheduler - ${status.initialized ? 'Running' : 'Stopped'}`
+        });
+
+    } catch (error) {
+        console.error('Error getting scheduler status:', error);
+        res.status(500).json({
+            error: 'Failed to get scheduler status',
+            details: error.message
+        });
+    }
+});
+
+/**
+ * POST /api/battles/scheduler/start
+ * Start the AI attack scheduler
+ */
+router.post('/scheduler/start', async (req, res) => {
+    try {
+        if (aiAttackScheduler.isInitialized) {
+            return res.json({
+                success: true,
+                message: 'AI Attack Scheduler is already running',
+                status: aiAttackScheduler.getStatus()
+            });
+        }
+
+        await aiAttackScheduler.initialize();
+
+        res.json({
+            success: true,
+            message: 'AI Attack Scheduler started successfully',
+            status: aiAttackScheduler.getStatus()
+        });
+
+    } catch (error) {
+        console.error('Error starting scheduler:', error);
+        res.status(500).json({
+            error: 'Failed to start AI attack scheduler',
+            details: error.message
+        });
+    }
+});
+
+/**
+ * POST /api/battles/scheduler/stop
+ * Stop the AI attack scheduler
+ */
+router.post('/scheduler/stop', (req, res) => {
+    try {
+        aiAttackScheduler.shutdown();
+
+        res.json({
+            success: true,
+            message: 'AI Attack Scheduler stopped successfully',
+            status: aiAttackScheduler.getStatus()
+        });
+
+    } catch (error) {
+        console.error('Error stopping scheduler:', error);
+        res.status(500).json({
+            error: 'Failed to stop AI attack scheduler',
+            details: error.message
+        });
+    }
+});
+
+/**
+ * GET /api/battles/incoming
+ * Get all incoming attacks (enhanced with AI scheduler integration)
+ */
+router.get('/incoming', async (req, res) => {
+    try {
+        const { colonyId } = req.query;
+
+        if (!colonyId) {
+            return res.status(400).json({
+                error: 'Colony ID is required as query parameter'
+            });
+        }
+
+        // Get incoming attacks from AI scheduler
+        const schedulerStatus = aiAttackScheduler.getStatus();
+        const incomingAttacks = [];
+
+        // Filter active attacks targeting this colony
+        for (const attack of aiAttackScheduler.activeAttacks.values()) {
+            if (attack.target_id === colonyId && attack.status === 'incoming') {
+                incomingAttacks.push({
+                    id: attack.id,
+                    attackerName: attack.attacker_name || 'Unknown Colony',
+                    attackType: attack.attack_type,
+                    forcesCount: attack.forces_sent,
+                    estimatedArrival: attack.estimated_arrival,
+                    canIntercept: Date.now() < (new Date(attack.estimated_arrival).getTime() - 60000), // Can intercept if >1min away
+                    timeToArrival: new Date(attack.estimated_arrival).getTime() - Date.now()
+                });
+            }
+        }
+
+        res.json({
+            success: true,
+            incomingAttacks,
+            schedulerActive: schedulerStatus.initialized,
+            message: incomingAttacks.length > 0 
+                ? `${incomingAttacks.length} incoming attacks detected!`
+                : 'No incoming attacks detected'
+        });
+
+    } catch (error) {
+        console.error('Error checking incoming attacks:', error);
+        res.status(500).json({
+            error: 'Failed to check incoming attacks',
             details: error.message
         });
     }
