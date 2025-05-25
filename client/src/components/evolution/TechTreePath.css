@@ -1,0 +1,134 @@
+/* Tech Tree Path Styles */
+.tech-tree-path {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-tree-canvas {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/* Tech Tree Connections */
+.tech-tree-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Node Containers */
+.tech-node-container {
+  z-index: 2;
+}
+
+/* Category Background Decorations */
+.category-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.category-background.physical {
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(244, 67, 54, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(244, 67, 54, 0.1) 0%, transparent 50%);
+}
+
+.category-background.specialized {
+  background: 
+    radial-gradient(circle at 30% 70%, rgba(33, 150, 243, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(33, 150, 243, 0.1) 0%, transparent 50%);
+}
+
+.category-background.environmental {
+  background: 
+    radial-gradient(circle at 40% 60%, rgba(76, 175, 80, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 60% 40%, rgba(76, 175, 80, 0.1) 0%, transparent 50%);
+}
+
+.category-background.combat {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 152, 0, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 152, 0, 0.1) 0%, transparent 50%);
+}
+
+.category-background.efficiency {
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(156, 39, 176, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 70%, rgba(156, 39, 176, 0.1) 0%, transparent 50%);
+}
+
+.category-pattern {
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(255, 255, 255, 0.02) 20px,
+      rgba(255, 255, 255, 0.02) 40px
+    );
+}
+
+/* Category Info Panel */
+.category-info {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10;
+  min-width: 200px;
+}
+
+.category-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #4CAF50;
+  text-align: center;
+  font-weight: 600;
+}
+
+.category-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4CAF50;
+} 

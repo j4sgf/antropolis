@@ -45,6 +45,10 @@ CREATE TABLE colonies (
   is_active BOOLEAN DEFAULT true,
   difficulty_level VARCHAR(20) DEFAULT 'medium',
   
+  -- Evolution system
+  evolution_points INTEGER DEFAULT 0,
+  total_evolution_points_earned INTEGER DEFAULT 0,
+  
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -203,6 +207,19 @@ CREATE TABLE technologies (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Evolution point transactions (for tracking earning history)
+CREATE TABLE evolution_point_transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  colony_id UUID NOT NULL REFERENCES colonies(id) ON DELETE CASCADE,
+  
+  points_earned INTEGER NOT NULL,
+  source_type VARCHAR(50) NOT NULL, -- 'resource_collection', 'combat_victory', 'milestone', 'manual'
+  source_details JSONB DEFAULT '{}'::jsonb,
+  description TEXT,
+  
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Colony tech progress
 CREATE TABLE colony_technologies (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -212,6 +229,7 @@ CREATE TABLE colony_technologies (
   research_progress INTEGER DEFAULT 0,
   is_researched BOOLEAN DEFAULT false,
   researched_at TIMESTAMP WITH TIME ZONE,
+  evolution_points_spent INTEGER DEFAULT 0,
   
   UNIQUE(colony_id, technology_id)
 );
@@ -304,6 +322,8 @@ CREATE INDEX idx_map_tiles_explored ON map_tiles(is_explored);
 CREATE INDEX idx_battles_colonies ON battles(attacker_colony_id, defender_colony_id);
 CREATE INDEX idx_battles_status ON battles(status);
 CREATE INDEX idx_game_events_colony_tick ON game_events(colony_id, game_tick);
+CREATE INDEX idx_evolution_transactions_colony ON evolution_point_transactions(colony_id);
+CREATE INDEX idx_colony_technologies_colony_id ON colony_technologies(colony_id);
 
 -- Row Level Security Policies
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -313,6 +333,7 @@ ALTER TABLE colony_resources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE buildings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE map_tiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE colony_technologies ENABLE ROW LEVEL SECURITY;
+ALTER TABLE evolution_point_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE battles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE game_events ENABLE ROW LEVEL SECURITY;

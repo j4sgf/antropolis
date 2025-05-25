@@ -17,6 +17,19 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Debug middleware for colony creation
+app.use('/api/colonies', (req, res, next) => {
+  if (req.method === 'POST') {
+    console.log('🔥 RAW COLONY REQUEST DEBUG:');
+    console.log('  Method:', req.method);
+    console.log('  URL:', req.url);
+    console.log('  Headers:', JSON.stringify(req.headers, null, 2));
+    console.log('  Body (raw):', req.body);
+    console.log('  Body (stringified):', JSON.stringify(req.body));
+  }
+  next();
+});
+
 // Basic security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -38,6 +51,7 @@ app.get('/api/health', (req, res) => {
 // Import routes
 const coloniesRouter = require('./routes/colonies');
 const resourcesRouter = require('./routes/resources');
+const resourceQueueRouter = require('./routes/resource-queue');
 const foragingRouter = require('./routes/foraging');
 const structuresRouter = require('./routes/structures');
 const { router: lifecycleRouter, initializeLifecycleManager } = require('./routes/lifecycle');
@@ -46,6 +60,8 @@ const aiColonyRouter = require('./routes/aiColony');
 const battlesRouter = require('./routes/battles');
 const explorationRouter = require('./routes/exploration');
 const antsRouter = require('./routes/ants');
+const evolutionRouter = require('./routes/evolutionRoutes');
+const techtreeRouter = require('./routes/techtree');
 
 // Import services
 const ConstructionManager = require('./services/ConstructionManager');
@@ -54,6 +70,7 @@ const StructureEventManager = require('./services/StructureEventManager');
 // API routes
 app.use('/api/colonies', coloniesRouter);
 app.use('/api/resources', resourcesRouter);
+app.use('/api/resource-queue', resourceQueueRouter);
 app.use('/api/foraging', foragingRouter);
 app.use('/api/structures', structuresRouter);
 app.use('/api/lifecycle', lifecycleRouter);
@@ -62,6 +79,8 @@ app.use('/api/ai-colonies', aiColonyRouter);
 app.use('/api/battles', battlesRouter);
 app.use('/api/exploration', explorationRouter);
 app.use('/api', antsRouter);
+app.use('/api/evolution', evolutionRouter);
+app.use('/api', techtreeRouter);
 
 app.get('/api/test', (req, res) => {
   res.json({

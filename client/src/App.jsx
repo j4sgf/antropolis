@@ -174,8 +174,8 @@ function App() {
             <CreateColony 
               onColonyCreated={(colony) => {
                 console.log('Colony created:', colony)
-                // Navigate to colony dashboard
-                window.location.href = `/colony/${colony.id}`
+                // Navigate directly to game (Task 20 implementation)
+                window.location.href = `/game/${colony.id}`
               }}
               onCancel={() => {
                 console.log('Colony creation cancelled')

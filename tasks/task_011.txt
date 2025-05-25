@@ -1,6 +1,6 @@
 # Task ID: 11
 # Title: Evolution and Tech Tree System
-# Status: pending
+# Status: in-progress
 # Dependencies: 4, 5, 10
 # Priority: medium
 # Description: Implement the evolution point system and tech tree as specified in section 5.5 and ST-106.
@@ -24,19 +24,19 @@
 Test evolution point earning rates. Verify tech tree UI navigation. Test upgrade purchase flow. Verify that upgrades correctly affect colony performance. Test prerequisite system for advanced upgrades. Verify visual changes to ants after evolution.
 
 # Subtasks:
-## 1. Evolution Points Earning System Backend [pending]
+## 1. Evolution Points Earning System Backend [done]
 ### Dependencies: None
 ### Description: Implement the backend logic for earning and tracking evolution points from various game activities.
 ### Details:
 Create database schema for evolution points in PostgreSQL. Implement API endpoints in Node.js/Express for: 1) Adding points from resource collection (POST /api/evolution/points/resource), 2) Adding points from combat (POST /api/evolution/points/combat), 3) Adding points from colony milestones (POST /api/evolution/points/milestone), 4) Getting current points balance (GET /api/evolution/points). Include transaction handling for point updates and implement rate limiting to prevent exploitation.
 
-## 2. Tech Tree Data Structure and Backend [pending]
+## 2. Tech Tree Data Structure and Backend [done]
 ### Dependencies: 11.1
 ### Description: Design and implement the tech tree data structure with multiple evolution paths and prerequisites system.
 ### Details:
 Create database schema for tech tree nodes and edges. Each node should contain: id, name, description, category (physical/specialized/environmental), cost, effects, prerequisites, and visual changes. Implement API endpoints: 1) GET /api/evolution/techtree to retrieve the full tree, 2) GET /api/evolution/techtree/available to get available upgrades based on current points and unlocked nodes, 3) POST /api/evolution/techtree/unlock to purchase an upgrade. Include validation logic for prerequisites and sufficient evolution points.
 
-## 3. Tech Tree UI Components [pending]
+## 3. Tech Tree UI Components [done]
 ### Dependencies: 11.2
 ### Description: Create React components for displaying and navigating the tech tree with visual representation of different evolution paths.
 ### Details:
