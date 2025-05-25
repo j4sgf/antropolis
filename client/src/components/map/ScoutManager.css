@@ -1,0 +1,411 @@
+.scout-manager {
+  position: relative;
+  pointer-events: none;
+}
+
+.scout-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: crosshair;
+}
+
+/* Scout management panel */
+.scout-panel {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 300px;
+  max-height: 80vh;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #8B4513;
+  border-left: none;
+  border-radius: 0 15px 15px 0;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  z-index: 1000;
+  pointer-events: auto;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.scout-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  border-bottom: 1px solid #654321;
+}
+
+.scout-panel-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.toggle-panel-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.toggle-panel-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.scout-panel-content {
+  padding: 15px;
+  max-height: calc(80vh - 70px);
+  overflow-y: auto;
+}
+
+/* Exploration stats */
+.exploration-stats {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: rgba(139, 69, 19, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(139, 69, 19, 0.4);
+}
+
+.exploration-stats h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #FFD700;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.stat-row span:last-child {
+  font-weight: bold;
+  color: #90EE90;
+}
+
+/* Scout list */
+.scout-list {
+  margin-bottom: 20px;
+}
+
+.scout-list h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #FFD700;
+}
+
+.scout-items {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.scout-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.scout-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.scout-item.selected {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: #FFD700;
+}
+
+.scout-item.inactive {
+  opacity: 0.6;
+  background: rgba(128, 128, 128, 0.2);
+}
+
+.scout-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.scout-icon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.scout-details {
+  flex: 1;
+}
+
+.scout-name {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.scout-pos {
+  font-size: 10px;
+  color: #CCCCCC;
+}
+
+.scout-stamina {
+  width: 40px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.stamina-bar {
+  height: 100%;
+  transition: width 0.5s ease, background-color 0.3s ease;
+  border-radius: 3px;
+}
+
+.remove-scout-btn {
+  background: rgba(255, 0, 0, 0.3);
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.remove-scout-btn:hover {
+  background: rgba(255, 0, 0, 0.6);
+  transform: scale(1.1);
+}
+
+/* Add scout section */
+.add-scout-section {
+  margin-bottom: 20px;
+}
+
+.add-scout-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #FFD700;
+}
+
+.scout-type-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.add-scout-btn {
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.add-scout-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Instructions */
+.scout-instructions {
+  padding: 10px;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.scout-instructions h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #FFD700;
+}
+
+.scout-instructions p {
+  margin: 5px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Status indicator */
+.scout-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  font-size: 12px;
+  z-index: 100;
+  pointer-events: auto;
+  backdrop-filter: blur(5px);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00FF00;
+  animation: pulse 2s infinite;
+}
+
+.status-dot.active {
+  background: #00FF00;
+}
+
+.status-dot.inactive {
+  background: #FF0000;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.last-update {
+  font-size: 10px;
+  color: #CCCCCC;
+}
+
+/* Scout visibility indicators on canvas */
+.scout-visibility-range {
+  stroke: rgba(34, 139, 34, 0.4);
+  stroke-width: 2;
+  fill: rgba(34, 139, 34, 0.1);
+  animation: visibilityPulse 3s ease-in-out infinite;
+}
+
+@keyframes visibilityPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Scrollbar styling */
+.scout-panel-content::-webkit-scrollbar,
+.scout-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scout-panel-content::-webkit-scrollbar-track,
+.scout-items::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.scout-panel-content::-webkit-scrollbar-thumb,
+.scout-items::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.7);
+  border-radius: 3px;
+}
+
+.scout-panel-content::-webkit-scrollbar-thumb:hover,
+.scout-items::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .scout-panel {
+    width: 250px;
+    max-height: 70vh;
+  }
+
+  .scout-panel-header h3 {
+    font-size: 14px;
+  }
+
+  .scout-type-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-row,
+  .scout-name,
+  .scout-instructions p {
+    font-size: 11px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .scout-item,
+  .add-scout-btn,
+  .remove-scout-btn,
+  .toggle-panel-btn {
+    transition: none;
+  }
+
+  .status-dot {
+    animation: none;
+  }
+
+  .scout-visibility-range {
+    animation: none;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .scout-panel {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: #654321;
+  }
+
+  .scout-panel-header {
+    background: linear-gradient(135deg, #654321, #8B4513);
+  }
+
+  .exploration-stats {
+    background: rgba(101, 67, 33, 0.3);
+    border-color: rgba(101, 67, 33, 0.6);
+  }
+} 

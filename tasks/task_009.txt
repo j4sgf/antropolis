@@ -1,6 +1,6 @@
 # Task ID: 9
 # Title: Fog of War and Map Exploration
-# Status: pending
+# Status: done
 # Dependencies: 8
 # Priority: medium
 # Description: Implement fog of war and map exploration mechanics as described in ST-107 and section 5.6.
@@ -24,31 +24,31 @@
 Test fog of war rendering. Verify that exploration correctly reveals map tiles. Test discovery events trigger appropriately. Verify memory decay mechanics. Test mini-map accuracy. Measure performance impact of fog of war rendering.
 
 # Subtasks:
-## 1. Implement Tile Exploration State Tracking System [pending]
+## 1. Implement Tile Exploration State Tracking System [done]
 ### Dependencies: None
 ### Description: Create a data structure and state management system to track the exploration status of each tile on the game map.
 ### Details:
 Create a new ExplorationManager class that maintains a 2D grid matching the game map dimensions. Each cell should store: 1) Boolean for explored status, 2) Timestamp of last visit, 3) Discovery type if applicable. Implement methods for: getExplorationStatus(x,y), setExplored(x,y), and calculateVisibleTiles(antPosition, visibilityRange). Store this data in the game state and ensure it persists between game sessions.
 
-## 2. Develop Fog of War Rendering System [pending]
+## 2. Develop Fog of War Rendering System [done]
 ### Dependencies: 9.1
 ### Description: Create the visual representation of unexplored areas using a fog effect that dynamically updates as the player explores the map.
 ### Details:
 Create a FogOfWarRenderer component that overlays the game map. Use HTML Canvas for efficient rendering. Implement three visual states: 1) Unexplored (full fog), 2) Previously explored (partial fog), 3) Currently visible (no fog). Use alpha transparency and gradient effects for smooth transitions. Optimize with layer caching and only redraw when exploration state changes. Add shader effects for fog appearance.
 
-## 3. Implement Scout Visibility and Real-time Fog Clearing [pending]
+## 3. Implement Scout Visibility and Real-time Fog Clearing [done]
 ### Dependencies: 9.1, 9.2
 ### Description: Create the system that calculates which tiles should be visible based on scout ant positions and clears fog in real-time as ants move.
 ### Details:
 Extend the game loop to include visibility calculations. For each scout ant, calculate visible tiles using a radial algorithm with configurable visibility range (stored in ant properties). Implement line-of-sight checks to handle obstacles blocking visibility. Create an efficient update system that only recalculates visibility when scout positions change. Add a subscription system so the FogOfWarRenderer updates only when visibility changes.
 
-## 4. Create Discovery Events and Notification System [pending]
+## 4. Create Discovery Events and Notification System [done]
 ### Dependencies: 9.1, 9.3
 ### Description: Implement the system for generating and handling discovery events when exploring new areas, along with user notifications.
 ### Details:
 Create a DiscoveryManager class that generates discoveries based on map data. Implement different discovery types: ResourceCache, HiddenEnemy, NPCNest, and EnvironmentalHazard. Each should have appropriate data and behavior. Create a NotificationSystem that displays discoveries to the player using toast notifications with appropriate icons and descriptions. Add event handlers to trigger discoveries when tiles change from unexplored to explored state.
 
-## 5. Implement Memory Decay and Mini-map Integration [pending]
+## 5. Implement Memory Decay and Mini-map Integration [done]
 ### Dependencies: 9.1, 9.2, 9.3
 ### Description: Add the memory decay feature where fog gradually returns to previously explored areas, and integrate the exploration system with the mini-map.
 ### Details:
