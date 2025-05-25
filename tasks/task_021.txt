@@ -1,6 +1,6 @@
 # Task ID: 21
 # Title: Accessibility Features
-# Status: pending
+# Status: in-progress
 # Dependencies: 20
 # Priority: medium
 # Description: Implement accessibility features as specified in section 8.3.
@@ -19,19 +19,19 @@
 Test colorblind mode with various types of color blindness. Verify mobile responsiveness on different devices. Test keyboard navigation for all game functions. Verify screen reader compatibility. Test tooltips for clarity and helpfulness. Verify text size adjustments work correctly.
 
 # Subtasks:
-## 1. Implement Color Palette Adjustments [pending]
+## 1. Implement Color Palette Adjustments [done]
 ### Dependencies: None
 ### Description: Create a system for colorblind-friendly palette options and text size adjustments in the game UI
 ### Details:
 Create a settings component that allows users to toggle between different color schemes (default, protanopia, deuteranopia, tritanopia). Implement CSS variables for all color values in the application. Create a color service that applies the selected palette to these variables. Add text size adjustment controls with at least three options (small, medium, large). Store user preferences in localStorage and apply them on application startup.
 
-## 2. Implement Keyboard Navigation Support [pending]
+## 2. Implement Keyboard Navigation Support [done]
 ### Dependencies: None
 ### Description: Add comprehensive keyboard navigation throughout the game interface
 ### Details:
 Implement focus management for all interactive elements. Add keyboard shortcuts for common game actions (documented in tooltips). Ensure logical tab order throughout the application. Create visible focus indicators that work across all color palettes. Implement arrow key navigation for game board interactions. Add keyboard trap prevention for modals and overlays. Document all keyboard shortcuts in the help section.
 
-## 3. Implement Screen Reader Compatibility [pending]
+## 3. Implement Screen Reader Compatibility [done]
 ### Dependencies: None
 ### Description: Ensure the game is fully compatible with screen readers through proper ARIA attributes and semantic HTML
 ### Details:

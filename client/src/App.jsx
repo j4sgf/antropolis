@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import CreateColony from './pages/CreateColony'
 import ColonyDashboard from './pages/ColonyDashboard'
 import GameLayout from './components/layout/GameLayout'
+import { AccessibilityProvider } from './store/AccessibilityContext'
 
 // Home page component
 function HomePage() {
@@ -165,36 +166,38 @@ function HomePage() {
 // Main App component with routing
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route 
-          path="/create-colony" 
-          element={
-            <CreateColony 
-              onColonyCreated={(colony) => {
-                console.log('Colony created:', colony)
-                // Navigate directly to game (Task 20 implementation)
-                window.location.href = `/game/${colony.id}`
-              }}
-              onCancel={() => {
-                console.log('Colony creation cancelled')
-                // Navigate back to home
-                window.location.href = '/'
-              }}
-            />
-          } 
-        />
-        <Route 
-          path="/colony/:colonyId" 
-          element={<ColonyDashboard />} 
-        />
-        <Route 
-          path="/game/:colonyId" 
-          element={<GameLayout />} 
-        />
-      </Routes>
-    </Router>
+    <AccessibilityProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route 
+            path="/create-colony" 
+            element={
+              <CreateColony 
+                onColonyCreated={(colony) => {
+                  console.log('Colony created:', colony)
+                  // Navigate directly to game (Task 20 implementation)
+                  window.location.href = `/game/${colony.id}`
+                }}
+                onCancel={() => {
+                  console.log('Colony creation cancelled')
+                  // Navigate back to home
+                  window.location.href = '/'
+                }}
+              />
+            } 
+          />
+          <Route 
+            path="/colony/:colonyId" 
+            element={<ColonyDashboard />} 
+          />
+          <Route 
+            path="/game/:colonyId" 
+            element={<GameLayout />} 
+          />
+        </Routes>
+      </Router>
+    </AccessibilityProvider>
   )
 }
 

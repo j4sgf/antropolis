@@ -1,0 +1,146 @@
+/* Accessible Tooltip Styles */
+
+.accessible-tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.accessible-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: var(--bg-tooltip, #2d3748);
+  color: var(--text-tooltip, #ffffff);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: calc(var(--base-font-size, 14px) * var(--text-scale, 1));
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 250px;
+  word-wrap: break-word;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-tooltip, rgba(255, 255, 255, 0.1));
+  opacity: 0;
+  transform: scale(0.95);
+  animation: tooltipFadeIn 0.2s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Respect reduced motion preferences */
+.reduced-motion .accessible-tooltip {
+  animation: none;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.accessible-tooltip.focus-visible {
+  border-color: var(--forest-primary, #38a169);
+  box-shadow: 0 0 0 2px var(--forest-primary, #38a169);
+}
+
+.tooltip-content {
+  position: relative;
+  z-index: 1;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--bg-tooltip, #2d3748);
+  border: 1px solid var(--border-tooltip, rgba(255, 255, 255, 0.1));
+  transform: rotate(45deg);
+}
+
+/* Arrow positioning based on tooltip position */
+.accessible-tooltip[data-position="top"] .tooltip-arrow {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-top: none;
+  border-left: none;
+}
+
+.accessible-tooltip[data-position="bottom"] .tooltip-arrow {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-bottom: none;
+  border-right: none;
+}
+
+.accessible-tooltip[data-position="left"] .tooltip-arrow {
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-left: none;
+  border-bottom: none;
+}
+
+.accessible-tooltip[data-position="right"] .tooltip-arrow {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-right: none;
+  border-top: none;
+}
+
+/* Animation keyframes */
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* High contrast mode support */
+.high-contrast .accessible-tooltip {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+.high-contrast .tooltip-arrow {
+  background: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+/* Color palette support */
+.accessible-tooltip {
+  background: var(--tooltip-bg, #2d3748);
+  color: var(--tooltip-text, #ffffff);
+  border-color: var(--tooltip-border, rgba(255, 255, 255, 0.1));
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .accessible-tooltip {
+    max-width: 200px;
+    font-size: calc(var(--base-font-size, 13px) * var(--text-scale, 1));
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .accessible-tooltip {
+    max-width: 150px;
+    font-size: calc(var(--base-font-size, 12px) * var(--text-scale, 1));
+    padding: 5px 8px;
+  }
+}
+
+/* Focus management for keyboard users */
+.keyboard-navigation-enabled .accessible-tooltip-wrapper:focus-within .accessible-tooltip {
+  border-color: var(--forest-primary, #38a169);
+  box-shadow: 0 0 0 2px var(--forest-primary, #38a169);
+}
+
+/* Ensure tooltips don't interfere with touch interactions */
+@media (hover: none) and (pointer: coarse) {
+  .accessible-tooltip-wrapper:hover .accessible-tooltip {
+    display: none;
+  }
+} 

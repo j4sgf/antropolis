@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LeftPanel from './LeftPanel';
 import CenterPanel from './CenterPanel';
 import RightPanel from './RightPanel';
+import AccessibilityPanel from '../accessibility/AccessibilityPanel';
+import { useAccessibility } from '../../store/AccessibilityContext';
+import useKeyboardNavigation from '../../hooks/useKeyboardNavigation';
 import './GameLayout.css';
 
 const GameLayout = ({ colonyId, colonyData }) => {
@@ -14,16 +17,33 @@ const GameLayout = ({ colonyId, colonyData }) => {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showAccessibilityPanel, setShowAccessibilityPanel] = useState(false);
   const [panelSizes, setPanelSizes] = useState({
     left: 320,
     right: 320
   });
+
+  // Accessibility context and keyboard navigation
+  const { settings, announceToScreenReader } = useAccessibility();
+  const { addKeyboardSupport, focusUtils } = useKeyboardNavigation();
 
   // Handle colony data updates from LeftPanel
   const handleColonyUpdate = (updatedColonyData) => {
     setRealTimeColonyData(updatedColonyData);
   };
   
+  // Handle accessibility panel custom event
+  useEffect(() => {
+    const handleOpenAccessibilityPanel = () => {
+      setShowAccessibilityPanel(true);
+    };
+
+    document.addEventListener('openAccessibilityPanel', handleOpenAccessibilityPanel);
+    return () => {
+      document.removeEventListener('openAccessibilityPanel', handleOpenAccessibilityPanel);
+    };
+  }, []);
+
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -450,6 +470,17 @@ const GameLayout = ({ colonyId, colonyData }) => {
           >
             📊
           </button>
+          <button
+            className="control-btn accessibility-btn"
+            onClick={() => {
+              setShowAccessibilityPanel(true);
+              announceToScreenReader('Accessibility settings opened', 'polite');
+            }}
+            title="Accessibility Settings (Ctrl+Shift+A)"
+            aria-label="Open accessibility settings"
+          >
+            ♿
+          </button>
         </div>
         
         {/* Theme Toggle Button */}
@@ -471,6 +502,15 @@ const GameLayout = ({ colonyId, colonyData }) => {
         {showSettingsModal && <SettingsModal />}
         {showHelpModal && <HelpModal />}
         {showStatsModal && <StatsModal />}
+        {showAccessibilityPanel && (
+          <AccessibilityPanel 
+            isOpen={showAccessibilityPanel}
+            onClose={() => {
+              setShowAccessibilityPanel(false);
+              announceToScreenReader('Accessibility settings closed', 'polite');
+            }}
+          />
+        )}
       </AnimatePresence>
 
       {/* Loading overlay */}

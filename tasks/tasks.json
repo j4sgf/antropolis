@@ -1358,7 +1358,7 @@
       "dependencies": [
         20
       ],
-      "status": "pending",
+      "status": "in-progress",
       "subtasks": [
         {
           "id": 1,
@@ -1366,7 +1366,7 @@
           "description": "Create a system for colorblind-friendly palette options and text size adjustments in the game UI",
           "dependencies": [],
           "details": "Create a settings component that allows users to toggle between different color schemes (default, protanopia, deuteranopia, tritanopia). Implement CSS variables for all color values in the application. Create a color service that applies the selected palette to these variables. Add text size adjustment controls with at least three options (small, medium, large). Store user preferences in localStorage and apply them on application startup.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test with color blindness simulation tools. Verify that all UI elements maintain proper contrast ratios across all palette options. Test text readability at different sizes across devices."
         },
         {
@@ -1375,7 +1375,7 @@
           "description": "Add comprehensive keyboard navigation throughout the game interface",
           "dependencies": [],
           "details": "Implement focus management for all interactive elements. Add keyboard shortcuts for common game actions (documented in tooltips). Ensure logical tab order throughout the application. Create visible focus indicators that work across all color palettes. Implement arrow key navigation for game board interactions. Add keyboard trap prevention for modals and overlays. Document all keyboard shortcuts in the help section.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test navigation with keyboard-only usage. Verify all game functions are accessible without a mouse. Test focus management in modal dialogs and game state transitions."
         },
         {
@@ -1384,7 +1384,7 @@
           "description": "Ensure the game is fully compatible with screen readers through proper ARIA attributes and semantic HTML",
           "dependencies": [],
           "details": "Audit and update all HTML elements to use semantic tags where appropriate. Add ARIA labels, roles, and states to all interactive components. Implement live regions for game state changes and notifications. Create screen reader announcements for turn changes, game events, and error messages. Test with VoiceOver, NVDA, and JAWS. Add skip navigation links for screen reader users.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test with multiple screen readers on different browsers. Create test scenarios for core game flows. Verify all game state changes are properly announced."
         },
         {
