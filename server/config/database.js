@@ -10,6 +10,7 @@ let isDevelopmentMode = false;
 // Mock data store for development
 const mockData = {
   buildings: [],
+  ants: [],
   colonies: [
     {
       id: 'mock-id',
@@ -132,8 +133,18 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || s
     insert(newData) {
       const id = `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       const record = Array.isArray(newData) 
-        ? newData.map((item, index) => ({ id: `${id}-${index}`, ...item, created_at: new Date().toISOString() }))
-        : { id, ...newData, created_at: new Date().toISOString() };
+        ? newData.map((item, index) => ({ 
+            id: `${id}-${index}`, 
+            ...item, 
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }))
+        : { 
+            id, 
+            ...newData, 
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
       
       if (Array.isArray(record)) {
         mockData[this.table].push(...record);

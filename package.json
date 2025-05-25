@@ -28,6 +28,7 @@
     "author": "Jeff Segaf",
     "license": "MIT",
     "dependencies": {
+        "axios": "^1.9.0",
         "concurrently": "^8.2.0",
         "node-fetch": "^3.3.2"
     }

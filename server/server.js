@@ -44,6 +44,8 @@ const { router: lifecycleRouter, initializeLifecycleManager } = require('./route
 const mapRouter = require('./routes/map');
 const aiColonyRouter = require('./routes/aiColony');
 const battlesRouter = require('./routes/battles');
+const explorationRouter = require('./routes/exploration');
+const antsRouter = require('./routes/ants');
 
 // Import services
 const ConstructionManager = require('./services/ConstructionManager');
@@ -58,6 +60,8 @@ app.use('/api/lifecycle', lifecycleRouter);
 app.use('/api/map', mapRouter);
 app.use('/api/ai-colonies', aiColonyRouter);
 app.use('/api/battles', battlesRouter);
+app.use('/api/exploration', explorationRouter);
+app.use('/api', antsRouter);
 
 app.get('/api/test', (req, res) => {
   res.json({
