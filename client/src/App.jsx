@@ -42,8 +42,8 @@ function HomePage() {
           >
             🐜👑
           </motion.div>
-          <h1 className="text-5xl font-bold text-forest-800 mb-4">
-            Antocracy: War of Colonies
+          <h1 className="text-5xl font-bold text-white mb-4 tracking-wide">
+            Antopolis
           </h1>
           <p className="text-xl text-earth-600 max-w-2xl mx-auto">
             Build, manage, and defend your ant colony in this strategic simulation game. 

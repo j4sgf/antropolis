@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    message: 'Antocracy server is running',
+    message: 'Antopolis server is running',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
   });
@@ -59,11 +59,12 @@ app.use('/api/ai-colonies', aiColonyRouter);
 
 app.get('/api/test', (req, res) => {
   res.json({
-    message: 'Hello from Antocracy API!',
-    data: {
-      colonies: 0,
-      ants: 0,
-      battles: 0
+    message: 'Antopolis server is running',
+    version: '1.0.0',
+    endpoints: {
+      colonies: '/api/colonies',
+      'ai-colonies': '/api/ai-colonies',
+      health: '/health'
     }
   });
 });
@@ -87,7 +88,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, async () => {
-  console.log(`🐜 Antocracy server running on port ${PORT}`);
+  console.log(`🐜 Antopolis server running on port ${PORT}`);
   console.log(`📡 Health check: http://localhost:${PORT}/api/health`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   

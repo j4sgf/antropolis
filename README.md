@@ -1,10 +1,10 @@
-# Antocracy - Ant Colony Simulation Game
+# Antopolis - Ant Colony Simulation Game
 
 A strategic ant colony simulation game where players build and manage their ant colonies while competing against intelligent AI opponents.
 
 ## 🎮 Game Overview
 
-Antocracy is a real-time strategy game focused on ant colony management and warfare. Players must:
+Antopolis is a real-time strategy game focused on ant colony management and warfare. Players must:
 - Build and expand their ant colonies
 - Manage resources (food, wood, stone, minerals, water)
 - Research new technologies and unit types
@@ -15,7 +15,7 @@ Antocracy is a real-time strategy game focused on ant colony management and warf
 ## 🏗️ Project Structure
 
 ```
-antocracy/
+antopolis/
 ├── server/                 # Backend Node.js application
 │   ├── controllers/        # API route controllers
 │   ├── models/            # Data models and database schemas
@@ -137,10 +137,10 @@ This project uses **TaskMaster AI** for sophisticated project management:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/antocracy.git
+git clone https://github.com/yourusername/antopolis.git
 
 # Navigate to project directory
-cd antocracy
+cd antopolis
 
 # Install dependencies
 npm install
