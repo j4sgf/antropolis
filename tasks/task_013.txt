@@ -1,6 +1,6 @@
 # Task ID: 13
 # Title: Battle Simulation System
-# Status: pending
+# Status: done
 # Dependencies: 4, 12
 # Priority: high
 # Description: Implement the battle system for conflicts between player and AI colonies as described in section 5.4 and ST-105.
@@ -28,27 +28,141 @@ Test battle calculations with various colony compositions. Verify that stats, fo
 ### Details:
 Create a new module `battleSimulator.js` in the backend that exports a function to simulate battles. Implement logic to: 1) Compare colony strengths based on ant types and quantities, 2) Apply modifiers for terrain types stored in the database, 3) Calculate casualties on both sides, 4) Determine victor based on remaining strength. The algorithm should be deterministic but include some controlled randomness for battle outcomes. Store battle parameters in a configuration object for easy balancing.
 
-## 2. Develop AI Attack Scheduling System [pending]
+## 2. Develop AI Attack Scheduling System [done]
 ### Dependencies: 13.1
 ### Description: Implement a system for AI colonies to periodically attack the player's colony based on difficulty settings and game progression.
 ### Details:
 Create an `aiAttackScheduler.js` module that runs on a timer to determine when AI attacks occur. Implement difficulty scaling based on player progression. Create database tables to track AI aggression levels and attack cooldowns. Add an endpoint `/api/battles/incoming` for the frontend to check for incoming attacks. Ensure the scheduler uses the battle simulation algorithm to pre-calculate potential outcomes and only launches winnable attacks (with some randomness based on difficulty).
+<info added on 2025-05-25T06:02:43.249Z>
+The AI Attack Scheduler has been successfully implemented with the following components:
 
-## 3. Create Player-Initiated Raid System [pending]
+Core Implementation:
+- Created AIAttackScheduler.js (643 lines) with intelligent attack scheduling system
+- Implemented dynamic difficulty-based attack intervals (easy: 5min, normal: 3min, hard: 2min)
+- Added personality-driven target selection (aggressive/opportunist/expansionist)
+- Incorporated distance-based targeting within 50-unit range
+- Integrated pre-battle simulation using existing BattleSimulator
+- Developed real-time attack tracking and battle resolution
+- Implemented concurrent attack limits and cooldown management
+- Added resource reward calculation and transfer mechanics
+
+API Enhancements:
+- GET /api/battles/scheduler/status - Get scheduler status
+- POST /api/battles/scheduler/start - Start AI attack scheduler  
+- POST /api/battles/scheduler/stop - Stop AI attack scheduler
+- Enhanced GET /api/battles/incoming - Incoming attacks with AI integration
+- Updated health check endpoint to include scheduler status
+
+Database Schema:
+- Created 002_ai_attack_tables.sql migration
+- Added ai_attacks table - Track scheduled/ongoing attacks with status, forces, arrival times
+- Added battle_history table - Store completed battle records with outcomes and forces
+- Added performance indexes on target_id, status, timestamps
+
+Testing:
+- Created test-ai-attack-scheduler.js with 11 comprehensive test scenarios
+- Achieved 100% success rate (11/11 tests passed) in 5.68 seconds
+- Tests cover API health check, scheduler status/start/stop, incoming attacks, battle targets, simulation, execution, history, statistics, and retreat mechanism
+</info added on 2025-05-25T06:02:43.249Z>
+
+## 3. Create Player-Initiated Raid System [done]
 ### Dependencies: 13.1
 ### Description: Implement the system allowing players to initiate attacks on AI colonies, including target selection, ant allocation, and battle execution.
 ### Details:
 Create React components for raid planning (`RaidPlanner.jsx`, `ColonySelector.jsx`, `AntAllocation.jsx`). Implement backend endpoints at `/api/battles/targets` to list attackable colonies and `/api/battles/execute` to process player attacks. Create a database schema to track available targets and their strength. Implement a cooldown system to prevent spam attacks. Use the battle simulation algorithm to determine outcomes when a raid is executed.
+<info added on 2025-05-25T06:09:37.254Z>
+The Player-Initiated Raid System has been successfully implemented with comprehensive frontend and backend integration.
 
-## 4. Implement Battle Resolution UI and Rewards System [pending]
+**Frontend Components Created:**
+- **battleService.js** - API service handling all battle-related HTTP requests with error handling
+- **RaidPlanner.jsx** - Main raid planning interface with 4-step wizard (Target Selection → Force Allocation → Battle Preview → Execution)
+- **ColonySelector.jsx** - AI colony target selection with detailed stats, difficulty indicators, and tactical advice
+- **AntAllocation.jsx** - Force allocation interface with ant counters, formation selection, and combat power calculations
+- **BattlePreview.jsx** - Detailed battle simulation preview showing predicted outcomes, casualties, and rewards
+
+**Component Features:**
+- Step-by-step interface with progress indicators and navigation controls
+- Target intelligence with colony strength analysis, terrain effects, and tactical advice
+- Interactive force management with recommended compositions and formation bonuses
+- Pre-battle simulation with outcome predictions, casualty estimates, and phase-by-phase analysis
+- Real-time validation with availability checks and error handling
+
+**Styling Implementation:**
+- Modal-style interface with modern game UI design and responsive layout
+- Card-based target grid with strength indicators and hover effects
+- Interactive allocation controls with formation selection interface
+- Comprehensive battle results display with color-coded outcomes
+
+**Backend Integration:**
+- Successfully integrated with `/api/battles/targets` and `/api/battles/execute` endpoints
+- Implemented BattleSimulator for pre-battle calculations
+- Added real-time battle preview using simulation API
+- Implemented complete error handling and loading states
+
+The system now provides a fully functional raid planning experience with tactical depth and user-friendly interface.
+</info added on 2025-05-25T06:09:37.254Z>
+
+## 4. Implement Battle Resolution UI and Rewards System [done]
 ### Dependencies: 13.1, 13.2, 13.3
 ### Description: Create the battle results screen showing the outcome, casualties, and implementing the resource rewards for successful battles.
 ### Details:
 Develop a `BattleResults.jsx` component to display battle outcomes with animations and statistics. Create a rewards calculation function in the backend that determines resources gained based on battle performance. Implement database updates to add resources to the player's colony after successful raids. Add API endpoint `/api/battles/results/:battleId` to fetch detailed battle results. Ensure proper error handling for failed attacks.
+<info added on 2025-05-25T06:17:50.531Z>
+The Battle Resolution UI and Rewards System has been successfully implemented with comprehensive components:
 
-## 5. Implement Battle History and Retreat Mechanics [pending]
+1. **BattleResults.jsx**: Features animated intro sequences, dynamic outcome classification, performance ratings, detailed battle summaries, forces comparison, casualty reporting, rewards display, battle timeline, and interactive action buttons.
+
+2. **BattleResults.css**: Includes full-screen overlay animations, outcome-specific styling, responsive layouts, timeline visualization, reward animations, mobile responsiveness, and accessibility support.
+
+3. **Backend API Enhancements**:
+   - GET /api/battles/results/:battleId for detailed battle results
+   - POST /api/battles/rewards/:battleId for reward calculation and distribution
+   - Enhanced battleService.js with new methods
+   - Updated health check endpoint
+
+4. **RewardsCalculator.js**: Advanced reward calculation system with base resource calculations, performance multipliers, victory margin bonuses, terrain bonuses, casualty penalties, colony personality bonuses, special rewards, and comprehensive resource valuation.
+
+5. **BattleManager.jsx**: Three-phase state management, animated execution overlay, battle data processing, force reconstruction, reward distribution integration, error handling, and seamless planning-to-results flow.
+
+6. **BattleManager.css**: Execution phase styling with battle animations, progress indicators, ambience effects, error displays, responsive design, and accessibility features.
+
+7. **Integration Features**: Automatic reward distribution, enhanced battle data, seamless transitions, error handling, and mobile-responsive design.
+</info added on 2025-05-25T06:17:50.531Z>
+
+## 5. Implement Battle History and Retreat Mechanics [done]
 ### Dependencies: 13.3, 13.4
 ### Description: Create a battle history logging system and implement retreat mechanics that allow players to withdraw from battles with consequences.
 ### Details:
 Create a `battles` table in the database to log all battle events. Implement a `BattleHistory.jsx` component to display past battles with filtering options. Add a retreat button to in-progress battles that calculates partial casualties using the battle algorithm. Create API endpoints `/api/battles/history` and `/api/battles/retreat/:battleId`. Implement consequences for retreating (e.g., resource penalties, cooldown increases). Add notifications for battle events using the existing notification system.
+<info added on 2025-05-25T06:35:06.394Z>
+**Core Components Created:**
+- **BattleHistory.jsx** (338 lines): Complete battle history interface with filtering options (outcome, type, date range), pagination, battle statistics summary, detailed battle records display, and interactive battle viewing functionality
+- **BattleHistory.css** (571 lines): Full styling system with responsive design, battle-themed UI, loading/error/empty states, filtering interface, battle record cards with outcome-specific styling, pagination controls, and mobile responsiveness
+
+**Backend Enhancements:**
+- Enhanced battle routes with proper database integration for battle history retrieval
+- Updated `/api/battles/history/:colonyId` endpoint to query battle_history table with fallback to mock data
+- Improved battle record storage in `/api/battles/execute` endpoint to save to database
+- Added comprehensive battle data transformation for frontend compatibility
+
+**Retreat Mechanics Implementation:**
+- **RetreatCalculator.js** (348 lines): Advanced retreat calculation service with sophisticated penalty systems including base casualty rates by ant type, terrain/battle phase/enemy pursuit modifiers, resource penalties, cooldown calculations, morale penalties, retreat efficiency ratings, and retreat recommendation logic
+- Enhanced `/api/battles/retreat/:battleId` endpoint with RetreatCalculator integration
+- Added `/api/battles/retreat/recommend` endpoint for tactical retreat recommendations
+- Implemented retreat record storage in battle_history table
+
+**Integration Features:**
+- Updated BattleManager.jsx to include BattleHistory component with seamless navigation
+- Added history button to RaidPlanner.jsx with proper styling
+- Enhanced battleService.js with existing getBattleHistory(), getBattleStats(), and retreatFromBattle() methods
+- Complete error handling and loading states throughout the system
+
+**Advanced Features:**
+- Battle filtering by outcome, type, and date range with real-time updates
+- Battle statistics dashboard with win rates, combat ratings, and performance metrics
+- Sophisticated retreat calculations based on terrain, battle phase, and enemy pursuit
+- Retreat efficiency ratings from "excellent" to "disastrous" with detailed descriptions
+- Resource penalties, cooldown increases, and morale impacts for retreating
+- Retreat recommendation system analyzing army strength ratios and casualty rates
+</info added on 2025-05-25T06:35:06.394Z>
 

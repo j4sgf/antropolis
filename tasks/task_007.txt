@@ -1,6 +1,6 @@
 # Task ID: 7
 # Title: Ant Role Assignment and Management UI
-# Status: pending
+# Status: done
 # Dependencies: 3, 4, 5
 # Priority: medium
 # Description: Create the interface for assigning and managing ant roles according to ST-102 and section 5.3.
@@ -21,31 +21,31 @@
 Test role assignment UI for usability. Verify that ant behavior changes appropriately when roles are reassigned. Test batch assignment functionality. Verify that UI updates in real-time with simulation changes. Test filters and sorting options.
 
 # Subtasks:
-## 1. Create Ant Role Management UI Panel Component [pending]
+## 1. Create Ant Role Management UI Panel Component [done]
 ### Dependencies: None
 ### Description: Design and implement the UI panel component for ant role management that will serve as the container for all role assignment functionality.
 ### Details:
 Create a new React component called 'AntRolePanel.jsx' in the components/ant directory. Design the panel layout with sections for different role categories (Worker, Soldier, Scout). Include a header with title, close button, and help icon. Style the component using CSS modules with appropriate colony theme colors. The panel should be responsive and support both desktop and mobile views.
 
-## 2. Implement Role Assignment Controls and Functionality [pending]
+## 2. Implement Role Assignment Controls and Functionality [done]
 ### Dependencies: 7.1
 ### Description: Create the interactive controls for assigning different roles to ants and implement the core assignment functionality.
 ### Details:
 Create role assignment components for each role type (Worker, Soldier, Scout) with specific sub-roles (build/forage, guard/fight, explore/detect). Implement radio buttons or dropdown selectors for role selection. Create a 'RoleAssignmentService.js' that handles API calls to '/api/ants/{antId}/role' endpoint for updating ant roles. Add state management to track current selections and implement the submission handler to update roles. Include validation to prevent invalid role combinations.
 
-## 3. Develop Visual Role Indicators and Tooltips [pending]
+## 3. Develop Visual Role Indicators and Tooltips [done]
 ### Dependencies: 7.2
 ### Description: Create visual indicators for different ant roles and implement tooltips that explain role benefits and trade-offs.
 ### Details:
 Design and implement icon or color-based indicators for each ant role type. Create a 'RoleIndicator.jsx' component that displays the appropriate visual based on an ant's assigned role. Implement tooltips using a tooltip library or custom component that appear on hover/tap and display role descriptions, benefits, and trade-offs. Create a 'roleData.js' file containing all role descriptions and statistics to be used by the tooltips.
 
-## 4. Create Ant Statistics View Component [pending]
+## 4. Create Ant Statistics View Component [done]
 ### Dependencies: 7.2
 ### Description: Implement the ant statistics view showing experience, efficiency, and other role-specific metrics.
 ### Details:
 Create an 'AntStatistics.jsx' component that displays detailed statistics for selected ants. Implement data fetching from '/api/ants/{antId}/stats' endpoint. Design visualizations (progress bars, charts) for key metrics like experience and efficiency. Add real-time updates using WebSocket connection to receive stat changes when ant behavior changes. Include comparison functionality to show how stats differ between roles to help with decision making.
 
-## 5. Implement Batch Assignment and Filtering [pending]
+## 5. Implement Batch Assignment and Filtering [done]
 ### Dependencies: 7.2, 7.3, 7.4
 ### Description: Add functionality for batch role assignment to multiple ants and filtering options to view ants by role or status.
 ### Details:

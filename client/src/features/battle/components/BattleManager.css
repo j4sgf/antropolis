@@ -1,0 +1,289 @@
+/* BattleManager Component Styles */
+
+.battle-manager {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Battle Execution Overlay */
+.battle-execution {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(139, 69, 19, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    animation: battleOverlayEnter 0.5s ease-out;
+}
+
+@keyframes battleOverlayEnter {
+    0% { opacity: 0; background-color: rgba(0, 0, 0, 0); }
+    100% { opacity: 1; background-color: rgba(0, 0, 0, 0.9); }
+}
+
+.execution-overlay {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    border: 3px solid #8B4513;
+    border-radius: 12px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9);
+    padding: 3rem;
+    max-width: 600px;
+    width: 90vw;
+    text-align: center;
+    color: #f5deb3;
+    position: relative;
+    overflow: hidden;
+}
+
+.execution-overlay::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+    animation: battleSweep 3s linear infinite;
+}
+
+@keyframes battleSweep {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.execution-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Battle Animation */
+.battle-animation {
+    margin-bottom: 3rem;
+}
+
+.battle-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    animation: battlePulse 1.5s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes battlePulse {
+    0%, 100% { 
+        transform: scale(1); 
+        filter: drop-shadow(0 0 10px rgba(139, 69, 19, 0.5));
+    }
+    50% { 
+        transform: scale(1.2); 
+        filter: drop-shadow(0 0 20px rgba(139, 69, 19, 0.8));
+    }
+}
+
+.battle-animation h2 {
+    color: #f5deb3;
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.battle-animation p {
+    color: #d2b48c;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* Execution Progress */
+.execution-progress {
+    margin-top: 2rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(44, 24, 16, 0.8);
+    border-radius: 6px;
+    border: 1px solid #654321;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    border-radius: 6px;
+    transition: width 0.3s ease-out;
+    position: relative;
+    animation: progressShimmer 2s linear infinite;
+}
+
+@keyframes progressShimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        transparent 100%);
+    animation: progressGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes progressGlow {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.8; }
+}
+
+.progress-text {
+    color: #d2b48c;
+    font-size: 1.1rem;
+    font-weight: 600;
+    animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+/* Execution Error */
+.execution-error {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid #dc3545;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 2rem;
+    color: #f8d7da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    animation: errorSlideIn 0.3s ease-out;
+}
+
+@keyframes errorSlideIn {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.error-icon {
+    font-size: 1.2rem;
+    animation: errorBlink 1s ease-in-out infinite;
+}
+
+@keyframes errorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.5; }
+}
+
+/* Battle Effects */
+.battle-manager::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(220, 53, 69, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    animation: battleAmbience 4s ease-in-out infinite alternate;
+}
+
+@keyframes battleAmbience {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+/* Phase Transition Effects */
+.battle-manager[data-phase="executing"] {
+    animation: battleShake 0.1s linear infinite;
+}
+
+@keyframes battleShake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .execution-overlay {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .battle-icon {
+        font-size: 4rem;
+    }
+    
+    .battle-animation h2 {
+        font-size: 2rem;
+    }
+    
+    .battle-animation p {
+        font-size: 1rem;
+    }
+    
+    .progress-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .execution-overlay {
+        padding: 1.5rem;
+        width: 95vw;
+    }
+    
+    .battle-icon {
+        font-size: 3rem;
+    }
+    
+    .battle-animation h2 {
+        font-size: 1.5rem;
+    }
+    
+    .progress-bar {
+        height: 10px;
+    }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    .execution-overlay {
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.95);
+    }
+    
+    .progress-bar {
+        background: rgba(20, 10, 5, 0.9);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .battle-icon,
+    .progress-fill::after,
+    .battle-manager::before,
+    .execution-overlay::before {
+        animation: none;
+    }
+    
+    .battle-manager[data-phase="executing"] {
+        animation: none;
+    }
+} 
