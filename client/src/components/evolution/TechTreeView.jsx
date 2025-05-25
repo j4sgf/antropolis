@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import TechTreePath from './TechTreePath';
 import TechTreeNode from './TechTreeNode';
 import EvolutionPointsDisplay from './EvolutionPointsDisplay';
+import UpgradeConfirmationModal from './UpgradeConfirmationModal';
+import UpgradeSuccessNotification from './UpgradeSuccessNotification';
+import evolutionManager from '../../services/EvolutionManager';
 import './TechTreeView.css';
 
 const TechTreeView = ({ colonyId, onTechUnlock }) => {
@@ -17,6 +20,12 @@ const TechTreeView = ({ colonyId, onTechUnlock }) => {
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  
+  // New state for upgrade flow
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationTech, setConfirmationTech] = useState(null);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [successData, setSuccessData] = useState(null);
   
   const containerRef = useRef(null);
   const contentRef = useRef(null);
@@ -57,7 +66,11 @@ const TechTreeView = ({ colonyId, onTechUnlock }) => {
         const progressData = await progressResponse.json();
         
         if (progressData.success) {
-          setUnlockedTechs(progressData.data.unlockedTechnologies || []);
+          const unlockedTechIds = progressData.data.unlockedTechnologies || [];
+          setUnlockedTechs(unlockedTechIds);
+          
+          // Initialize evolution manager
+          await evolutionManager.initialize(colonyId, unlockedTechIds);
         }
         
         setTechTreeData(treeData.data);
@@ -110,24 +123,60 @@ const TechTreeView = ({ colonyId, onTechUnlock }) => {
     setSelectedTech(tech);
   };
 
-  // Handle tech unlock
-  const handleTechUnlock = async (techId) => {
+  // Handle tech unlock request (open confirmation)
+  const handleTechUnlock = (techId) => {
+    const tech = findTechById(techId);
+    if (tech) {
+      setConfirmationTech(tech);
+      setShowConfirmation(true);
+      setSelectedTech(null); // Close detail modal
+    }
+  };
+
+  // Find tech by ID from all categories
+  const findTechById = (techId) => {
+    if (!techTreeData?.structuredTree) return null;
+    
+    for (const category of Object.values(techTreeData.structuredTree)) {
+      const tech = category.find(t => t.id === techId);
+      if (tech) return tech;
+    }
+    return null;
+  };
+
+  // Handle actual tech purchase (from confirmation modal)
+  const handleConfirmPurchase = async (tech) => {
     try {
       const response = await fetch(`/api/techtree/unlock/${colonyId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ technologyId: techId }),
+        body: JSON.stringify({ technologyId: tech.id }),
       });
 
       const result = await response.json();
 
       if (result.success) {
         // Update local state
-        setUnlockedTechs(prev => [...prev, techId]);
+        const newUnlockedTechs = [...unlockedTechs, tech.id];
+        setUnlockedTechs(newUnlockedTechs);
         setEvolutionPoints(result.data.remainingPoints);
-        setSelectedTech(null);
+        
+        // Add to evolution manager
+        evolutionManager.addUpgrade(tech);
+        
+        // Close confirmation and show success
+        setShowConfirmation(false);
+        setConfirmationTech(null);
+        
+        // Show success notification
+        setSuccessData({
+          tech,
+          remainingPoints: result.data.remainingPoints,
+          pointsSpent: tech.required_research_points
+        });
+        setShowSuccessNotification(true);
         
         // Notify parent component
         if (onTechUnlock) {
@@ -138,7 +187,42 @@ const TechTreeView = ({ colonyId, onTechUnlock }) => {
       }
     } catch (err) {
       console.error('Error unlocking technology:', err);
-      setError(err.message);
+      throw err; // Let the modal handle the error display
+    }
+  };
+
+  // Handle undo purchase
+  const handleUndoPurchase = async (tech) => {
+    try {
+      const response = await fetch(`/api/techtree/undo/${colonyId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ technologyId: tech.id }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Update local state
+        setUnlockedTechs(prev => prev.filter(id => id !== tech.id));
+        setEvolutionPoints(result.data.currentPoints);
+        
+        // Remove from evolution manager
+        evolutionManager.removeUpgrade(tech.id);
+        
+        // Close success notification
+        setShowSuccessNotification(false);
+        setSuccessData(null);
+        
+        console.log(`🔄 Undid upgrade: ${tech.name}`);
+      } else {
+        throw new Error(result.error || 'Failed to undo technology');
+      }
+    } catch (err) {
+      console.error('Error undoing technology:', err);
+      throw err;
     }
   };
 
@@ -287,6 +371,32 @@ const TechTreeView = ({ colonyId, onTechUnlock }) => {
       <div className="tech-tree-instructions">
         <p>🖱️ Click and drag to pan • 🖱️ Scroll to zoom • 🎯 Click technologies for details</p>
       </div>
+
+      {/* Upgrade Confirmation Modal */}
+      <UpgradeConfirmationModal
+        isOpen={showConfirmation}
+        onClose={() => {
+          setShowConfirmation(false);
+          setConfirmationTech(null);
+        }}
+        onConfirm={handleConfirmPurchase}
+        tech={confirmationTech}
+        evolutionPoints={evolutionPoints}
+        unlockedTechs={unlockedTechs}
+      />
+
+      {/* Success Notification */}
+      <UpgradeSuccessNotification
+        isVisible={showSuccessNotification}
+        onClose={() => {
+          setShowSuccessNotification(false);
+          setSuccessData(null);
+        }}
+        onUndo={handleUndoPurchase}
+        tech={successData?.tech}
+        remainingPoints={successData?.remainingPoints}
+        pointsSpent={successData?.pointsSpent}
+      />
     </div>
   );
 };

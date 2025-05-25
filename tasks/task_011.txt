@@ -1,6 +1,6 @@
 # Task ID: 11
 # Title: Evolution and Tech Tree System
-# Status: in-progress
+# Status: done
 # Dependencies: 4, 5, 10
 # Priority: medium
 # Description: Implement the evolution point system and tech tree as specified in section 5.5 and ST-106.
@@ -42,13 +42,13 @@ Create database schema for tech tree nodes and edges. Each node should contain: 
 ### Details:
 Implement React components: 1) TechTreeView (main container), 2) TechTreePath (for each evolution category), 3) TechTreeNode (individual upgrades), 4) TechTreeConnection (visual connections between nodes). Use React context to manage tech tree state. Implement zooming and panning functionality for large tech trees. Use CSS for styling nodes based on status (available, locked, purchased). Add tooltips showing upgrade details and effects.
 
-## 4. Upgrade Purchase Flow and Confirmation UI [pending]
+## 4. Upgrade Purchase Flow and Confirmation UI [done]
 ### Dependencies: 11.3
 ### Description: Implement the UI flow for purchasing upgrades, including confirmation dialogs and feedback.
 ### Details:
 Create React components: 1) UpgradeDetailsModal (showing full details of an upgrade), 2) PurchaseConfirmationDialog (confirming point expenditure), 3) UpgradeSuccessNotification (feedback after purchase). Implement client-side validation to prevent attempting invalid purchases. Add animations for successful purchases. Update the evolution points display in real-time after purchases. Include undo functionality with a time limit for accidental purchases.
 
-## 5. Evolution Effects Implementation [pending]
+## 5. Evolution Effects Implementation [done]
 ### Dependencies: 11.2, 11.4
 ### Description: Implement the actual gameplay effects of purchased upgrades on colony performance and ant appearance.
 ### Details:

@@ -696,7 +696,7 @@
         5,
         10
       ],
-      "status": "in-progress",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -737,7 +737,7 @@
             3
           ],
           "details": "Create React components: 1) UpgradeDetailsModal (showing full details of an upgrade), 2) PurchaseConfirmationDialog (confirming point expenditure), 3) UpgradeSuccessNotification (feedback after purchase). Implement client-side validation to prevent attempting invalid purchases. Add animations for successful purchases. Update the evolution points display in real-time after purchases. Include undo functionality with a time limit for accidental purchases.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "User flow testing for the complete purchase process. Unit tests for validation logic. Integration tests with mock API responses."
         },
         {
@@ -749,7 +749,7 @@
             4
           ],
           "details": "Create a system to apply upgrade effects to game mechanics: 1) Implement modifier system for ant attributes (speed, strength, etc.), 2) Add visual changes to ant sprites based on evolution choices, 3) Update resource collection rates based on upgrades, 4) Modify combat calculations for upgraded ants, 5) Adjust environmental interactions based on adaptations. Create an EvolutionManager class to centrally manage all active upgrades and their effects. Implement caching for performance optimization when calculating effects.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Unit tests for each type of upgrade effect. Integration tests to verify effects are properly applied in gameplay. Performance testing to ensure minimal impact on game loop."
         }
       ]
