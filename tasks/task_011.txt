@@ -1,0 +1,56 @@
+# Task ID: 11
+# Title: Evolution and Tech Tree System
+# Status: pending
+# Dependencies: 4, 5, 10
+# Priority: medium
+# Description: Implement the evolution point system and tech tree as specified in section 5.5 and ST-106.
+# Details:
+1. Design evolution point earning system:
+   - Points from resource collection
+   - Points from successful combat
+   - Points from colony milestones
+2. Create tech tree structure with multiple paths:
+   - Physical traits (strength, speed, etc.)
+   - Specialized ant types
+   - Environmental adaptations
+3. Implement UI for viewing and navigating tech tree
+4. Create upgrade purchase and confirmation flow
+5. Implement effects of upgrades on colony performance
+6. Add visual changes to ants based on evolution choices
+7. Implement prerequisite system for advanced upgrades
+8. Balance evolution costs and benefits
+
+# Test Strategy:
+Test evolution point earning rates. Verify tech tree UI navigation. Test upgrade purchase flow. Verify that upgrades correctly affect colony performance. Test prerequisite system for advanced upgrades. Verify visual changes to ants after evolution.
+
+# Subtasks:
+## 1. Evolution Points Earning System Backend [pending]
+### Dependencies: None
+### Description: Implement the backend logic for earning and tracking evolution points from various game activities.
+### Details:
+Create database schema for evolution points in PostgreSQL. Implement API endpoints in Node.js/Express for: 1) Adding points from resource collection (POST /api/evolution/points/resource), 2) Adding points from combat (POST /api/evolution/points/combat), 3) Adding points from colony milestones (POST /api/evolution/points/milestone), 4) Getting current points balance (GET /api/evolution/points). Include transaction handling for point updates and implement rate limiting to prevent exploitation.
+
+## 2. Tech Tree Data Structure and Backend [pending]
+### Dependencies: 11.1
+### Description: Design and implement the tech tree data structure with multiple evolution paths and prerequisites system.
+### Details:
+Create database schema for tech tree nodes and edges. Each node should contain: id, name, description, category (physical/specialized/environmental), cost, effects, prerequisites, and visual changes. Implement API endpoints: 1) GET /api/evolution/techtree to retrieve the full tree, 2) GET /api/evolution/techtree/available to get available upgrades based on current points and unlocked nodes, 3) POST /api/evolution/techtree/unlock to purchase an upgrade. Include validation logic for prerequisites and sufficient evolution points.
+
+## 3. Tech Tree UI Components [pending]
+### Dependencies: 11.2
+### Description: Create React components for displaying and navigating the tech tree with visual representation of different evolution paths.
+### Details:
+Implement React components: 1) TechTreeView (main container), 2) TechTreePath (for each evolution category), 3) TechTreeNode (individual upgrades), 4) TechTreeConnection (visual connections between nodes). Use React context to manage tech tree state. Implement zooming and panning functionality for large tech trees. Use CSS for styling nodes based on status (available, locked, purchased). Add tooltips showing upgrade details and effects.
+
+## 4. Upgrade Purchase Flow and Confirmation UI [pending]
+### Dependencies: 11.3
+### Description: Implement the UI flow for purchasing upgrades, including confirmation dialogs and feedback.
+### Details:
+Create React components: 1) UpgradeDetailsModal (showing full details of an upgrade), 2) PurchaseConfirmationDialog (confirming point expenditure), 3) UpgradeSuccessNotification (feedback after purchase). Implement client-side validation to prevent attempting invalid purchases. Add animations for successful purchases. Update the evolution points display in real-time after purchases. Include undo functionality with a time limit for accidental purchases.
+
+## 5. Evolution Effects Implementation [pending]
+### Dependencies: 11.2, 11.4
+### Description: Implement the actual gameplay effects of purchased upgrades on colony performance and ant appearance.
+### Details:
+Create a system to apply upgrade effects to game mechanics: 1) Implement modifier system for ant attributes (speed, strength, etc.), 2) Add visual changes to ant sprites based on evolution choices, 3) Update resource collection rates based on upgrades, 4) Modify combat calculations for upgraded ants, 5) Adjust environmental interactions based on adaptations. Create an EvolutionManager class to centrally manage all active upgrades and their effects. Implement caching for performance optimization when calculating effects.
+

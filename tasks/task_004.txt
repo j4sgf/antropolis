@@ -1,0 +1,97 @@
+# Task ID: 4
+# Title: Core Game Loop and Simulation Engine
+# Status: done
+# Dependencies: 2
+# Priority: high
+# Description: Develop the core game loop and simulation engine that will drive the ant colony simulation.
+# Details:
+1. Implement a time-based simulation loop with configurable tick rate
+2. Create event system for simulation events (ant birth, resource collection, attacks)
+3. Develop state management for colony resources and population
+4. Implement basic ant behavior logic:
+   - Workers: resource collection and structure building
+   - Soldiers: defense and attack
+   - Scouts: exploration
+5. Create resource consumption and production calculations
+6. Implement colony growth mechanics based on resources
+7. Design a system for pausing/resuming simulation
+8. Optimize performance for handling large numbers of ants
+9. Support multiple colonies running simultaneously
+
+# Test Strategy:
+Unit test individual simulation components. Measure performance with varying colony sizes. Test state consistency across simulation ticks. Verify resource calculations match expected outcomes. Test pause/resume functionality. Verify multi-colony support with independent state tracking.
+
+# Subtasks:
+## 1. Implement Time-Based Simulation Loop [done]
+### Dependencies: None
+### Description: Create the core simulation loop with configurable tick rate that will drive all game events and updates.
+### Details:
+1. Create a SimulationEngine class with methods for start(), stop(), pause(), resume()
+2. Implement a configurable tick system using requestAnimationFrame for browser performance
+3. Add a configuration object to control simulation speed (ticks per second)
+4. Create a central update() method that will be called on each tick
+5. Implement time scaling to ensure simulation consistency across different frame rates
+6. Add event listeners for window focus/blur to handle background tab behavior
+
+## 2. Develop Event System for Simulation [done]
+### Dependencies: None
+### Description: Create a robust event system to handle and propagate simulation events throughout the application.
+### Details:
+1. Implement an EventEmitter class for the simulation engine
+2. Define standard event types (RESOURCE_COLLECTED, ANT_BORN, ATTACK, etc.)
+3. Create methods to register/unregister event listeners
+4. Implement event queuing system to handle multiple events per tick
+5. Add event prioritization for processing critical events first
+6. Create debugging tools to log and monitor event flow
+
+## 3. Implement Colony State Management [done]
+### Dependencies: None
+### Description: Develop the state management system to track and update colony resources, population, and other simulation variables.
+### Details:
+1. Create a ColonyState class to maintain all colony data
+2. Implement getters/setters for resources (food, building materials)
+3. Add population tracking by ant type (workers, soldiers, scouts)
+4. Create methods for resource consumption calculations based on population
+5. Implement resource production tracking based on ant activities
+6. Add serialization/deserialization methods for save/load functionality
+7. Implement state change notifications via the event system
+
+## 4. Develop Ant Behavior System [done]
+### Dependencies: None
+### Description: Create the behavior system for different ant types with their specific roles and actions.
+### Details:
+1. Create an abstract Ant class with common properties and methods
+2. Implement specialized classes for WorkerAnt, SoldierAnt, and ForagerAnt (renamed from ScoutAnt)
+3. Create a behavior tree system for decision making
+4. Implement worker behaviors: resource gathering, structure building
+5. Implement soldier behaviors: patrolling, attacking, defending
+6. Implement forager behaviors: exploration, resource discovery
+7. Add state machines to manage ant activity transitions
+8. Implement efficiency calculations based on colony conditions
+9. Ensure behaviors work correctly with the existing event system
+
+## 5. Optimize Colony Growth and Performance [done]
+### Dependencies: None
+### Description: Implement colony growth mechanics and optimize the simulation for handling large numbers of ants.
+### Details:
+1. Implement birth/death mechanics based on colony resources
+2. Create formulas for calculating new ant type distribution
+3. Implement spatial partitioning for efficient ant interaction calculations
+4. Add instancing for rendering large numbers of ants
+5. Implement level-of-detail system to reduce computation for distant/less important ants
+6. Create worker pools for distributing computation across multiple threads
+7. Add performance monitoring and automatic adjustment of simulation detail
+8. Optimize for maintaining 30+ FPS with large colonies
+
+## 6. Multi-Colony Support [done]
+### Dependencies: 4.1, 4.2, 4.3
+### Description: Enhance the simulation engine to support multiple independent colonies running simultaneously.
+### Details:
+1. Extend the simulation engine to manage multiple colony instances
+2. Implement colony identification and tracking system
+3. Create inter-colony interaction mechanics (territory disputes, resource competition)
+4. Add colony comparison statistics and visualization
+5. Implement colony relationship states (neutral, hostile, allied)
+6. Create resource sharing mechanics for allied colonies
+7. Develop territory boundary visualization
+

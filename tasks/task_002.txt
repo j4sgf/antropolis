@@ -1,0 +1,53 @@
+# Task ID: 2
+# Title: Design and Implement Database Schema
+# Status: done
+# Dependencies: 1
+# Priority: high
+# Description: Create PostgreSQL database schema for storing colony and ant data according to ST-110 user story requirements.
+# Details:
+Design and implement the following tables in PostgreSQL via Supabase:
+1. `users`: id, username, email, created_at
+2. `colonies`: id, user_id (FK), name, type (aggressive/defensive/balanced), strength, speed, intelligence, defense, created_at, updated_at
+3. `ants`: id, colony_id (FK), role (worker/soldier/scout), status, experience, level, attributes JSON
+4. `structures`: id, colony_id (FK), type, level, position_x, position_y, health
+5. `resources`: id, colony_id (FK), type (leaves/fungus/insect_remains), amount
+6. `battles`: id, colony_id (FK), enemy_id, outcome, points_earned, timestamp
+7. `map_tiles`: id, colony_id (FK), position_x, position_y, type, discovered, content
+8. `achievements`: id, colony_id (FK), type, earned_at
+
+Implement database connection in the backend using Supabase client.
+
+# Test Strategy:
+Create unit tests for database models. Test CRUD operations for each table. Verify foreign key constraints and relationships between tables. Test with sample data to ensure schema supports all required game mechanics.
+
+# Subtasks:
+## 1. Create Database Schema Definition File [done]
+### Dependencies: None
+### Description: Create a SQL file defining all required tables with proper relationships, constraints, and indexes for the colony management system.
+### Details:
+Create a `schema.sql` file with CREATE TABLE statements for all 8 required tables. Include proper primary keys, foreign keys with ON DELETE CASCADE where appropriate, NOT NULL constraints for required fields, and default values for created_at/updated_at timestamps. Define appropriate data types for each column (UUID for IDs, ENUM for role/type fields where applicable, JSONB for attributes). Add indexes on foreign keys and frequently queried columns.
+
+## 2. Configure Supabase Project and Apply Schema [done]
+### Dependencies: None
+### Description: Set up a Supabase project and apply the database schema to create all required tables.
+### Details:
+Create a new Supabase project in the development environment. Configure authentication settings to support email/password login. Apply the schema.sql file to create all tables. Set up appropriate Row Level Security (RLS) policies to ensure users can only access their own data. Document connection details and environment variables needed for the application.
+
+## 3. Implement Database Connection Module [done]
+### Dependencies: None
+### Description: Create a reusable database connection module using the Supabase client for the backend application.
+### Details:
+Create a `database.js` module that initializes and exports a configured Supabase client. Use environment variables for Supabase URL and API key. Implement helper functions for common database operations (query, insert, update, delete) that handle error cases consistently. Add connection pooling configuration for production environments. Include logging for database operations in development mode.
+
+## 4. Create Data Models and Type Definitions [done]
+### Dependencies: 2.3
+### Description: Implement TypeScript interfaces or classes that represent the database entities and their relationships.
+### Details:
+Create a `models` directory with TypeScript interfaces for each database entity (User, Colony, Ant, etc.). Define proper types for all fields matching the database schema. Implement validation functions for each model to ensure data integrity before database operations. Create relationship methods that make it easy to navigate between related entities (e.g., getAntsForColony). Document each model with JSDoc comments.
+
+## 5. Implement Database Access Layer [done]
+### Dependencies: None
+### Description: Create repository classes that provide a clean API for database operations on each entity.
+### Details:
+Create repository classes for each entity (UserRepository, ColonyRepository, etc.) that use the database connection module. Implement CRUD operations for each entity. Add specialized query methods for common access patterns (e.g., getColonyWithAllAnts, findAntsByRole). Ensure all methods properly validate inputs and handle errors. Implement transaction support for operations that affect multiple tables. Add pagination support for list operations.
+

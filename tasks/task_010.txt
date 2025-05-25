@@ -1,0 +1,89 @@
+# Task ID: 10
+# Title: Colony Building and Structure System
+# Status: done
+# Dependencies: 4, 6
+# Priority: high
+# Description: Implement the building and structure system for colony development as described in ST-104 and section 5.2.
+# Details:
+1. Design different structure types:
+   - Nursery (increases birth rate)
+   - Storage chambers (increases resource capacity)
+   - Defense structures (improves colony defense)
+   - Specialized chambers (enables new ant types)
+2. Implement building mechanics:
+   - Resource requirements
+   - Construction time
+   - Worker ant assignment
+3. Create upgrade paths for structures with increasing benefits
+4. Implement structure placement UI on the colony map
+5. Add visual representation of construction progress
+6. Create structure damage and repair mechanics
+7. Implement structure bonuses to colony stats
+8. Balance building costs and benefits
+
+# Test Strategy:
+Test structure placement UI. Verify resource requirements for building. Test construction time calculations. Verify upgrade paths function correctly. Test structure bonuses apply correctly to colony stats. Verify visual representation of structures and construction progress.
+
+# Subtasks:
+## 1. Define Structure Data Models and Database Schema [done]
+### Dependencies: None
+### Description: Create the data models and database schema for all colony structures including their properties, requirements, and effects on colony stats.
+### Details:
+1. Create a 'structures' table in PostgreSQL with columns for id, name, type, description, base_cost, construction_time, level, and effects.
+2. Create a 'colony_structures' join table to track structures built in each colony with columns for colony_id, structure_id, position_x, position_y, construction_progress, health, and is_active.
+3. Define Sequelize models for Structure and ColonyStructure with appropriate relationships.
+4. Implement database migrations for these tables.
+5. Create seed data for the initial structure types (Nursery, Storage, Defense, Specialized chambers).
+
+## 2. Implement Structure Backend API [done]
+### Dependencies: 10.1
+### Description: Create the backend API endpoints for managing colony structures, including construction, upgrades, and retrieving structure information.
+### Details:
+1. Create RESTful API endpoints in Express:
+   - GET /api/structures - List all available structure types
+   - GET /api/colonies/:colonyId/structures - List structures in a colony
+   - POST /api/colonies/:colonyId/structures - Start construction of a new structure
+   - PUT /api/colonies/:colonyId/structures/:structureId - Update structure (repair/upgrade)
+   - DELETE /api/colonies/:colonyId/structures/:structureId - Demolish structure
+2. Implement controllers with business logic for resource checks, construction time calculation, and worker assignment.
+3. Create middleware to validate structure placement and resource requirements.
+4. Implement structure effects on colony stats (birth rate, resource capacity, defense, etc.).
+
+## 3. Develop Structure Placement UI [done]
+### Dependencies: 10.2
+### Description: Create the user interface for placing and managing structures on the colony map, including visual feedback for valid placement locations.
+### Details:
+1. Create a StructurePlacementOverlay React component that renders on top of the colony map.
+2. Implement drag-and-drop functionality for structure placement using React DnD.
+3. Add grid-based placement system with visual indicators for valid/invalid placement locations.
+4. Create a StructureCatalog component showing available structures with costs and requirements.
+5. Implement structure selection and information panel showing details about the selected structure.
+6. Add visual feedback for placement constraints (terrain limitations, proximity requirements).
+7. Implement confirmation dialog with resource cost breakdown before construction begins.
+
+## 4. Implement Construction and Upgrade System [done]
+### Dependencies: 10.2, 10.3
+### Description: Develop the mechanics for structure construction, including resource consumption, worker assignment, construction progress, and structure upgrades.
+### Details:
+1. Create a ConstructionManager service to handle ongoing construction projects.
+2. Implement worker ant assignment system where assigned workers affect construction speed.
+3. Create a progress tracking system that updates construction completion percentage over time.
+4. Develop visual representation of construction progress (scaffolding, progress bars).
+5. Implement structure upgrade paths with increasing costs and benefits for each level.
+6. Create upgrade UI showing comparison between current and next level benefits.
+7. Implement resource consumption at construction start and worker return upon completion.
+8. Add notifications for construction start, completion, and available upgrades.
+
+## 5. Implement Structure Effects and Damage System [done]
+### Dependencies: 10.4
+### Description: Develop the system for applying structure bonuses to colony stats and implement structure damage and repair mechanics.
+### Details:
+1. Create a StructureEffectsManager to calculate and apply bonuses from all active structures to colony stats.
+2. Implement event-based system to update colony stats when structures are built, upgraded, damaged, or destroyed.
+3. Create damage mechanics for structures during colony attacks or events.
+4. Implement visual representation of damaged structures with different damage states.
+5. Develop repair mechanics requiring resources and worker assignment.
+6. Create UI for viewing all active structure bonuses and their effects on the colony.
+7. Implement structure maintenance costs that periodically consume resources.
+8. Add special abilities for certain structures (e.g., defense structures providing active defense during attacks).
+

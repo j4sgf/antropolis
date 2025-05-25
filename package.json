@@ -1,0 +1,25 @@
+{
+    "name": "antocracy",
+    "version": "1.0.0",
+    "description": "Antocracy: War of Colonies - Single-player browser-based ant colony simulation game",
+    "private": true,
+    "workspaces": [
+      "client",
+      "server"
+    ],
+    "scripts": {
+      "dev": "concurrently \"npm run dev --workspace client\" \"npm run dev --workspace server\"",
+      "install:all": "npm install --workspaces",
+      "build": "npm run build --workspace client",
+      "start": "npm run start --workspace server",
+      "dev:client": "npm run dev --workspace client",
+      "dev:server": "npm run dev --workspace server"
+    },
+    "keywords": ["game", "simulation", "react", "express", "ants", "AI"],
+    "author": "Jeff Segaf",
+    "license": "MIT",
+    "dependencies": {
+      "concurrently": "^8.2.0"
+    }
+  }
+  

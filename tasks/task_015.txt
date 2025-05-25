@@ -1,0 +1,53 @@
+# Task ID: 15
+# Title: Visual Differentiation of Ant Types
+# Status: pending
+# Dependencies: 5, 7
+# Priority: low
+# Description: Implement visual indicators for different ant roles and types as specified in ST-112.
+# Details:
+1. Design unique visual indicators for each ant role:
+   - Workers: distinct color/shape
+   - Soldiers: larger size, mandibles
+   - Scouts: antenna emphasis, lighter color
+2. Implement visual evolution changes based on upgrades
+3. Create status indicators (busy, idle, injured)
+4. Add animation differences between roles
+5. Implement colorblind-friendly indicators
+6. Create hover tooltips showing ant details
+7. Design level/experience visual indicators
+8. Optimize rendering for large numbers of ants
+
+# Test Strategy:
+Verify visual distinctions are clear between ant roles. Test colorblind mode for accessibility. Verify evolution changes are visually apparent. Test hover tooltips display correct information. Measure performance with large numbers of visually distinct ants.
+
+# Subtasks:
+## 1. Create Ant Type Base Styling Components [pending]
+### Dependencies: None
+### Description: Develop the core styling components for different ant types (workers, soldiers, scouts) with distinct visual characteristics.
+### Details:
+Create React components for each ant type with appropriate styling. Implement base CSS classes for each ant role with distinct colors, shapes, and sizes. For workers, use a standard size with a distinct color; for soldiers, implement larger size with visible mandibles; for scouts, emphasize antennae and use lighter coloration. Create a configuration file that maps ant types to their visual properties for easy maintenance.
+
+## 2. Implement Status and State Indicators [pending]
+### Dependencies: None
+### Description: Add visual indicators for ant status states (busy, idle, injured) and implement colorblind-friendly mode.
+### Details:
+Extend the ant components to include status indicators. Create animated overlays or icon badges that show when ants are busy, idle, or injured. Implement a colorblind mode that uses patterns and shapes in addition to colors to differentiate states. Use SVG icons or CSS animations to represent different states. Store ant status in the game state and update visual indicators when status changes.
+
+## 3. Develop Ant Evolution and Upgrade Visuals [pending]
+### Dependencies: None
+### Description: Create visual changes that reflect ant upgrades and evolution progress.
+### Details:
+Implement progressive visual enhancements that correspond to ant upgrades. Create a system that modifies ant appearance based on their level or upgrades. Design subtle visual cues like size increases, color intensity changes, or additional details that appear as ants evolve. Create a mapping between upgrade levels and visual modifications in the configuration file. Ensure the upgrade visuals are consistent with the game's art style.
+
+## 4. Add Ant Detail Tooltips and Information Display [pending]
+### Dependencies: None
+### Description: Implement hover tooltips and information displays that show detailed information about each ant.
+### Details:
+Create a tooltip component that appears when hovering over ants. Display relevant information such as ant type, current status, level, and special abilities. Implement a more detailed information panel that can be shown when an ant is selected. Use React portals for tooltips to avoid layout issues. Ensure tooltips are responsive and properly positioned on different screen sizes. Include both textual information and visual indicators in the tooltips.
+
+## 5. Optimize Ant Rendering for Performance [pending]
+### Dependencies: None
+### Description: Implement rendering optimizations to handle large numbers of ants with different visual indicators.
+### Details:
+Optimize the rendering of multiple ants by implementing techniques like object pooling, canvas-based rendering for large numbers, or WebGL acceleration. Use React.memo or shouldComponentUpdate to prevent unnecessary re-renders. Implement level-of-detail rendering that simplifies ant visuals when zoomed out or when many ants are visible. Create a batching system for rendering similar ants together. Add configuration options to adjust visual detail based on device performance.
+

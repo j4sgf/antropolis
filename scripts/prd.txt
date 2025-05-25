@@ -1,0 +1,194 @@
+<PRD>
+
+# Antocracy: War of Colonies - Product Requirements Document
+
+---
+
+## 1. Introduction
+
+This Product Requirements Document (PRD) outlines the features, goals, and technical implementation for *Antocracy: War of Colonies*, a single-player browser-based simulation game. The document is intended to guide developers, designers, and stakeholders through the full scope of the product from conception to MVP delivery.
+
+---
+
+## 2. Product overview
+
+*Antocracy: War of Colonies* is a web-based simulation and strategy game where players create and manage a virtual ant colony. Through colony building, food foraging, unit specialization, and evolution, players engage in a war for survival against intelligent AI-controlled colonies. The gameplay emphasizes strategic growth, efficient resource management, and tactical decision-making.
+
+---
+
+## 3. Goals and objectives
+
+**Primary goals:**
+
+* Deliver a compelling simulation experience centered on ant colony life.
+* Build a scalable, single-player architecture with responsive performance.
+* Implement AI-controlled enemy colonies with dynamic behavior.
+* Allow for incremental feature upgrades post-MVP (e.g., multiplayer mode, genetic mutations).
+
+**Objectives for MVP:**
+
+* Basic ant colony management
+* AI battle simulation
+* Ant lifecycle growth
+* Initial tech tree for evolution
+* Visual representation of colony map and battle zones
+
+---
+
+## 4. Target audience
+
+**Demographic:**
+
+* Strategy and simulation game players aged 14–35
+* Gamers interested in nature-inspired or base-building gameplay
+* Indie and casual web gamers
+
+**Psychographic:**
+
+* Players who enjoy long-term progression and optimization
+* Curious minds drawn to biology, ecosystems, or emergent gameplay
+* Users comfortable with lightweight web applications
+
+---
+
+## 5. Features and requirements
+
+### 5.1 Colony creation and customization
+
+* Custom colony name and visual palette
+* Selectable attributes: Strength, Speed, Intelligence, Defense
+* Strategic type selection: Aggressive, Defensive, Balanced
+
+### 5.2 Simulation and growth system
+
+* Dynamic food foraging and route optimization
+* Storage management for resources: leaves, fungus, insect remains
+* Lifecycle simulation: Egg → Larva → Pupa → Adult
+* Construction system with upgrade paths
+
+### 5.3 Ant simulation
+
+* Role-based behavior for:
+
+  * Workers (build, forage)
+  * Soldiers (guard, fight)
+  * Scouts (explore, detect threats)
+* Role evolution via experience and environment exposure
+
+### 5.4 AI colony battle system
+
+* Scheduled and event-driven AI attacks
+* Player-initiated raids on enemy colonies
+* Battle simulation algorithm using stats, formation, terrain bonuses
+* Adjustable AI difficulty with decision trees
+
+### 5.5 Evolution and tech tree
+
+* Earn Evolution Points via resource collection and combat
+* Upgrade physical traits and unlock specialized ants
+* Environmental adaptiveness (rain resistance, night vision)
+
+### 5.6 Map exploration
+
+* Procedurally generated tile-based maps
+* Fog-of-war and exploration tracking
+* Discovery events: hidden enemies, resources, NPC nests
+
+### 5.7 Progression and achievements
+
+* Historical timeline (nest age, food harvested, battles won)
+* Achievements (e.g., “First Mutation”, “Max Population”)
+* Unlockable cosmetic upgrades (colors, visual hive upgrades)
+
+---
+
+## 6. User stories and acceptance criteria
+
+| ID     | User Story                                                                                         | Acceptance Criteria                                                                              |
+| ------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| ST-101 | As a player, I want to create and name my colony so I can personalize my experience                | Player can enter a custom name and select starting traits on a creation screen                   |
+| ST-102 | As a player, I want to assign ants to different roles so I can optimize my colony's functions      | UI allows role assignment and real-time updates on ant behavior                                  |
+| ST-103 | As a player, I want to forage for food sources so I can sustain and grow my colony                 | Ants successfully collect food from the map and deposit it into storage                          |
+| ST-104 | As a player, I want to build and upgrade structures to improve colony capabilities                 | Build UI with upgrade levels, construction time, and resource requirements                       |
+| ST-105 | As a player, I want to see my colony defend itself from AI attacks                                 | Periodic AI attacks occur and trigger a battle resolution screen                                 |
+| ST-106 | As a player, I want to earn evolution points and upgrade my colony                                 | Earned points can be spent to enhance stats or unlock new ant types                              |
+| ST-107 | As a player, I want to explore the map so I can discover enemies, food, and hazards                | Visible fog clears as scouts explore; events trigger on tile contact                             |
+| ST-108 | As a player, I want to view my colony’s progress and achievements                                  | Progress stats and achievement checklists are visible from UI menu                               |
+| ST-109 | As a player, I want a secure way to resume my colony from where I left off                         | Save/load system via browser local storage or cloud backup                                       |
+| ST-110 | As a developer, I want the game to use structured schema so I can store colony and ant data        | PostgreSQL schema includes `users`, `colonies`, `ants`, `battles`, `resources`, and `structures` |
+| ST-111 | As a user, I want to adjust game difficulty so I can tailor the challenge to my skill level        | Difficulty option available at the start or in settings                                          |
+| ST-112 | As a player, I want to visually differentiate ant types so I can recognize roles during simulation | Unique visual indicators (color/icons) are present per role                                      |
+
+---
+
+## 7. Technical requirements / stack
+
+### 7.1 Frontend
+
+* **React.js**: SPA framework
+* **Tailwind CSS**: Utility-first styling
+* **Framer Motion**: Animation library for UI and simulation
+
+### 7.2 Backend
+
+* **Node.js + Express**: REST API, simulation engine
+* **AI Engine**: Rule-based decision tree (expandable to behavior trees)
+* **Authentication**: Optional with Supabase Auth or Firebase (for future saves)
+
+### 7.3 Database
+
+* **PostgreSQL (via Supabase)**: Primary structured storage
+* **Redis (optional)**: Cache for battle queues or frequently accessed colony data
+
+### 7.4 Hosting
+
+* **Frontend**: Vercel / Netlify
+* **Backend**: Railway / Render
+* **Database**: Supabase managed instance
+
+---
+
+## 8. Design and user interface
+
+### 8.1 Visual style
+
+* Naturalistic, earthy color palette
+* Flat or 2.5D minimalist graphics for tunnels, ants, and food
+* Organic shapes and intuitive layouts
+
+### 8.2 Layout structure
+
+* Left panel: colony stats and ant assignments
+* Center: interactive simulation view (top-down or isometric)
+* Right panel: evolution tree and resources
+* Modal overlays for battle results, upgrades, and map discoveries
+
+### 8.3 Accessibility
+
+* Colorblind-friendly palette
+* Mobile-responsive layout (scalable UI)
+* Clear tooltips and onboarding tutorial
+
+---
+
+## 9. MVP milestone suggestions
+
+| Phase   | Feature Set                                            |
+| ------- | ------------------------------------------------------ |
+| Phase 1 | Colony creation, simulation loop, food foraging        |
+| Phase 2 | Ant lifecycle system, AI battle logic, evolution       |
+| Phase 3 | Interactive map, fog-of-war, building upgrades         |
+| Phase 4 | Achievements tracking, history timeline                |
+| Phase 5 | Polish UI/UX, integrate animations, prepare for launch |
+
+---
+
+## 10. Deliverables
+
+* [ ] Wireframes and mockups for colony, battle, and evolution UI
+* [ ] REST API design documentation
+* [ ] PostgreSQL schema and seed data
+* [ ] Battle simulation logic with configurable difficulty
+* [ ] Single-player playable build hosted online
+
+</PRD>

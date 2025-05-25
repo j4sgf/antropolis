@@ -1,0 +1,54 @@
+# Task ID: 13
+# Title: Battle Simulation System
+# Status: pending
+# Dependencies: 4, 12
+# Priority: high
+# Description: Implement the battle system for conflicts between player and AI colonies as described in section 5.4 and ST-105.
+# Details:
+1. Design battle simulation algorithm:
+   - Factor in ant stats (strength, defense, etc.)
+   - Consider formation and positioning
+   - Apply terrain bonuses/penalties
+   - Calculate casualties and outcomes
+2. Implement scheduled AI attacks on player colony
+3. Create player-initiated raid mechanics on enemy colonies
+4. Design battle resolution screen with outcome details
+5. Implement resource rewards for successful battles
+6. Create battle history logging
+7. Add visual battle simulation (optional)
+8. Implement retreat mechanics and consequences
+
+# Test Strategy:
+Test battle calculations with various colony compositions. Verify that stats, formation, and terrain correctly affect outcomes. Test scheduled AI attacks trigger appropriately. Verify resource rewards scale with battle difficulty. Test battle history logging. Verify retreat mechanics function correctly.
+
+# Subtasks:
+## 1. Implement Battle Simulation Algorithm Core [pending]
+### Dependencies: None
+### Description: Create the core battle simulation algorithm that calculates battle outcomes based on ant stats, formations, and terrain factors.
+### Details:
+Create a new module `battleSimulator.js` in the backend that exports a function to simulate battles. Implement logic to: 1) Compare colony strengths based on ant types and quantities, 2) Apply modifiers for terrain types stored in the database, 3) Calculate casualties on both sides, 4) Determine victor based on remaining strength. The algorithm should be deterministic but include some controlled randomness for battle outcomes. Store battle parameters in a configuration object for easy balancing.
+
+## 2. Develop AI Attack Scheduling System [pending]
+### Dependencies: 13.1
+### Description: Implement a system for AI colonies to periodically attack the player's colony based on difficulty settings and game progression.
+### Details:
+Create an `aiAttackScheduler.js` module that runs on a timer to determine when AI attacks occur. Implement difficulty scaling based on player progression. Create database tables to track AI aggression levels and attack cooldowns. Add an endpoint `/api/battles/incoming` for the frontend to check for incoming attacks. Ensure the scheduler uses the battle simulation algorithm to pre-calculate potential outcomes and only launches winnable attacks (with some randomness based on difficulty).
+
+## 3. Create Player-Initiated Raid System [pending]
+### Dependencies: 13.1
+### Description: Implement the system allowing players to initiate attacks on AI colonies, including target selection, ant allocation, and battle execution.
+### Details:
+Create React components for raid planning (`RaidPlanner.jsx`, `ColonySelector.jsx`, `AntAllocation.jsx`). Implement backend endpoints at `/api/battles/targets` to list attackable colonies and `/api/battles/execute` to process player attacks. Create a database schema to track available targets and their strength. Implement a cooldown system to prevent spam attacks. Use the battle simulation algorithm to determine outcomes when a raid is executed.
+
+## 4. Implement Battle Resolution UI and Rewards System [pending]
+### Dependencies: 13.1, 13.2, 13.3
+### Description: Create the battle results screen showing the outcome, casualties, and implementing the resource rewards for successful battles.
+### Details:
+Develop a `BattleResults.jsx` component to display battle outcomes with animations and statistics. Create a rewards calculation function in the backend that determines resources gained based on battle performance. Implement database updates to add resources to the player's colony after successful raids. Add API endpoint `/api/battles/results/:battleId` to fetch detailed battle results. Ensure proper error handling for failed attacks.
+
+## 5. Implement Battle History and Retreat Mechanics [pending]
+### Dependencies: 13.3, 13.4
+### Description: Create a battle history logging system and implement retreat mechanics that allow players to withdraw from battles with consequences.
+### Details:
+Create a `battles` table in the database to log all battle events. Implement a `BattleHistory.jsx` component to display past battles with filtering options. Add a retreat button to in-progress battles that calculates partial casualties using the battle algorithm. Create API endpoints `/api/battles/history` and `/api/battles/retreat/:battleId`. Implement consequences for retreating (e.g., resource penalties, cooldown increases). Add notifications for battle events using the existing notification system.
+

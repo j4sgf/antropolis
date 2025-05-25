@@ -1,0 +1,107 @@
+# Task ID: 6
+# Title: Food Foraging and Resource Management
+# Status: done
+# Dependencies: 4
+# Priority: high
+# Description: Implement the food foraging system and resource management as described in ST-103 and section 5.2.
+# Details:
+1. Implement different resource types: leaves, fungus, insect remains
+2. Create foraging mechanics for worker ants:
+   - Path finding to food sources
+   - Resource collection time calculations
+   - Carrying capacity limitations
+3. Implement storage management for collected resources
+4. Create visual representation of foraging paths
+5. Implement route optimization algorithms for efficient foraging
+6. Add random events during foraging (predators, weather)
+7. Create resource decay/spoilage mechanics
+8. Implement resource conversion (e.g., leaves to fungus)
+
+# Test Strategy:
+Test path finding algorithms with various map layouts. Verify resource collection and storage mechanics. Test route optimization under different scenarios. Verify resource conversion rates. Test random event triggers and their effects on foraging.
+
+# Subtasks:
+## 1. Implement Resource Types and Database Schema [done]
+### Dependencies: None
+### Description: Create the data models and database schema for different resource types (leaves, fungus, insect remains) with their properties such as nutritional value, decay rate, and storage requirements.
+### Details:
+1. Define PostgreSQL schema for resources table with columns: id, type, nutritional_value, decay_rate, storage_requirements, created_at
+2. Create Sequelize/ORM models for resources
+3. Implement API endpoints for resource CRUD operations
+4. Add seed data for initial resource types
+5. Document the resource type specifications in the codebase
+<info added on 2025-05-24T12:01:14.792Z>
+Resource management system has been fully implemented with the following components:
+
+- Created database models: `Resource.js` for map resources and `ColonyResource.js` for colony storage
+- Implemented 5 resource types with varying properties:
+  * Leaves: 5 nutrition, 5% decay/hour, common (30s collection)
+  * Fungus: 12 nutrition, 2% decay/hour, uncommon (60s collection)
+  * Insect Remains: 20 nutrition, 10% decay/hour, rare (45s collection)
+  * Seeds: 8 nutrition, 1% decay/hour, common (20s collection)
+  * Nectar: 15 nutrition, 8% decay/hour, uncommon (40s collection)
+- Developed 4 storage zone types with different capacities and properties:
+  * General Storage: 500 capacity
+  * Food Processing: 200 capacity (reduced decay)
+  * Nursery Supplies: 100 capacity
+  * Emergency Reserves: 150 capacity (50% decay reduction)
+- Implemented core mechanics including:
+  * Resource quality/decay calculations over time
+  * Storage capacity and utilization tracking
+  * Resource conversion systems (e.g., leaves → fungus)
+  * Reservation system for task allocation
+- Created comprehensive API endpoints in routes/resources.js
+- Successfully tested all functionality with working demonstrations
+- Ready for integration with foraging mechanics in subtask 6.2
+</info added on 2025-05-24T12:01:14.792Z>
+
+## 2. Develop Foraging Mechanics and Pathfinding [done]
+### Dependencies: 6.1
+### Description: Implement the core foraging mechanics for worker ants, including pathfinding to food sources, resource collection time calculations, and carrying capacity limitations.
+### Details:
+1. Implement A* pathfinding algorithm for ants to navigate to food sources
+2. Create a worker ant class with properties for carrying capacity and collection speed
+3. Develop time-based collection mechanics based on ant type and resource type
+4. Add collision detection to prevent ants from overlapping
+5. Implement a queue system for multiple ants targeting the same resource
+<info added on 2025-05-24T12:14:52.959Z>
+1. Implemented comprehensive swarm intelligence system with realistic ant behavior
+2. Developed PheromoneMap.js with 16x16 pixel grid and 4 pheromone types (FOOD_TRAIL, HOME_TRAIL, EXPLORATION_TRAIL, DANGER_TRAIL)
+3. Created Ant.js with realistic states (foraging, returning, exploring, following_trail, idle) and 2 ant types (workers and scouts)
+4. Built ForagingManager.js to handle pheromone state, ant populations, resource interactions, and colony deliveries
+5. Integrated complete REST API for managing the foraging system
+6. Successfully implemented key behaviors: pheromone trail formation, resource discovery, adaptive pathfinding, emergent patterns
+7. Optimized performance with grid-based system, selective updates, efficient searches
+8. Added player interaction through scent markers and path blocking
+</info added on 2025-05-24T12:14:52.959Z>
+
+## 3. Create Storage Management System [done]
+### Dependencies: 6.1
+### Description: Implement the colony's storage management system for collected resources, including storage limits, organization, and UI representation.
+### Details:
+1. Create database schema for colony storage with capacity limits
+2. Implement storage zones within the colony (general storage, food processing, nursery supplies)
+3. Develop API endpoints for resource deposit, withdrawal, and transfer between zones
+4. Create React components for visualizing storage contents and capacity
+5. Implement resource prioritization algorithm for limited storage scenarios
+
+## 4. Implement Foraging Visualization and Route Optimization [done]
+### Dependencies: 6.2
+### Description: Create visual representation of foraging paths and implement route optimization algorithms for efficient resource collection.
+### Details:
+1. Develop a trail renderer component to visualize ant paths on the game map
+2. Implement pheromone trail mechanics that strengthen with repeated use
+3. Create route optimization algorithm that considers distance, obstacles, and existing trails
+4. Add visual indicators for resource-rich areas
+5. Implement time-of-day effects on foraging efficiency
+
+## 5. Add Resource Events and Conversion Mechanics [done]
+### Dependencies: 6.2, 6.3
+### Description: Implement random events during foraging (predators, weather) and resource conversion/decay mechanics.
+### Details:
+1. Create an event system for random occurrences during foraging (predator attacks, rainfall, resource bonuses)
+2. Implement resource decay mechanics based on time and storage conditions
+3. Develop resource conversion system (leaves to fungus) with time and efficiency factors
+4. Add worker ant specialization effects on conversion efficiency
+5. Create UI notifications for significant events and resource status changes
+

@@ -1,0 +1,60 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Component & Project Guidelines
+
+## Tech Stack & Library Versions
+- **Frontend:** React 18, Vite, Zustand, React Router, Framer Motion, TailwindCSS 3
+- **Backend:** Node.js, Express 4, PostgreSQL, Supabase, dotenv, cors
+- **Dev Tools:** concurrently, nodemon
+
+## Project Structure
+- **client/**: Frontend React app
+  - **src/components/**: Reusable UI components (PascalCase, e.g., `AntStatsCard.jsx`)
+  - **src/features/**: Domain-specific logic, organized by feature (e.g., `colony/`, `battle/`)
+  - **src/pages/**: Top-level route components (e.g., `Home.jsx`, `Game.jsx`)
+  - **src/utils/**: Utility/helper functions (camelCase, e.g., `formatters.js`)
+  - **src/store/**: State management (Zustand stores)
+  - **public/**: Static assets
+- **server/**: Backend API
+  - **models/**: Data models (PascalCase, e.g., `Colony.js`)
+  - **controllers/**: Request handlers (camelCase + Controller, e.g., `colonyController.js`)
+  - **routes/**: Express route definitions (camelCase + Routes, e.g., `colonyRoutes.js`)
+  - **services/**: Business logic/services (camelCase + Service/Engine/Logic)
+  - **utils/**: Utility functions (camelCase)
+- **db/**: Database schema and migrations
+- **supabase/**: Supabase client and config
+
+## Naming Conventions
+- **Components:** PascalCase (`MyComponent.jsx`)
+- **Files/Folders:**
+  - Features: lowerCamelCase or descriptive (e.g., `colony/`, `battle/`)
+  - Utilities: camelCase (`formatters.js`)
+  - Models/Controllers/Routes: PascalCase for models, camelCase for others
+- **Variables/Functions:** camelCase
+- **Constants:** UPPER_SNAKE_CASE
+
+## Style/Language Preferences
+- **Language:** JavaScript (ES6+), JSX for React
+- **Styling:** TailwindCSS utility classes preferred for all UI; avoid inline styles unless necessary
+- **Formatting:** Prettier defaults (2-space indent, single quotes, trailing commas)
+- **Type Safety:** Use PropTypes or JSDoc for public component APIs (no TypeScript by default)
+
+## UI Coding Preferences
+- **Component Structure:**
+  - Functional components only (no class components)
+  - Keep components small and focused; extract logic to hooks or utils
+  - Use Zustand for state management, React Router for navigation
+- **Styling:**
+  - Use Tailwind utility classes for layout, spacing, and color
+  - Prefer semantic HTML elements
+  - Responsive design by default
+- **Animation:** Use Framer Motion for interactive UI effects
+- **Testing:** (If added) Prefer React Testing Library
+
+---
+
+For more details, see [client/src/components/](mdc:client/src/components), [client/src/features/](mdc:client/src/features), [server/models/](mdc:server/models), and [server/controllers/](mdc:server/controllers).
+

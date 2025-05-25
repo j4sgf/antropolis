@@ -1,0 +1,79 @@
+# Task ID: 17
+# Title: Colony Statistics and History Timeline
+# Status: pending
+# Dependencies: 4, 13
+# Priority: low
+# Description: Implement the colony statistics and history timeline as specified in section 5.7 and ST-108.
+# Details:
+1. Design statistics tracking system for:
+   - Nest age
+   - Food harvested by type
+   - Battles won/lost
+   - Ants born/lost
+   - Structures built
+2. Create visual timeline of colony history
+3. Implement milestone markers on timeline
+4. Design statistics UI panel with graphs and numbers
+5. Add filtering options for different stat categories
+6. Implement export functionality for statistics
+7. Create comparative stats with previous game sessions
+8. Add tooltips with interesting facts based on stats
+
+# Test Strategy:
+Verify statistics are accurately tracked during gameplay. Test timeline visualization for clarity. Verify milestone markers appear correctly. Test filtering options for statistics. Verify export functionality produces correct data. Test comparative stats with multiple save files.
+
+# Subtasks:
+## 1. Design and implement statistics tracking database schema [pending]
+### Dependencies: None
+### Description: Create the database schema to track all colony statistics including nest age, food harvested by type, battles, ant population changes, and structures built.
+### Details:
+1. Create a new migration file for colony_statistics table with columns for colony_id, stat_type, value, and timestamp
+2. Create a separate colony_events table for timeline events with columns for colony_id, event_type, description, importance_level, and timestamp
+3. Add appropriate indexes for efficient querying
+4. Implement database functions for incrementing/updating statistics
+5. Create API endpoints in the backend for recording new statistics and events
+
+## 2. Implement backend services for statistics collection and retrieval [pending]
+### Dependencies: 17.1
+### Description: Create the backend services that will collect statistics during gameplay and provide endpoints for the frontend to retrieve historical data.
+### Details:
+1. Create a StatisticsService class to handle all statistics operations
+2. Implement methods to record various statistics (addFoodHarvested, recordBattle, updateAntPopulation, etc.)
+3. Create API endpoints for retrieving statistics with filtering options
+4. Implement data aggregation functions for generating summary statistics
+5. Add functionality to compare current session with previous sessions
+6. Create an endpoint for exporting statistics as JSON or CSV
+
+## 3. Develop statistics UI panel with graphs and numbers [pending]
+### Dependencies: 17.2
+### Description: Create the UI components to display colony statistics with various visualization options including graphs, charts and numerical displays.
+### Details:
+1. Create a StatisticsPanel React component with tabs for different stat categories
+2. Implement data visualization components using Chart.js or D3.js for graphs
+3. Create numerical stat displays with appropriate formatting
+4. Add filtering controls for time periods and stat categories
+5. Implement the export functionality in the UI
+6. Style the components according to the game's visual design
+
+## 4. Build colony history timeline with milestone markers [pending]
+### Dependencies: 17.2
+### Description: Create a visual timeline component that displays the colony's history with important events and milestones.
+### Details:
+1. Design a Timeline React component that displays events chronologically
+2. Implement milestone markers with different visual indicators based on importance
+3. Add interactive elements to show event details on hover/click
+4. Create a filtering system for different event types
+5. Implement zooming functionality to focus on specific time periods
+6. Add animations for timeline navigation
+
+## 5. Implement tooltips and comparative statistics features [pending]
+### Dependencies: 17.3, 17.4
+### Description: Add contextual tooltips with interesting facts based on statistics and implement the comparative statistics feature to compare with previous game sessions.
+### Details:
+1. Create a system for generating interesting facts based on colony statistics
+2. Implement a Tooltip component that displays these facts in context
+3. Build the comparative statistics view showing current vs. previous sessions
+4. Add visual indicators for improvements or declines in performance
+5. Implement data normalization for fair comparisons between sessions of different lengths
+6. Create a session selector for choosing which previous sessions to compare against
+

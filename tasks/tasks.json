@@ -1,0 +1,1488 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Setup Project Repository and Development Environment",
+      "description": "Initialize the project repository with React.js frontend and Node.js/Express backend structure. Configure Tailwind CSS and Framer Motion libraries.",
+      "details": "1. Create a monorepo structure with separate folders for frontend and backend\n2. Initialize React app using create-react-app or Vite\n3. Set up Express.js server with basic routing\n4. Configure Tailwind CSS in the frontend\n5. Install and configure Framer Motion for animations\n6. Set up ESLint and Prettier for code quality\n7. Create basic CI/CD pipeline for deployment to Vercel/Netlify (frontend) and Railway/Render (backend)\n8. Configure environment variables for development and production",
+      "testStrategy": "Verify that the development environment runs without errors. Test the connection between frontend and backend with a simple API endpoint. Ensure Tailwind CSS and Framer Motion are working correctly by creating test components.",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Initialize Monorepo Structure and Git Repository",
+          "description": "Set up the project's monorepo structure with separate directories for frontend and backend. Initialize Git repository with appropriate .gitignore file and README documentation.",
+          "dependencies": [],
+          "details": "Create root directory with frontend/ and backend/ subdirectories. Initialize Git repository with appropriate .gitignore for Node.js projects. Create package.json at root level with workspace configuration. Document project structure and setup instructions in README.md. Set up conventional commit standards and branch protection rules.",
+          "status": "done",
+          "testStrategy": "Verify repository structure and ensure Git hooks are working correctly. Test workspace configuration by installing a test dependency."
+        },
+        {
+          "id": 2,
+          "title": "Configure Frontend React Application with Tailwind CSS",
+          "description": "Initialize React application in the frontend directory using Vite. Configure Tailwind CSS for styling and set up the basic application structure.",
+          "dependencies": [
+            1
+          ],
+          "details": "Run 'npm create vite@latest frontend -- --template react-ts' for TypeScript support. Install and configure Tailwind CSS following official documentation. Create basic folder structure (components/, pages/, hooks/, utils/, assets/). Set up index.html with appropriate meta tags and favicon. Configure absolute imports in tsconfig.json. Create basic App component and routing structure.",
+          "status": "done",
+          "testStrategy": "Run the development server and verify Tailwind CSS is working by testing a few utility classes. Ensure the basic app renders without errors."
+        },
+        {
+          "id": 3,
+          "title": "Set Up Express.js Backend with Basic Structure",
+          "description": "Initialize Node.js/Express.js application in the backend directory. Set up the server with basic middleware, error handling, and folder structure.",
+          "dependencies": [
+            1
+          ],
+          "details": "Initialize package.json with 'npm init -y'. Install Express.js, cors, helmet, and other essential middleware. Create server.js as entry point. Set up middleware for parsing JSON, CORS, and security headers. Implement basic error handling middleware. Create routes/, controllers/, models/, and config/ directories. Implement a health check endpoint at GET /api/health. Configure dotenv for environment variables.",
+          "status": "done",
+          "testStrategy": "Test the server startup and health check endpoint. Verify middleware is correctly applied using manual API testing."
+        },
+        {
+          "id": 4,
+          "title": "Implement Animation Framework with Framer Motion",
+          "description": "Install and configure Framer Motion in the frontend. Create reusable animation components and hooks for consistent animations throughout the application.",
+          "dependencies": [
+            2
+          ],
+          "details": "Install Framer Motion with 'npm install framer-motion'. Create components/animations/ directory for reusable animation components. Implement common animation variants (fade, slide, scale). Create custom hooks for animation control (useAnimationControls). Set up animation context provider for global animation settings. Create documentation for animation usage patterns.",
+          "status": "done",
+          "testStrategy": "Create a test page with various animations to verify they work correctly. Test animations on different screen sizes to ensure responsiveness."
+        },
+        {
+          "id": 5,
+          "title": "Configure Development Tools and CI/CD Pipeline",
+          "description": "Set up ESLint and Prettier for code quality. Configure CI/CD pipeline for deployment to Vercel/Netlify (frontend) and Railway/Render (backend).",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "Install and configure ESLint and Prettier in both frontend and backend. Create .eslintrc and .prettierrc files with appropriate rules. Set up husky for pre-commit hooks to enforce linting and formatting. Create GitHub Actions workflow files for CI/CD. Configure Vercel/Netlify for frontend deployment. Set up Railway/Render for backend deployment. Create environment variable templates (.env.example) for both frontend and backend. Document deployment process in README.md.",
+          "status": "done",
+          "testStrategy": "Run linting and formatting checks manually to verify configuration. Test CI pipeline by making a small change and pushing to repository. Verify deployment process works correctly in staging environment."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Design and Implement Database Schema",
+      "description": "Create PostgreSQL database schema for storing colony and ant data according to ST-110 user story requirements.",
+      "details": "Design and implement the following tables in PostgreSQL via Supabase:\n1. `users`: id, username, email, created_at\n2. `colonies`: id, user_id (FK), name, type (aggressive/defensive/balanced), strength, speed, intelligence, defense, created_at, updated_at\n3. `ants`: id, colony_id (FK), role (worker/soldier/scout), status, experience, level, attributes JSON\n4. `structures`: id, colony_id (FK), type, level, position_x, position_y, health\n5. `resources`: id, colony_id (FK), type (leaves/fungus/insect_remains), amount\n6. `battles`: id, colony_id (FK), enemy_id, outcome, points_earned, timestamp\n7. `map_tiles`: id, colony_id (FK), position_x, position_y, type, discovered, content\n8. `achievements`: id, colony_id (FK), type, earned_at\n\nImplement database connection in the backend using Supabase client.",
+      "testStrategy": "Create unit tests for database models. Test CRUD operations for each table. Verify foreign key constraints and relationships between tables. Test with sample data to ensure schema supports all required game mechanics.",
+      "priority": "high",
+      "dependencies": [
+        1
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Database Schema Definition File",
+          "description": "Create a SQL file defining all required tables with proper relationships, constraints, and indexes for the colony management system.",
+          "dependencies": [],
+          "details": "Create a `schema.sql` file with CREATE TABLE statements for all 8 required tables. Include proper primary keys, foreign keys with ON DELETE CASCADE where appropriate, NOT NULL constraints for required fields, and default values for created_at/updated_at timestamps. Define appropriate data types for each column (UUID for IDs, ENUM for role/type fields where applicable, JSONB for attributes). Add indexes on foreign keys and frequently queried columns.",
+          "status": "done",
+          "testStrategy": "Validate the schema with a SQL linter. Test the schema by running it against a local PostgreSQL instance and verifying all tables are created with correct relationships."
+        },
+        {
+          "id": 2,
+          "title": "Configure Supabase Project and Apply Schema",
+          "description": "Set up a Supabase project and apply the database schema to create all required tables.",
+          "dependencies": [],
+          "details": "Create a new Supabase project in the development environment. Configure authentication settings to support email/password login. Apply the schema.sql file to create all tables. Set up appropriate Row Level Security (RLS) policies to ensure users can only access their own data. Document connection details and environment variables needed for the application.",
+          "status": "done",
+          "testStrategy": "Verify all tables are created correctly in the Supabase dashboard. Test RLS policies by attempting to access data across different user contexts."
+        },
+        {
+          "id": 3,
+          "title": "Implement Database Connection Module",
+          "description": "Create a reusable database connection module using the Supabase client for the backend application.",
+          "dependencies": [],
+          "details": "Create a `database.js` module that initializes and exports a configured Supabase client. Use environment variables for Supabase URL and API key. Implement helper functions for common database operations (query, insert, update, delete) that handle error cases consistently. Add connection pooling configuration for production environments. Include logging for database operations in development mode.",
+          "status": "done",
+          "testStrategy": "Write unit tests for the database module using a mock Supabase client. Test connection error handling and retry logic."
+        },
+        {
+          "id": 4,
+          "title": "Create Data Models and Type Definitions",
+          "description": "Implement TypeScript interfaces or classes that represent the database entities and their relationships.",
+          "dependencies": [
+            3
+          ],
+          "details": "Create a `models` directory with TypeScript interfaces for each database entity (User, Colony, Ant, etc.). Define proper types for all fields matching the database schema. Implement validation functions for each model to ensure data integrity before database operations. Create relationship methods that make it easy to navigate between related entities (e.g., getAntsForColony). Document each model with JSDoc comments.",
+          "status": "done",
+          "testStrategy": "Write unit tests for model validation functions with various valid and invalid inputs."
+        },
+        {
+          "id": 5,
+          "title": "Implement Database Access Layer",
+          "description": "Create repository classes that provide a clean API for database operations on each entity.",
+          "dependencies": [],
+          "details": "Create repository classes for each entity (UserRepository, ColonyRepository, etc.) that use the database connection module. Implement CRUD operations for each entity. Add specialized query methods for common access patterns (e.g., getColonyWithAllAnts, findAntsByRole). Ensure all methods properly validate inputs and handle errors. Implement transaction support for operations that affect multiple tables. Add pagination support for list operations.",
+          "status": "done",
+          "testStrategy": "Write integration tests that verify each repository method against a test database. Create test fixtures to populate test data. Test edge cases like empty results, maximum values, and error conditions."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Colony Creation and Customization UI",
+      "description": "Implement the colony creation screen where players can name their colony and select starting attributes according to ST-101.",
+      "details": "1. Create a form component for colony creation with the following fields:\n   - Colony name input\n   - Attribute selection sliders for Strength, Speed, Intelligence, Defense\n   - Colony type selection (Aggressive, Defensive, Balanced)\n   - Color palette selection for visual customization\n2. Implement form validation\n3. Connect form submission to backend API\n4. Design an appealing UI with naturalistic, earthy color palette\n5. Add animations for transitions between creation steps\n6. Implement responsive design for mobile compatibility",
+      "testStrategy": "Test form validation for required fields. Verify that attribute points have proper constraints. Test API integration for colony creation. Conduct usability testing to ensure the interface is intuitive. Test responsive design on various screen sizes.",
+      "priority": "high",
+      "dependencies": [
+        1,
+        2
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Colony Creation Form Component Structure",
+          "description": "Build the basic React component structure for the colony creation form with all required input fields and layout.",
+          "dependencies": [],
+          "details": "Create a new React component called ColonyCreationForm.jsx in the src/components/colony directory. Implement a multi-step form with the following sections: 1) Colony name input with validation, 2) Attribute selection sliders for Strength, Speed, Intelligence, Defense with appropriate min/max values and visual feedback, 3) Colony type radio buttons (Aggressive, Defensive, Balanced) with descriptive tooltips, 4) Color palette selection with at least 8 color options. Use React hooks (useState) to manage form state and implement the basic navigation between form steps.",
+          "status": "done",
+          "testStrategy": "Write unit tests using Jest and React Testing Library to verify all form elements render correctly and that state updates properly when inputs change."
+        },
+        {
+          "id": 2,
+          "title": "Implement Form Validation and State Management",
+          "description": "Add comprehensive validation to the colony creation form and implement proper state management for all form fields.",
+          "dependencies": [
+            1
+          ],
+          "details": "Enhance the ColonyCreationForm component with validation rules: colony name must be 3-20 characters, attribute points must have a combined maximum (e.g., 20 total points to distribute), and all fields must be completed before submission. Create a custom useColonyForm hook to manage form state and validation logic. Implement visual feedback for validation errors using styled components or CSS modules. Add a progress indicator showing completion status of each section. Ensure form state persists if user navigates between steps.",
+          "status": "done",
+          "testStrategy": "Test validation logic with various input combinations, including edge cases. Verify error messages display correctly and that the form cannot be submitted with invalid data."
+        },
+        {
+          "id": 3,
+          "title": "Design UI with Animations and Responsive Layout",
+          "description": "Style the colony creation form with the specified naturalistic color palette and implement animations for transitions between steps.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create a ColonyCreation.module.css file with a color scheme using earthy tones (greens, browns, amber). Implement responsive layouts using CSS Grid and/or Flexbox that work well on both desktop and mobile devices (minimum support for 320px width). Add smooth transitions between form steps using CSS transitions or React animation libraries (like Framer Motion). Design custom UI elements for sliders and selection components that match the game's natural theme. Implement loading states and transitions for form submission.",
+          "status": "done",
+          "testStrategy": "Test responsive behavior across multiple viewport sizes. Verify animations work correctly in different browsers. Conduct usability testing to ensure the interface is intuitive."
+        },
+        {
+          "id": 4,
+          "title": "Connect Form to Backend API",
+          "description": "Create API service and connect the colony creation form to the backend endpoints for saving colony data.",
+          "dependencies": [
+            2
+          ],
+          "details": "Create a colonyService.js file in the src/services directory with functions to handle API communication. Implement a createColony function that sends POST requests to the /api/colonies endpoint with the form data. Add proper error handling for network failures and server errors. Implement loading states during API calls. Create a Redux slice (or context) to manage colony creation state globally if needed. Update the form submission handler to use this service and handle the response appropriately, including success and error states.",
+          "status": "done",
+          "testStrategy": "Mock API calls using Jest and test both successful and failed submission scenarios. Verify loading states display correctly during API calls."
+        },
+        {
+          "id": 5,
+          "title": "Implement Colony Preview and Confirmation Screen",
+          "description": "Create a visual preview of the colony based on selected attributes and a confirmation screen before final submission.",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "Create a ColonyPreview.jsx component that visualizes the colony based on selected attributes and colors. The preview should update in real-time as users adjust attributes. Implement a final confirmation screen as the last step in the form process, showing a summary of all selections. Add the ability to go back and edit any section from the confirmation screen. Create visual representations of how attribute selections might affect gameplay (e.g., strength visualization, speed indicators). Implement a success screen after successful colony creation with an option to start playing or view colony details.",
+          "status": "done",
+          "testStrategy": "Test that the preview accurately reflects all user selections. Verify that navigation between confirmation and previous steps maintains all form data correctly."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Core Game Loop and Simulation Engine",
+      "description": "Develop the core game loop and simulation engine that will drive the ant colony simulation.",
+      "status": "done",
+      "dependencies": [
+        2
+      ],
+      "priority": "high",
+      "details": "1. Implement a time-based simulation loop with configurable tick rate\n2. Create event system for simulation events (ant birth, resource collection, attacks)\n3. Develop state management for colony resources and population\n4. Implement basic ant behavior logic:\n   - Workers: resource collection and structure building\n   - Soldiers: defense and attack\n   - Scouts: exploration\n5. Create resource consumption and production calculations\n6. Implement colony growth mechanics based on resources\n7. Design a system for pausing/resuming simulation\n8. Optimize performance for handling large numbers of ants\n9. Support multiple colonies running simultaneously",
+      "testStrategy": "Unit test individual simulation components. Measure performance with varying colony sizes. Test state consistency across simulation ticks. Verify resource calculations match expected outcomes. Test pause/resume functionality. Verify multi-colony support with independent state tracking.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Time-Based Simulation Loop",
+          "description": "Create the core simulation loop with configurable tick rate that will drive all game events and updates.",
+          "dependencies": [],
+          "details": "1. Create a SimulationEngine class with methods for start(), stop(), pause(), resume()\n2. Implement a configurable tick system using requestAnimationFrame for browser performance\n3. Add a configuration object to control simulation speed (ticks per second)\n4. Create a central update() method that will be called on each tick\n5. Implement time scaling to ensure simulation consistency across different frame rates\n6. Add event listeners for window focus/blur to handle background tab behavior",
+          "status": "done",
+          "testStrategy": "Unit test the simulation loop timing with jest.useFakeTimers(). Verify consistent behavior across different tick rates."
+        },
+        {
+          "id": 2,
+          "title": "Develop Event System for Simulation",
+          "description": "Create a robust event system to handle and propagate simulation events throughout the application.",
+          "dependencies": [],
+          "details": "1. Implement an EventEmitter class for the simulation engine\n2. Define standard event types (RESOURCE_COLLECTED, ANT_BORN, ATTACK, etc.)\n3. Create methods to register/unregister event listeners\n4. Implement event queuing system to handle multiple events per tick\n5. Add event prioritization for processing critical events first\n6. Create debugging tools to log and monitor event flow",
+          "status": "done",
+          "testStrategy": "Test event propagation with mock listeners. Verify events are properly queued and processed in the correct order."
+        },
+        {
+          "id": 3,
+          "title": "Implement Colony State Management",
+          "description": "Develop the state management system to track and update colony resources, population, and other simulation variables.",
+          "dependencies": [],
+          "details": "1. Create a ColonyState class to maintain all colony data\n2. Implement getters/setters for resources (food, building materials)\n3. Add population tracking by ant type (workers, soldiers, scouts)\n4. Create methods for resource consumption calculations based on population\n5. Implement resource production tracking based on ant activities\n6. Add serialization/deserialization methods for save/load functionality\n7. Implement state change notifications via the event system",
+          "status": "done",
+          "testStrategy": "Unit test resource calculations and population management. Create test scenarios for different colony sizes and verify correct resource balance."
+        },
+        {
+          "id": 4,
+          "title": "Develop Ant Behavior System",
+          "description": "Create the behavior system for different ant types with their specific roles and actions.",
+          "dependencies": [],
+          "details": "1. Create an abstract Ant class with common properties and methods\n2. Implement specialized classes for WorkerAnt, SoldierAnt, and ForagerAnt (renamed from ScoutAnt)\n3. Create a behavior tree system for decision making\n4. Implement worker behaviors: resource gathering, structure building\n5. Implement soldier behaviors: patrolling, attacking, defending\n6. Implement forager behaviors: exploration, resource discovery\n7. Add state machines to manage ant activity transitions\n8. Implement efficiency calculations based on colony conditions\n9. Ensure behaviors work correctly with the existing event system",
+          "status": "done",
+          "testStrategy": "Test each ant type with mock environments to verify behavior patterns. Create scenarios to test decision making under different conditions. Verify integration with the event system."
+        },
+        {
+          "id": 5,
+          "title": "Optimize Colony Growth and Performance",
+          "description": "Implement colony growth mechanics and optimize the simulation for handling large numbers of ants.",
+          "dependencies": [],
+          "details": "1. Implement birth/death mechanics based on colony resources\n2. Create formulas for calculating new ant type distribution\n3. Implement spatial partitioning for efficient ant interaction calculations\n4. Add instancing for rendering large numbers of ants\n5. Implement level-of-detail system to reduce computation for distant/less important ants\n6. Create worker pools for distributing computation across multiple threads\n7. Add performance monitoring and automatic adjustment of simulation detail\n8. Optimize for maintaining 30+ FPS with large colonies",
+          "status": "done",
+          "testStrategy": "Benchmark performance with increasing colony sizes. Test growth mechanics with different resource scenarios. Verify the simulation remains responsive with 1000+ ants."
+        },
+        {
+          "id": 6,
+          "title": "Multi-Colony Support",
+          "description": "Enhance the simulation engine to support multiple independent colonies running simultaneously.",
+          "dependencies": [
+            1,
+            2,
+            3
+          ],
+          "details": "1. Extend the simulation engine to manage multiple colony instances\n2. Implement colony identification and tracking system\n3. Create inter-colony interaction mechanics (territory disputes, resource competition)\n4. Add colony comparison statistics and visualization\n5. Implement colony relationship states (neutral, hostile, allied)\n6. Create resource sharing mechanics for allied colonies\n7. Develop territory boundary visualization",
+          "status": "done",
+          "testStrategy": "Test with multiple colonies running simultaneously. Verify independent state tracking and resource management. Test inter-colony interactions and boundary conditions."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Ant Lifecycle System",
+      "description": "Implement the ant lifecycle simulation from egg to adult as specified in section 5.2.",
+      "details": "1. Create data models for each lifecycle stage: Egg, Larva, Pupa, Adult\n2. Implement time-based progression through lifecycle stages\n3. Design resource requirements for each stage (food consumption)\n4. Create visual representations for each lifecycle stage\n5. Implement colony population management:\n   - Birth rate calculations based on resources\n   - Death mechanics (age, battle, starvation)\n6. Add lifecycle events that trigger at stage transitions\n7. Implement queen ant mechanics for egg production\n8. Balance lifecycle timing for engaging gameplay",
+      "testStrategy": "Test progression through all lifecycle stages. Verify resource consumption at each stage. Test population growth under various resource conditions. Verify death mechanics function correctly. Test edge cases like resource scarcity.",
+      "priority": "medium",
+      "dependencies": [
+        4
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Ant Lifecycle Data Models",
+          "description": "Implement data models for each lifecycle stage (Egg, Larva, Pupa, Adult) with appropriate properties and state transitions.",
+          "dependencies": [],
+          "details": "Create a base AntEntity class with common properties (id, age, stage, health) and stage-specific classes that extend it. Each class should include properties for: timeInStage, foodConsumption, nextStageThreshold, and visual representation ID. Implement database schema with appropriate tables and relationships. Create API endpoints for CRUD operations on ant entities.",
+          "status": "done",
+          "testStrategy": "Unit tests for each lifecycle stage class, ensuring proper inheritance. API endpoint tests for creating and retrieving ant entities. Database schema validation tests."
+        },
+        {
+          "id": 2,
+          "title": "Implement Lifecycle Progression System",
+          "description": "Create a time-based system that handles ant progression through lifecycle stages based on age, resources, and colony conditions.",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement a LifecycleManager service that runs on a game tick interval. For each ant, calculate age progression, check stage transition conditions, and handle stage transitions. Create transition functions between stages with appropriate validation. Implement resource consumption tracking during each stage. Add lifecycle events that trigger at stage transitions (using an event system).",
+          "status": "done",
+          "testStrategy": "Unit tests for lifecycle progression logic. Integration tests for complete lifecycle transitions. Performance testing with large numbers of ants."
+        },
+        {
+          "id": 3,
+          "title": "Develop Queen Ant and Reproduction Mechanics",
+          "description": "Implement specialized queen ant functionality for egg production and colony growth management.",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Create a QueenAnt class extending the Adult ant type with special properties (eggProductionRate, fertilityLevel). Implement egg-laying mechanics based on colony resources and queen health. Add colony-level birth rate calculations based on available resources. Create API endpoints for queen status and egg production management. Implement frontend components to display queen status and egg production statistics.",
+          "status": "done",
+          "testStrategy": "Unit tests for queen egg production calculations. Integration tests for resource-based birth rate limitations. UI component tests for queen status display."
+        },
+        {
+          "id": 4,
+          "title": "Create Visual Representations for Lifecycle Stages",
+          "description": "Design and implement visual assets and rendering components for each ant lifecycle stage.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create sprite sheets or 3D models for each lifecycle stage with appropriate animations. Implement React components for rendering each lifecycle stage with proper scaling and positioning. Add visual effects for stage transitions. Create a LifecycleVisualController that maps ant entity data to the correct visual representation. Implement zoom levels to properly display different sized lifecycle stages.",
+          "status": "done",
+          "testStrategy": "Visual regression tests for each lifecycle stage. Component tests for proper rendering based on ant data. Performance testing for rendering large colonies."
+        },
+        {
+          "id": 5,
+          "title": "Implement Colony Population Management",
+          "description": "Create systems for managing ant population including death mechanics, resource balancing, and lifecycle timing.",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "Implement death mechanics for ants based on age, battle damage, and starvation. Create a resource management system that tracks food consumption across all lifecycle stages. Balance lifecycle timing parameters for engaging gameplay (stored in configuration). Add colony-level statistics tracking for population by stage. Implement UI components to display population statistics and resource consumption. Create admin tools for adjusting lifecycle parameters during development.",
+          "status": "done",
+          "testStrategy": "Unit tests for death mechanics and resource consumption. Integration tests for population management under various resource conditions. Balance testing with different lifecycle timing configurations."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Food Foraging and Resource Management",
+      "description": "Implement the food foraging system and resource management as described in ST-103 and section 5.2.",
+      "details": "1. Implement different resource types: leaves, fungus, insect remains\n2. Create foraging mechanics for worker ants:\n   - Path finding to food sources\n   - Resource collection time calculations\n   - Carrying capacity limitations\n3. Implement storage management for collected resources\n4. Create visual representation of foraging paths\n5. Implement route optimization algorithms for efficient foraging\n6. Add random events during foraging (predators, weather)\n7. Create resource decay/spoilage mechanics\n8. Implement resource conversion (e.g., leaves to fungus)",
+      "testStrategy": "Test path finding algorithms with various map layouts. Verify resource collection and storage mechanics. Test route optimization under different scenarios. Verify resource conversion rates. Test random event triggers and their effects on foraging.",
+      "priority": "high",
+      "dependencies": [
+        4
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Resource Types and Database Schema",
+          "description": "Create the data models and database schema for different resource types (leaves, fungus, insect remains) with their properties such as nutritional value, decay rate, and storage requirements.",
+          "dependencies": [],
+          "details": "1. Define PostgreSQL schema for resources table with columns: id, type, nutritional_value, decay_rate, storage_requirements, created_at\n2. Create Sequelize/ORM models for resources\n3. Implement API endpoints for resource CRUD operations\n4. Add seed data for initial resource types\n5. Document the resource type specifications in the codebase\n<info added on 2025-05-24T12:01:14.792Z>\nResource management system has been fully implemented with the following components:\n\n- Created database models: `Resource.js` for map resources and `ColonyResource.js` for colony storage\n- Implemented 5 resource types with varying properties:\n  * Leaves: 5 nutrition, 5% decay/hour, common (30s collection)\n  * Fungus: 12 nutrition, 2% decay/hour, uncommon (60s collection)\n  * Insect Remains: 20 nutrition, 10% decay/hour, rare (45s collection)\n  * Seeds: 8 nutrition, 1% decay/hour, common (20s collection)\n  * Nectar: 15 nutrition, 8% decay/hour, uncommon (40s collection)\n- Developed 4 storage zone types with different capacities and properties:\n  * General Storage: 500 capacity\n  * Food Processing: 200 capacity (reduced decay)\n  * Nursery Supplies: 100 capacity\n  * Emergency Reserves: 150 capacity (50% decay reduction)\n- Implemented core mechanics including:\n  * Resource quality/decay calculations over time\n  * Storage capacity and utilization tracking\n  * Resource conversion systems (e.g., leaves → fungus)\n  * Reservation system for task allocation\n- Created comprehensive API endpoints in routes/resources.js\n- Successfully tested all functionality with working demonstrations\n- Ready for integration with foraging mechanics in subtask 6.2\n</info added on 2025-05-24T12:01:14.792Z>",
+          "status": "done",
+          "testStrategy": "Write unit tests for model validation and API endpoints. Create test fixtures for each resource type to verify properties are correctly stored and retrieved."
+        },
+        {
+          "id": 2,
+          "title": "Develop Foraging Mechanics and Pathfinding",
+          "description": "Implement the core foraging mechanics for worker ants, including pathfinding to food sources, resource collection time calculations, and carrying capacity limitations.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Implement A* pathfinding algorithm for ants to navigate to food sources\n2. Create a worker ant class with properties for carrying capacity and collection speed\n3. Develop time-based collection mechanics based on ant type and resource type\n4. Add collision detection to prevent ants from overlapping\n5. Implement a queue system for multiple ants targeting the same resource\n<info added on 2025-05-24T12:14:52.959Z>\n1. Implemented comprehensive swarm intelligence system with realistic ant behavior\n2. Developed PheromoneMap.js with 16x16 pixel grid and 4 pheromone types (FOOD_TRAIL, HOME_TRAIL, EXPLORATION_TRAIL, DANGER_TRAIL)\n3. Created Ant.js with realistic states (foraging, returning, exploring, following_trail, idle) and 2 ant types (workers and scouts)\n4. Built ForagingManager.js to handle pheromone state, ant populations, resource interactions, and colony deliveries\n5. Integrated complete REST API for managing the foraging system\n6. Successfully implemented key behaviors: pheromone trail formation, resource discovery, adaptive pathfinding, emergent patterns\n7. Optimized performance with grid-based system, selective updates, efficient searches\n8. Added player interaction through scent markers and path blocking\n</info added on 2025-05-24T12:14:52.959Z>",
+          "status": "done",
+          "testStrategy": "Test pathfinding with different map configurations. Verify carrying capacity limitations work correctly. Benchmark performance with multiple ants foraging simultaneously."
+        },
+        {
+          "id": 3,
+          "title": "Create Storage Management System",
+          "description": "Implement the colony's storage management system for collected resources, including storage limits, organization, and UI representation.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create database schema for colony storage with capacity limits\n2. Implement storage zones within the colony (general storage, food processing, nursery supplies)\n3. Develop API endpoints for resource deposit, withdrawal, and transfer between zones\n4. Create React components for visualizing storage contents and capacity\n5. Implement resource prioritization algorithm for limited storage scenarios",
+          "status": "done",
+          "testStrategy": "Test storage limits enforcement. Verify resource transfers between zones. Test UI updates when storage contents change."
+        },
+        {
+          "id": 4,
+          "title": "Implement Foraging Visualization and Route Optimization",
+          "description": "Create visual representation of foraging paths and implement route optimization algorithms for efficient resource collection.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Develop a trail renderer component to visualize ant paths on the game map\n2. Implement pheromone trail mechanics that strengthen with repeated use\n3. Create route optimization algorithm that considers distance, obstacles, and existing trails\n4. Add visual indicators for resource-rich areas\n5. Implement time-of-day effects on foraging efficiency",
+          "status": "done",
+          "testStrategy": "Visual testing of path rendering. Performance testing of optimization algorithms with different colony sizes. Verify pheromone trail mechanics strengthen correctly with use."
+        },
+        {
+          "id": 5,
+          "title": "Add Resource Events and Conversion Mechanics",
+          "description": "Implement random events during foraging (predators, weather) and resource conversion/decay mechanics.",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "1. Create an event system for random occurrences during foraging (predator attacks, rainfall, resource bonuses)\n2. Implement resource decay mechanics based on time and storage conditions\n3. Develop resource conversion system (leaves to fungus) with time and efficiency factors\n4. Add worker ant specialization effects on conversion efficiency\n5. Create UI notifications for significant events and resource status changes",
+          "status": "done",
+          "testStrategy": "Test random event generation distribution. Verify decay mechanics over different time periods. Test resource conversion rates and ensure proper resource deduction and creation."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Ant Role Assignment and Management UI",
+      "description": "Create the interface for assigning and managing ant roles according to ST-102 and section 5.3.",
+      "details": "1. Design UI panel for ant role management\n2. Implement role assignment functionality:\n   - Worker assignment (build, forage)\n   - Soldier assignment (guard, fight)\n   - Scout assignment (explore, detect threats)\n3. Create visual indicators for different ant roles\n4. Implement real-time updates of ant behavior based on role changes\n5. Add tooltips explaining role benefits and trade-offs\n6. Create ant statistics view (experience, efficiency)\n7. Implement batch assignment for multiple ants\n8. Add filters for viewing ants by role or status",
+      "testStrategy": "Test role assignment UI for usability. Verify that ant behavior changes appropriately when roles are reassigned. Test batch assignment functionality. Verify that UI updates in real-time with simulation changes. Test filters and sorting options.",
+      "priority": "medium",
+      "dependencies": [
+        3,
+        4,
+        5
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Ant Role Management UI Panel Component",
+          "description": "Design and implement the UI panel component for ant role management that will serve as the container for all role assignment functionality.",
+          "dependencies": [],
+          "details": "Create a new React component called 'AntRolePanel.jsx' in the components/ant directory. Design the panel layout with sections for different role categories (Worker, Soldier, Scout). Include a header with title, close button, and help icon. Style the component using CSS modules with appropriate colony theme colors. The panel should be responsive and support both desktop and mobile views.",
+          "status": "pending",
+          "testStrategy": "Write unit tests using Jest and React Testing Library to verify the component renders correctly with all expected sections and controls."
+        },
+        {
+          "id": 2,
+          "title": "Implement Role Assignment Controls and Functionality",
+          "description": "Create the interactive controls for assigning different roles to ants and implement the core assignment functionality.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create role assignment components for each role type (Worker, Soldier, Scout) with specific sub-roles (build/forage, guard/fight, explore/detect). Implement radio buttons or dropdown selectors for role selection. Create a 'RoleAssignmentService.js' that handles API calls to '/api/ants/{antId}/role' endpoint for updating ant roles. Add state management to track current selections and implement the submission handler to update roles. Include validation to prevent invalid role combinations.",
+          "status": "pending",
+          "testStrategy": "Test the role assignment functionality with both unit tests for the UI components and integration tests that mock API calls to verify proper state updates."
+        },
+        {
+          "id": 3,
+          "title": "Develop Visual Role Indicators and Tooltips",
+          "description": "Create visual indicators for different ant roles and implement tooltips that explain role benefits and trade-offs.",
+          "dependencies": [
+            2
+          ],
+          "details": "Design and implement icon or color-based indicators for each ant role type. Create a 'RoleIndicator.jsx' component that displays the appropriate visual based on an ant's assigned role. Implement tooltips using a tooltip library or custom component that appear on hover/tap and display role descriptions, benefits, and trade-offs. Create a 'roleData.js' file containing all role descriptions and statistics to be used by the tooltips.",
+          "status": "pending",
+          "testStrategy": "Test that indicators correctly display for each role type and that tooltips show the appropriate content when triggered."
+        },
+        {
+          "id": 4,
+          "title": "Create Ant Statistics View Component",
+          "description": "Implement the ant statistics view showing experience, efficiency, and other role-specific metrics.",
+          "dependencies": [
+            2
+          ],
+          "details": "Create an 'AntStatistics.jsx' component that displays detailed statistics for selected ants. Implement data fetching from '/api/ants/{antId}/stats' endpoint. Design visualizations (progress bars, charts) for key metrics like experience and efficiency. Add real-time updates using WebSocket connection to receive stat changes when ant behavior changes. Include comparison functionality to show how stats differ between roles to help with decision making.",
+          "status": "pending",
+          "testStrategy": "Test the statistics component with mock data to verify correct rendering of all metrics and test WebSocket connection handling for real-time updates."
+        },
+        {
+          "id": 5,
+          "title": "Implement Batch Assignment and Filtering",
+          "description": "Add functionality for batch role assignment to multiple ants and filtering options to view ants by role or status.",
+          "dependencies": [
+            2,
+            3,
+            4
+          ],
+          "details": "Create a selection mechanism in the ant list view to select multiple ants. Implement a batch assignment modal that appears when multiple ants are selected. Add filter controls above the ant list to filter by role type, specific role, and status (idle, busy, etc.). Create a 'BatchAssignmentService.js' to handle the API calls to '/api/ants/batch-assign' endpoint. Implement the UI for confirming batch changes with a preview of affected ants and potential colony impact.",
+          "status": "pending",
+          "testStrategy": "Test the batch selection UI, filter functionality, and batch assignment process with various combinations of ants and roles to ensure proper handling of all scenarios."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Procedural Map Generation",
+      "description": "Implement the procedural generation of tile-based maps as specified in section 5.6.",
+      "details": "1. Design tile-based map system with various terrain types\n2. Implement procedural generation algorithm:\n   - Perlin noise for natural terrain distribution\n   - Placement of food sources, obstacles, and enemy colonies\n   - Balancing resource distribution\n3. Create map data structure for efficient storage and access\n4. Implement map boundaries and size constraints\n5. Add environmental features (water bodies, rocks, plants)\n6. Create seed-based generation for reproducible maps\n7. Optimize generation for performance\n8. Implement difficulty scaling in map generation",
+      "testStrategy": "Test map generation with various seeds. Verify terrain distribution is natural and balanced. Test resource placement algorithms. Measure performance of map generation. Verify that maps scale appropriately with difficulty settings.",
+      "priority": "medium",
+      "dependencies": [
+        4
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Tile System and Map Data Structure",
+          "description": "Create the foundational tile system and map data structure that will store the procedurally generated map data.",
+          "dependencies": [],
+          "details": "1. Define a Tile class with properties for terrain type, resources, obstacles, and entities.\n2. Create a MapGrid class that manages a 2D array of tiles with methods for accessing and modifying tiles.\n3. Implement terrain type enums (GRASS, SAND, WATER, ROCK, etc.).\n4. Add methods for efficient spatial queries (getNeighbors, getTilesInRadius).\n5. Create serialization/deserialization methods for saving/loading maps.\n6. Implement map boundary handling with configurable size constraints.",
+          "status": "done",
+          "testStrategy": "Write unit tests for the Tile and MapGrid classes, testing terrain assignment, neighbor calculations, and boundary conditions."
+        },
+        {
+          "id": 2,
+          "title": "Implement Perlin Noise Generator for Terrain Distribution",
+          "description": "Create a Perlin noise generator to produce natural-looking terrain distributions across the map.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Implement or integrate a Perlin noise library (consider simplex-noise.js).\n2. Create a TerrainGenerator class that uses Perlin noise to assign terrain types to tiles.\n3. Add configuration parameters for noise scale, octaves, persistence, and lacunarity.\n4. Implement methods to map noise values to different terrain types using thresholds.\n5. Add terrain transition smoothing to avoid unnatural boundaries between terrain types.\n6. Create a visualization helper for debugging terrain generation.",
+          "status": "done",
+          "testStrategy": "Test terrain generation with different parameters, verify terrain distribution percentages match expected ranges, and visually inspect generated maps for natural patterns."
+        },
+        {
+          "id": 3,
+          "title": "Implement Resource and Feature Placement",
+          "description": "Add logic to place resources, obstacles, and environmental features on the generated terrain.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Create a FeaturePlacer class responsible for distributing resources and features.\n2. Implement algorithms for placing food sources with appropriate density based on terrain type.\n3. Add obstacle generation (rocks, plants) with configurable density.\n4. Implement water body generation (lakes, rivers) using noise and flood fill algorithms.\n5. Create enemy colony placement logic that considers distance from player start position.\n6. Add resource balancing logic to ensure fair distribution across the map.\n7. Implement methods to prevent feature overlap and maintain playability.",
+          "status": "done",
+          "testStrategy": "Test resource distribution algorithms for balance, verify minimum distances between critical features, and ensure resources are accessible to players."
+        },
+        {
+          "id": 4,
+          "title": "Implement Seed-Based Generation System",
+          "description": "Create a system for seed-based map generation to allow reproducible maps.",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "1. Implement a seeded random number generator class.\n2. Modify the terrain and feature generators to use the seeded RNG.\n3. Create a MapGenerator class that orchestrates the entire generation process using a seed.\n4. Add methods to extract the current seed from a generated map.\n5. Implement seed validation and normalization.\n6. Create a user interface component for entering custom seeds.\n7. Add seed display and sharing functionality.",
+          "status": "done",
+          "testStrategy": "Verify that the same seed produces identical maps across multiple generations, test edge case seeds (very large numbers, negative values), and ensure proper error handling for invalid seeds."
+        },
+        {
+          "id": 5,
+          "title": "Implement Difficulty Scaling and Performance Optimization",
+          "description": "Add difficulty scaling to map generation and optimize the generation process for performance.",
+          "dependencies": [
+            4
+          ],
+          "details": "1. Create a DifficultyManager class with presets (EASY, MEDIUM, HARD).\n2. Implement difficulty-based adjustments for resource abundance, enemy colony placement, and obstacle density.\n3. Add progressive difficulty scaling for campaign mode maps.\n4. Optimize map generation using web workers for multi-threading.\n5. Implement chunked generation for large maps to prevent UI freezing.\n6. Add caching mechanisms for frequently accessed map data.\n7. Create a loading indicator and progress tracking for map generation.\n8. Implement map generation cancellation functionality.",
+          "status": "done",
+          "testStrategy": "Benchmark generation times for various map sizes, profile memory usage during generation, verify difficulty settings produce appropriate challenge levels, and test generation on various devices to ensure performance."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Fog of War and Map Exploration",
+      "description": "Implement fog of war and map exploration mechanics as described in ST-107 and section 5.6.",
+      "details": "1. Implement fog of war visual effect for unexplored areas\n2. Create exploration tracking system:\n   - Store explored/unexplored state for each tile\n   - Track scout ant visibility range\n   - Update fog clearing in real-time\n3. Implement discovery events when exploring new tiles:\n   - Hidden enemies\n   - Resource caches\n   - NPC nests\n   - Environmental hazards\n4. Create notification system for discoveries\n5. Implement memory decay (fog returns to unexplored areas over time)\n6. Add mini-map functionality showing explored areas\n7. Optimize rendering of fog of war for performance",
+      "testStrategy": "Test fog of war rendering. Verify that exploration correctly reveals map tiles. Test discovery events trigger appropriately. Verify memory decay mechanics. Test mini-map accuracy. Measure performance impact of fog of war rendering.",
+      "priority": "medium",
+      "dependencies": [
+        8
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Tile Exploration State Tracking System",
+          "description": "Create a data structure and state management system to track the exploration status of each tile on the game map.",
+          "dependencies": [],
+          "details": "Create a new ExplorationManager class that maintains a 2D grid matching the game map dimensions. Each cell should store: 1) Boolean for explored status, 2) Timestamp of last visit, 3) Discovery type if applicable. Implement methods for: getExplorationStatus(x,y), setExplored(x,y), and calculateVisibleTiles(antPosition, visibilityRange). Store this data in the game state and ensure it persists between game sessions.",
+          "status": "pending",
+          "testStrategy": "Unit test the ExplorationManager class with mock map data to verify correct tracking of explored/unexplored states. Test edge cases like map boundaries and different visibility ranges."
+        },
+        {
+          "id": 2,
+          "title": "Develop Fog of War Rendering System",
+          "description": "Create the visual representation of unexplored areas using a fog effect that dynamically updates as the player explores the map.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create a FogOfWarRenderer component that overlays the game map. Use HTML Canvas for efficient rendering. Implement three visual states: 1) Unexplored (full fog), 2) Previously explored (partial fog), 3) Currently visible (no fog). Use alpha transparency and gradient effects for smooth transitions. Optimize with layer caching and only redraw when exploration state changes. Add shader effects for fog appearance.",
+          "status": "pending",
+          "testStrategy": "Performance test the rendering system with large maps to ensure frame rate remains stable. Visual regression tests to verify fog appearance in different states."
+        },
+        {
+          "id": 3,
+          "title": "Implement Scout Visibility and Real-time Fog Clearing",
+          "description": "Create the system that calculates which tiles should be visible based on scout ant positions and clears fog in real-time as ants move.",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Extend the game loop to include visibility calculations. For each scout ant, calculate visible tiles using a radial algorithm with configurable visibility range (stored in ant properties). Implement line-of-sight checks to handle obstacles blocking visibility. Create an efficient update system that only recalculates visibility when scout positions change. Add a subscription system so the FogOfWarRenderer updates only when visibility changes.",
+          "status": "pending",
+          "testStrategy": "Test visibility calculations with different map layouts and obstacles. Verify that fog clearing happens correctly when scouts move. Benchmark performance with multiple scouts moving simultaneously."
+        },
+        {
+          "id": 4,
+          "title": "Create Discovery Events and Notification System",
+          "description": "Implement the system for generating and handling discovery events when exploring new areas, along with user notifications.",
+          "dependencies": [
+            1,
+            3
+          ],
+          "details": "Create a DiscoveryManager class that generates discoveries based on map data. Implement different discovery types: ResourceCache, HiddenEnemy, NPCNest, and EnvironmentalHazard. Each should have appropriate data and behavior. Create a NotificationSystem that displays discoveries to the player using toast notifications with appropriate icons and descriptions. Add event handlers to trigger discoveries when tiles change from unexplored to explored state.",
+          "status": "pending",
+          "testStrategy": "Test discovery generation logic with mock map data. Verify notifications appear correctly for each discovery type. Test edge cases like multiple simultaneous discoveries."
+        },
+        {
+          "id": 5,
+          "title": "Implement Memory Decay and Mini-map Integration",
+          "description": "Add the memory decay feature where fog gradually returns to previously explored areas, and integrate the exploration system with the mini-map.",
+          "dependencies": [
+            1,
+            2,
+            3
+          ],
+          "details": "Extend the ExplorationManager to include a decay system that gradually returns tiles to unexplored state based on time since last visit. Implement configurable decay rates. Create a scheduler that periodically updates decay status. Modify the FogOfWarRenderer to show partially decayed areas with intermediate fog density. Integrate with the mini-map component to show: 1) Unexplored areas (dark), 2) Explored areas (light), 3) Currently visible areas (highlighted). Add mini-map controls to toggle fog visibility.",
+          "status": "pending",
+          "testStrategy": "Test decay mechanics with accelerated time simulation. Verify correct visual representation of decay states. Test mini-map integration to ensure it correctly reflects the exploration state."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Colony Building and Structure System",
+      "description": "Implement the building and structure system for colony development as described in ST-104 and section 5.2.",
+      "details": "1. Design different structure types:\n   - Nursery (increases birth rate)\n   - Storage chambers (increases resource capacity)\n   - Defense structures (improves colony defense)\n   - Specialized chambers (enables new ant types)\n2. Implement building mechanics:\n   - Resource requirements\n   - Construction time\n   - Worker ant assignment\n3. Create upgrade paths for structures with increasing benefits\n4. Implement structure placement UI on the colony map\n5. Add visual representation of construction progress\n6. Create structure damage and repair mechanics\n7. Implement structure bonuses to colony stats\n8. Balance building costs and benefits",
+      "testStrategy": "Test structure placement UI. Verify resource requirements for building. Test construction time calculations. Verify upgrade paths function correctly. Test structure bonuses apply correctly to colony stats. Verify visual representation of structures and construction progress.",
+      "priority": "high",
+      "dependencies": [
+        4,
+        6
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Define Structure Data Models and Database Schema",
+          "description": "Create the data models and database schema for all colony structures including their properties, requirements, and effects on colony stats.",
+          "dependencies": [],
+          "details": "1. Create a 'structures' table in PostgreSQL with columns for id, name, type, description, base_cost, construction_time, level, and effects.\n2. Create a 'colony_structures' join table to track structures built in each colony with columns for colony_id, structure_id, position_x, position_y, construction_progress, health, and is_active.\n3. Define Sequelize models for Structure and ColonyStructure with appropriate relationships.\n4. Implement database migrations for these tables.\n5. Create seed data for the initial structure types (Nursery, Storage, Defense, Specialized chambers).",
+          "status": "done",
+          "testStrategy": "Write unit tests for model validations and relationships. Create test fixtures for each structure type to verify proper database interactions."
+        },
+        {
+          "id": 2,
+          "title": "Implement Structure Backend API",
+          "description": "Create the backend API endpoints for managing colony structures, including construction, upgrades, and retrieving structure information.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create RESTful API endpoints in Express:\n   - GET /api/structures - List all available structure types\n   - GET /api/colonies/:colonyId/structures - List structures in a colony\n   - POST /api/colonies/:colonyId/structures - Start construction of a new structure\n   - PUT /api/colonies/:colonyId/structures/:structureId - Update structure (repair/upgrade)\n   - DELETE /api/colonies/:colonyId/structures/:structureId - Demolish structure\n2. Implement controllers with business logic for resource checks, construction time calculation, and worker assignment.\n3. Create middleware to validate structure placement and resource requirements.\n4. Implement structure effects on colony stats (birth rate, resource capacity, defense, etc.).",
+          "status": "done",
+          "testStrategy": "Write integration tests for each API endpoint. Test resource validation, construction time calculation, and proper application of structure effects on colony stats."
+        },
+        {
+          "id": 3,
+          "title": "Develop Structure Placement UI",
+          "description": "Create the user interface for placing and managing structures on the colony map, including visual feedback for valid placement locations.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Create a StructurePlacementOverlay React component that renders on top of the colony map.\n2. Implement drag-and-drop functionality for structure placement using React DnD.\n3. Add grid-based placement system with visual indicators for valid/invalid placement locations.\n4. Create a StructureCatalog component showing available structures with costs and requirements.\n5. Implement structure selection and information panel showing details about the selected structure.\n6. Add visual feedback for placement constraints (terrain limitations, proximity requirements).\n7. Implement confirmation dialog with resource cost breakdown before construction begins.",
+          "status": "done",
+          "testStrategy": "Write React component tests using Jest and React Testing Library. Test drag-and-drop functionality, valid/invalid placement detection, and proper resource cost display."
+        },
+        {
+          "id": 4,
+          "title": "Implement Construction and Upgrade System",
+          "description": "Develop the mechanics for structure construction, including resource consumption, worker assignment, construction progress, and structure upgrades.",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "1. Create a ConstructionManager service to handle ongoing construction projects.\n2. Implement worker ant assignment system where assigned workers affect construction speed.\n3. Create a progress tracking system that updates construction completion percentage over time.\n4. Develop visual representation of construction progress (scaffolding, progress bars).\n5. Implement structure upgrade paths with increasing costs and benefits for each level.\n6. Create upgrade UI showing comparison between current and next level benefits.\n7. Implement resource consumption at construction start and worker return upon completion.\n8. Add notifications for construction start, completion, and available upgrades.",
+          "status": "done",
+          "testStrategy": "Test construction time calculations with different worker assignments. Verify resource consumption and proper application of benefits upon completion. Test upgrade paths and proper stat increases."
+        },
+        {
+          "id": 5,
+          "title": "Implement Structure Effects and Damage System",
+          "description": "Develop the system for applying structure bonuses to colony stats and implement structure damage and repair mechanics.",
+          "dependencies": [
+            4
+          ],
+          "details": "1. Create a StructureEffectsManager to calculate and apply bonuses from all active structures to colony stats.\n2. Implement event-based system to update colony stats when structures are built, upgraded, damaged, or destroyed.\n3. Create damage mechanics for structures during colony attacks or events.\n4. Implement visual representation of damaged structures with different damage states.\n5. Develop repair mechanics requiring resources and worker assignment.\n6. Create UI for viewing all active structure bonuses and their effects on the colony.\n7. Implement structure maintenance costs that periodically consume resources.\n8. Add special abilities for certain structures (e.g., defense structures providing active defense during attacks).",
+          "status": "done",
+          "testStrategy": "Test proper application of structure bonuses to colony stats. Verify damage calculations and repair mechanics. Test structure special abilities and maintenance costs."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Evolution and Tech Tree System",
+      "description": "Implement the evolution point system and tech tree as specified in section 5.5 and ST-106.",
+      "details": "1. Design evolution point earning system:\n   - Points from resource collection\n   - Points from successful combat\n   - Points from colony milestones\n2. Create tech tree structure with multiple paths:\n   - Physical traits (strength, speed, etc.)\n   - Specialized ant types\n   - Environmental adaptations\n3. Implement UI for viewing and navigating tech tree\n4. Create upgrade purchase and confirmation flow\n5. Implement effects of upgrades on colony performance\n6. Add visual changes to ants based on evolution choices\n7. Implement prerequisite system for advanced upgrades\n8. Balance evolution costs and benefits",
+      "testStrategy": "Test evolution point earning rates. Verify tech tree UI navigation. Test upgrade purchase flow. Verify that upgrades correctly affect colony performance. Test prerequisite system for advanced upgrades. Verify visual changes to ants after evolution.",
+      "priority": "medium",
+      "dependencies": [
+        4,
+        5,
+        10
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Evolution Points Earning System Backend",
+          "description": "Implement the backend logic for earning and tracking evolution points from various game activities.",
+          "dependencies": [],
+          "details": "Create database schema for evolution points in PostgreSQL. Implement API endpoints in Node.js/Express for: 1) Adding points from resource collection (POST /api/evolution/points/resource), 2) Adding points from combat (POST /api/evolution/points/combat), 3) Adding points from colony milestones (POST /api/evolution/points/milestone), 4) Getting current points balance (GET /api/evolution/points). Include transaction handling for point updates and implement rate limiting to prevent exploitation.",
+          "status": "pending",
+          "testStrategy": "Unit tests for each API endpoint with mock data. Integration tests for database transactions. Load testing to ensure system handles concurrent point updates."
+        },
+        {
+          "id": 2,
+          "title": "Tech Tree Data Structure and Backend",
+          "description": "Design and implement the tech tree data structure with multiple evolution paths and prerequisites system.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create database schema for tech tree nodes and edges. Each node should contain: id, name, description, category (physical/specialized/environmental), cost, effects, prerequisites, and visual changes. Implement API endpoints: 1) GET /api/evolution/techtree to retrieve the full tree, 2) GET /api/evolution/techtree/available to get available upgrades based on current points and unlocked nodes, 3) POST /api/evolution/techtree/unlock to purchase an upgrade. Include validation logic for prerequisites and sufficient evolution points.",
+          "status": "pending",
+          "testStrategy": "Unit tests for prerequisite validation logic. Integration tests for the tech tree data retrieval and unlock functionality. Test edge cases like attempting to unlock unavailable upgrades."
+        },
+        {
+          "id": 3,
+          "title": "Tech Tree UI Components",
+          "description": "Create React components for displaying and navigating the tech tree with visual representation of different evolution paths.",
+          "dependencies": [
+            2
+          ],
+          "details": "Implement React components: 1) TechTreeView (main container), 2) TechTreePath (for each evolution category), 3) TechTreeNode (individual upgrades), 4) TechTreeConnection (visual connections between nodes). Use React context to manage tech tree state. Implement zooming and panning functionality for large tech trees. Use CSS for styling nodes based on status (available, locked, purchased). Add tooltips showing upgrade details and effects.",
+          "status": "pending",
+          "testStrategy": "Component tests with React Testing Library. Visual regression tests to ensure proper rendering of the tech tree. User testing for navigation experience."
+        },
+        {
+          "id": 4,
+          "title": "Upgrade Purchase Flow and Confirmation UI",
+          "description": "Implement the UI flow for purchasing upgrades, including confirmation dialogs and feedback.",
+          "dependencies": [
+            3
+          ],
+          "details": "Create React components: 1) UpgradeDetailsModal (showing full details of an upgrade), 2) PurchaseConfirmationDialog (confirming point expenditure), 3) UpgradeSuccessNotification (feedback after purchase). Implement client-side validation to prevent attempting invalid purchases. Add animations for successful purchases. Update the evolution points display in real-time after purchases. Include undo functionality with a time limit for accidental purchases.",
+          "status": "pending",
+          "testStrategy": "User flow testing for the complete purchase process. Unit tests for validation logic. Integration tests with mock API responses."
+        },
+        {
+          "id": 5,
+          "title": "Evolution Effects Implementation",
+          "description": "Implement the actual gameplay effects of purchased upgrades on colony performance and ant appearance.",
+          "dependencies": [
+            2,
+            4
+          ],
+          "details": "Create a system to apply upgrade effects to game mechanics: 1) Implement modifier system for ant attributes (speed, strength, etc.), 2) Add visual changes to ant sprites based on evolution choices, 3) Update resource collection rates based on upgrades, 4) Modify combat calculations for upgraded ants, 5) Adjust environmental interactions based on adaptations. Create an EvolutionManager class to centrally manage all active upgrades and their effects. Implement caching for performance optimization when calculating effects.",
+          "status": "pending",
+          "testStrategy": "Unit tests for each type of upgrade effect. Integration tests to verify effects are properly applied in gameplay. Performance testing to ensure minimal impact on game loop."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "AI Colony Behavior System",
+      "description": "Implement the AI-controlled enemy colonies with dynamic behavior as specified in section 5.4.",
+      "details": "1. Design AI colony data structure and behavior patterns\n2. Implement decision tree for AI colony actions:\n   - Resource gathering strategy\n   - Defensive positioning\n   - Attack planning\n   - Growth priorities\n3. Create difficulty scaling for AI colonies\n4. Implement AI colony growth over time\n5. Add personality traits to different AI colonies\n6. Create trigger conditions for AI attacks\n7. Implement AI scouting and exploration behavior\n8. Add adaptive strategies based on player actions",
+      "testStrategy": "Test AI decision making under various conditions. Verify difficulty scaling affects AI behavior appropriately. Test AI colony growth rates. Verify attack triggers function correctly. Test adaptive strategies respond to player actions. Measure performance impact of multiple AI colonies.",
+      "priority": "high",
+      "dependencies": [
+        4,
+        8
+      ],
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement AI Colony Data Structure and State Management",
+          "description": "Create the core data structure for AI colonies including state management, personality traits, and resource tracking capabilities.",
+          "dependencies": [],
+          "details": "1. Create a new `AIColony` class in `src/models/AIColony.js` with properties for resources, units, territory, growth rate, and personality traits.\n2. Implement state management using a finite state machine pattern with states like GATHERING, DEFENDING, ATTACKING, GROWING.\n3. Create database schema for storing colony data in PostgreSQL with tables for colony_base, colony_resources, and colony_traits.\n4. Implement API endpoints in `src/controllers/aiColonyController.js` for CRUD operations.\n5. Add colony initialization logic that assigns random personality traits from a predefined set (aggressive, defensive, expansionist, etc.).\n<info added on 2025-05-25T01:28:07.257Z>\n## Implementation Summary\n\nThe AI Colony Data Structure and State Management system has been successfully implemented with the following components:\n\n### AIColony Model (`server/models/AIColony.js`)\n- Created AIColony class extending the base Colony class\n- Implemented finite state machine with 6 states: GATHERING, DEFENDING, ATTACKING, GROWING, EXPLORING, IDLE\n- Added 6 personality traits: AGGRESSIVE, DEFENSIVE, EXPANSIONIST, OPPORTUNIST, MILITANT, BUILDER\n- Implemented state transition validation and logic\n- Added AI-specific properties: aggression_level, expansion_drive, growth_rate, military_focus, resource_efficiency\n- Implemented memory system for storing discovered resources, enemy movements, battle history, territory changes\n- Added decision-making framework with strategic decision logic\n- Implemented threat level calculation and resource priority management\n- Full database integration with CRUD operations\n\n### AI Colony Controller (`server/controllers/aiColonyController.js`)\n- Complete CRUD operations for AI colonies\n- Strategic decision-making endpoint (`/decide`)\n- State management endpoint (`/change-state`)\n- Threat level updating (`/update-threat`)\n- Memory management (`/memory`)\n- Batch AI tick processing (`/tick`) for all colonies\n- Colony statistics endpoint (`/stats`)\n- Comprehensive error handling and validation\n\n### API Routes (`server/routes/aiColony.js`)\n- RESTful API endpoints with proper documentation\n- Full routing structure for all AI colony operations\n- Integrated into main server (`server/server.js`)\n\nThe foundation for AI colony behavior is now complete and ready for the next subtask (Decision Tree implementation).\n</info added on 2025-05-25T01:28:07.257Z>",
+          "status": "done",
+          "testStrategy": "Write unit tests for the AIColony class to verify state transitions and resource calculations. Create integration tests for database operations and API endpoints."
+        },
+        {
+          "id": 2,
+          "title": "Develop Decision Tree for AI Colony Actions",
+          "description": "Implement the decision-making logic that determines AI colony behavior based on game state, resources, and personality traits.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create a `DecisionTree` class in `src/ai/DecisionTree.js` that evaluates conditions and returns appropriate actions.\n2. Implement resource gathering strategy logic in `src/ai/strategies/ResourceStrategy.js` with different approaches based on colony traits.\n3. Create defensive positioning logic in `src/ai/strategies/DefenseStrategy.js` that determines optimal unit placement.\n4. Implement attack planning in `src/ai/strategies/AttackStrategy.js` with target selection and force calculation.\n5. Add growth priority logic in `src/ai/strategies/GrowthStrategy.js` that balances expansion vs. military development.\n6. Connect the decision tree to the colony state machine from subtask 1.\n<info added on 2025-05-25T01:36:31.481Z>\nI have successfully implemented the Decision Tree system for AI Colony Actions with comprehensive strategic decision-making capabilities:\n\n## Core Decision Tree Implementation:\n\n### 1. DecisionTree Class (`server/services/DecisionTree.js`)\n- Created comprehensive decision evaluation system with 15+ conditions and 12+ actions\n- Implemented multi-factor scoring system with personality, state, threat, and urgency modifiers\n- Added condition-based action filtering and requirement validation\n- Integrated randomness for unpredictable AI behavior (±10% variation)\n- Provided detailed decision explanations for debugging and analysis\n\n### 2. Specialized Strategy Classes:\n\n#### ResourceStrategy (`server/services/strategies/ResourceStrategy.js`)\n- Intelligent resource gathering prioritization based on colony needs and personality\n- Dynamic worker allocation across 5 resource types (food, wood, stone, minerals, water)\n- Resource opportunity evaluation with distance, abundance, safety, and competition factors\n- Storage status monitoring and critical shortage detection\n\n#### DefenseStrategy (`server/services/strategies/DefenseStrategy.js`)\n- 4-tier defensive posture system (minimal, balanced, defensive, fortress)\n- Intelligent unit deployment with 5 position types and 4 unit types\n- Comprehensive fortification planning with resource cost calculation\n- Priority area identification including perimeter, high ground, and resource protection\n\n#### AttackStrategy (`server/services/strategies/AttackStrategy.js`)\n- 5 attack types (raid, siege, blitz, harassment, conquest) with detailed planning\n- Target viability assessment with risk/benefit analysis\n- Force composition planning with role-based unit allocation\n- Multi-phase attack plans with contingencies and success criteria\n\n#### GrowthStrategy (`server/services/strategies/GrowthStrategy.js`)\n- 4-phase development system (early, expansion, consolidation, dominance)\n- 5 growth focus areas (population, territory, military, infrastructure, technology)\n- Comprehensive resource allocation and milestone tracking\n- Situational modifiers for threat level, resource constraints, and population pressure\n\n### 3. Enhanced AIColony Integration:\n- Integrated all strategy classes into the AIColony model\n- Implemented strategic decision combination logic\n- Added confidence scoring and decision reasoning\n- Created fallback basic decision system for error handling\n- Enhanced state transition logic based on strategic recommendations\n\n## Key Features Implemented:\n\n### Decision Making Framework:\n- Multi-layered decision evaluation (basic → strategic → combined)\n- Personality-driven behavior modifiers for 6 personality types\n- State-aware decision making with appropriate transitions\n- Resource-conscious action filtering and prioritization\n\n### Strategic Intelligence:\n- Threat-responsive defensive positioning\n- Opportunistic attack target selection\n- Growth phase-appropriate development priorities\n- Resource efficiency optimization\n\n### Behavioral Complexity:\n- Unpredictable AI through controlled randomness\n- Memory-based decision storage and learning\n- Confidence-based decision validation\n- Comprehensive reasoning for all decisions\n</info added on 2025-05-25T01:36:31.481Z>",
+          "status": "done",
+          "testStrategy": "Create scenario-based tests that simulate different game states and verify the decision tree produces expected actions. Use mock objects to isolate strategy testing."
+        },
+        {
+          "id": 3,
+          "title": "Implement Colony Growth and Difficulty Scaling",
+          "description": "Create systems for AI colony growth over time and difficulty scaling based on game progression and player performance.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Implement time-based growth functions in `src/ai/GrowthCalculator.js` that increase colony resources and units.\n2. Create difficulty scaling logic in `src/ai/DifficultyManager.js` that adjusts growth rates, decision-making aggressiveness, and resource efficiency.\n3. Add player performance tracking in `src/services/PlayerMetricsService.js` to inform difficulty adjustments.\n4. Implement colony expansion logic that allows colonies to claim new territory.\n5. Create API endpoints in `src/controllers/gameProgressionController.js` to retrieve and update difficulty settings.\n6. Add database tables for storing difficulty settings and growth parameters.\n<info added on 2025-05-25T01:43:46.449Z>\nThe Colony Growth and Difficulty Scaling system has been successfully implemented with the following components:\n\n1. Created GrowthCalculator class in `server/services/GrowthCalculator.js` with time-based growth functions for population, resources, territory, military, and infrastructure.\n\n2. Enhanced AIColony model with growth tracking properties (growth_history, last_growth_tick, infrastructure_level, development_phase) and integrated growth calculation methods.\n\n3. Implemented a Growth Modifiers System with personality-based modifiers, difficulty scaling multipliers (easy: 0.8x to nightmare: 1.6x), and contextual adjustments based on threat levels and resource availability.\n\n4. Extended PlayerMetricsService with performance tracking, trend analysis, and dynamic difficulty recommendation based on win rates, game length, and resource efficiency.\n\n5. Added new API endpoints:\n   - POST /api/ai-colonies/:id/process-growth\n   - GET /api/ai-colonies/:id/growth-projection\n   - GET /api/ai-colonies/:id/growth-efficiency\n   - POST /api/ai-colonies/process-all-growth\n   - POST /api/ai-colonies/:id/update-difficulty\n\n6. Implemented intelligent difficulty scaling with real-time player performance analysis and adaptive AI behavior based on player skill level.\n</info added on 2025-05-25T01:43:46.449Z>",
+          "status": "done",
+          "testStrategy": "Create time-based tests that verify colony growth over simulated game time. Test difficulty scaling by simulating different player performance scenarios."
+        },
+        {
+          "id": 4,
+          "title": "Develop AI Scouting and Exploration Behavior",
+          "description": "Implement the logic for AI colonies to explore the game world, discover resources, and gather intelligence about player activities.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Create an `ExplorationManager` class in `src/ai/ExplorationManager.js` to track unexplored areas and prioritize scouting targets.\n2. Implement fog-of-war mechanics for AI colonies in `src/services/VisibilityService.js`.\n3. Add scout unit behavior in `src/ai/units/ScoutBehavior.js` with pathfinding and information gathering capabilities.\n4. Create memory systems in `src/ai/ColonyMemory.js` for storing and retrieving discovered information.\n5. Implement API endpoints in `src/controllers/mapController.js` for updating and retrieving exploration data.\n6. Add visualization components in the frontend to represent AI exploration activities.\n<info added on 2025-05-25T01:53:53.722Z>\nThe AI Scouting and Exploration Behavior system has been successfully implemented with the following components:\n\n1. ExplorationManager Class (server/services/ExplorationManager.js):\n   - Implemented 4 exploration modes: systematic, opportunistic, resource_focused, threat_assessment\n   - Created personality-driven exploration patterns with varying parameters\n   - Developed multi-objective exploration system with 5 objective types\n   - Built advanced scout assignment planning with 15+ specialized types\n   - Added risk assessment and mitigation capabilities\n   - Implemented coordinate generation for various exploration patterns\n\n2. VisibilityService (server/services/VisibilityService.js):\n   - Created fog-of-war mechanics with unit-specific visibility ranges\n   - Implemented dynamic visibility calculation with line-of-sight mechanics\n   - Added discovery tracking system with confidence levels\n   - Developed fog decay mechanics for information aging\n   - Built strategic exploration priority calculation system\n\n3. ScoutBehavior Class (server/services/ai/units/ScoutBehavior.js):\n   - Implemented advanced pathfinding with 4 modes: direct, safe, stealth, rapid\n   - Created mission execution framework with waypoint navigation\n   - Added intelligent route planning with risk assessment\n   - Developed discovery simulation for resources, enemies, and terrain\n   - Implemented mission success calculation metrics\n\n4. ColonyMemory System (server/services/ai/ColonyMemory.js):\n   - Built comprehensive memory management with 10 specialized categories\n   - Implemented advanced search and retrieval with multiple filtering options\n   - Added memory relevance scoring with automatic cleanup\n   - Created relationship mapping between memories\n   - Developed memory statistics and analytics\n\n5. AIColony Model Integration:\n   - Added 12+ exploration-related properties and methods\n   - Implemented automated exploration planning and execution\n   - Created mission management system with tracking\n   - Developed discovery processing pipeline\n   - Added exploration efficiency metrics\n\n6. API Endpoints:\n   - Implemented 9 new endpoints for visibility, exploration, memory, and mission management\n\nAll components are fully integrated with the existing AI colony framework, providing a complete system for intelligent environmental exploration and strategic decision-making.\n</info added on 2025-05-25T01:53:53.722Z>",
+          "status": "done",
+          "testStrategy": "Test exploration algorithms with different map configurations. Verify memory systems correctly store and retrieve discovered information. Test fog-of-war mechanics to ensure proper visibility constraints."
+        },
+        {
+          "id": 5,
+          "title": "Implement Adaptive Strategies and Attack Triggers",
+          "description": "Create systems for AI colonies to adapt their strategies based on player actions and implement trigger conditions for launching attacks.",
+          "dependencies": [
+            2,
+            3,
+            4
+          ],
+          "details": "1. Implement player action monitoring in `src/ai/PlayerMonitor.js` to track and analyze player behavior patterns.\n2. Create strategy adaptation logic in `src/ai/AdaptiveStrategy.js` that adjusts colony behavior based on player actions.\n3. Implement attack trigger conditions in `src/ai/TriggerConditions.js` with factors like resource thresholds, territory proximity, and time-based events.\n4. Add counter-strategy selection in `src/ai/CounterStrategies.js` that chooses appropriate responses to player strategies.\n5. Create notification system in `src/services/AIEventService.js` to inform the game about significant AI decisions.\n6. Implement frontend components in `src/components/ai/AIActivityIndicator.jsx` to subtly hint at AI colony intentions.",
+          "status": "done",
+          "testStrategy": "Create scenario tests that simulate specific player actions and verify appropriate AI adaptations. Test attack triggers with various game states to ensure they activate under the right conditions."
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Battle Simulation System",
+      "description": "Implement the battle system for conflicts between player and AI colonies as described in section 5.4 and ST-105.",
+      "details": "1. Design battle simulation algorithm:\n   - Factor in ant stats (strength, defense, etc.)\n   - Consider formation and positioning\n   - Apply terrain bonuses/penalties\n   - Calculate casualties and outcomes\n2. Implement scheduled AI attacks on player colony\n3. Create player-initiated raid mechanics on enemy colonies\n4. Design battle resolution screen with outcome details\n5. Implement resource rewards for successful battles\n6. Create battle history logging\n7. Add visual battle simulation (optional)\n8. Implement retreat mechanics and consequences",
+      "testStrategy": "Test battle calculations with various colony compositions. Verify that stats, formation, and terrain correctly affect outcomes. Test scheduled AI attacks trigger appropriately. Verify resource rewards scale with battle difficulty. Test battle history logging. Verify retreat mechanics function correctly.",
+      "priority": "high",
+      "dependencies": [
+        4,
+        12
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Battle Simulation Algorithm Core",
+          "description": "Create the core battle simulation algorithm that calculates battle outcomes based on ant stats, formations, and terrain factors.",
+          "dependencies": [],
+          "details": "Create a new module `battleSimulator.js` in the backend that exports a function to simulate battles. Implement logic to: 1) Compare colony strengths based on ant types and quantities, 2) Apply modifiers for terrain types stored in the database, 3) Calculate casualties on both sides, 4) Determine victor based on remaining strength. The algorithm should be deterministic but include some controlled randomness for battle outcomes. Store battle parameters in a configuration object for easy balancing.",
+          "status": "pending",
+          "testStrategy": "Write unit tests with Jest to verify battle outcomes are consistent and reasonable. Create test cases for various colony compositions and terrain types to ensure balance."
+        },
+        {
+          "id": 2,
+          "title": "Develop AI Attack Scheduling System",
+          "description": "Implement a system for AI colonies to periodically attack the player's colony based on difficulty settings and game progression.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create an `aiAttackScheduler.js` module that runs on a timer to determine when AI attacks occur. Implement difficulty scaling based on player progression. Create database tables to track AI aggression levels and attack cooldowns. Add an endpoint `/api/battles/incoming` for the frontend to check for incoming attacks. Ensure the scheduler uses the battle simulation algorithm to pre-calculate potential outcomes and only launches winnable attacks (with some randomness based on difficulty).",
+          "status": "pending",
+          "testStrategy": "Test the scheduler with different game states to verify attack frequency scales appropriately. Mock time functions to test scheduling without waiting for real-time intervals."
+        },
+        {
+          "id": 3,
+          "title": "Create Player-Initiated Raid System",
+          "description": "Implement the system allowing players to initiate attacks on AI colonies, including target selection, ant allocation, and battle execution.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create React components for raid planning (`RaidPlanner.jsx`, `ColonySelector.jsx`, `AntAllocation.jsx`). Implement backend endpoints at `/api/battles/targets` to list attackable colonies and `/api/battles/execute` to process player attacks. Create a database schema to track available targets and their strength. Implement a cooldown system to prevent spam attacks. Use the battle simulation algorithm to determine outcomes when a raid is executed.",
+          "status": "pending",
+          "testStrategy": "Test the API endpoints with various input combinations. Create UI tests to verify the raid planning flow works correctly. Test edge cases like attempting to raid with insufficient ants."
+        },
+        {
+          "id": 4,
+          "title": "Implement Battle Resolution UI and Rewards System",
+          "description": "Create the battle results screen showing the outcome, casualties, and implementing the resource rewards for successful battles.",
+          "dependencies": [
+            1,
+            2,
+            3
+          ],
+          "details": "Develop a `BattleResults.jsx` component to display battle outcomes with animations and statistics. Create a rewards calculation function in the backend that determines resources gained based on battle performance. Implement database updates to add resources to the player's colony after successful raids. Add API endpoint `/api/battles/results/:battleId` to fetch detailed battle results. Ensure proper error handling for failed attacks.",
+          "status": "pending",
+          "testStrategy": "Test reward calculations with different battle outcomes. Verify UI correctly displays all battle statistics. Test database transactions to ensure resources are properly awarded."
+        },
+        {
+          "id": 5,
+          "title": "Implement Battle History and Retreat Mechanics",
+          "description": "Create a battle history logging system and implement retreat mechanics that allow players to withdraw from battles with consequences.",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "Create a `battles` table in the database to log all battle events. Implement a `BattleHistory.jsx` component to display past battles with filtering options. Add a retreat button to in-progress battles that calculates partial casualties using the battle algorithm. Create API endpoints `/api/battles/history` and `/api/battles/retreat/:battleId`. Implement consequences for retreating (e.g., resource penalties, cooldown increases). Add notifications for battle events using the existing notification system.",
+          "status": "pending",
+          "testStrategy": "Test the history logging system with various battle types. Verify retreat calculations produce reasonable results. Test the UI components display battle history correctly and that retreat functionality works as expected."
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Game Difficulty Settings",
+      "description": "Implement adjustable game difficulty settings as specified in ST-111.",
+      "details": "1. Design difficulty options (Easy, Normal, Hard, Custom)\n2. Implement difficulty effects on:\n   - Resource availability\n   - AI colony aggressiveness\n   - Evolution point costs\n   - Battle outcomes\n   - Environmental hazards\n3. Create UI for difficulty selection at game start\n4. Add custom difficulty option with individual parameter adjustment\n5. Implement difficulty change option during gameplay\n6. Create tooltips explaining difficulty impacts\n7. Add achievement modifications based on difficulty",
+      "testStrategy": "Test each difficulty setting affects gameplay appropriately. Verify custom difficulty parameter adjustments. Test difficulty change during gameplay. Verify tooltips accurately describe difficulty impacts. Test achievement modifications based on difficulty.",
+      "priority": "low",
+      "dependencies": [
+        4,
+        12,
+        13
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Difficulty Settings Data Model and Backend API",
+          "description": "Design and implement the data model for difficulty settings and create backend API endpoints to manage them.",
+          "dependencies": [],
+          "details": "1. Create a new 'difficulty_settings' table in PostgreSQL with columns for difficulty level, resource_multiplier, ai_aggressiveness, evolution_cost_multiplier, battle_outcome_modifier, and hazard_frequency.\n2. Implement default values for Easy, Normal, Hard difficulty presets.\n3. Create a schema for custom difficulty settings storage.\n4. Develop RESTful API endpoints in Node.js/Express: GET /api/difficulty-settings, POST /api/difficulty-settings/custom, PUT /api/difficulty-settings/current.\n5. Implement service layer functions to retrieve and update difficulty settings.",
+          "status": "pending",
+          "testStrategy": "Write unit tests for the API endpoints using Jest. Test each endpoint with valid and invalid inputs. Create integration tests to verify database interactions."
+        },
+        {
+          "id": 2,
+          "title": "Implement Game Mechanics Difficulty Modifiers",
+          "description": "Modify core game mechanics to respond to the selected difficulty settings.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Update the resource generation system to apply the resource_multiplier from difficulty settings.\n2. Modify AI colony behavior to adjust aggressiveness based on difficulty.\n3. Implement evolution point cost scaling based on difficulty settings.\n4. Adjust battle outcome calculations to incorporate difficulty modifiers.\n5. Update environmental hazard frequency and intensity based on difficulty level.\n6. Create a DifficultyService class that provides current settings to all game systems.",
+          "status": "pending",
+          "testStrategy": "Create unit tests for each modified game system. Test boundary conditions (min/max difficulty values). Implement integration tests that verify systems work together correctly under different difficulty settings."
+        },
+        {
+          "id": 3,
+          "title": "Develop Difficulty Selection UI for Game Start",
+          "description": "Create the user interface for selecting difficulty at the start of a new game.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Design and implement a DifficultySelector React component with options for Easy, Normal, Hard, and Custom.\n2. Create visual indicators showing the effects of each difficulty level.\n3. For Custom option, create sliders for adjusting individual parameters (resource availability, AI aggressiveness, etc.).\n4. Implement form validation to ensure custom settings are within allowed ranges.\n5. Connect the UI to the backend API to save selected difficulty settings.\n6. Add the DifficultySelector component to the NewGameScreen component.",
+          "status": "pending",
+          "testStrategy": "Write Jest/React Testing Library tests for the DifficultySelector component. Test user interactions like selecting different difficulties and adjusting custom sliders. Verify API calls are made correctly."
+        },
+        {
+          "id": 4,
+          "title": "Implement In-Game Difficulty Adjustment",
+          "description": "Allow players to change difficulty settings during gameplay with appropriate game state adjustments.",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "1. Create a DifficultyAdjustmentModal React component accessible from the game settings menu.\n2. Implement logic to calculate appropriate adjustments to current game state when difficulty changes.\n3. Add warnings for players about potential impacts of changing difficulty mid-game.\n4. Create transition effects for when difficulty changes (e.g., resource adjustments).\n5. Implement backend logic to safely update game state when difficulty changes.\n6. Add an event log entry when difficulty is changed.",
+          "status": "pending",
+          "testStrategy": "Test the DifficultyAdjustmentModal component with React Testing Library. Create integration tests for the full difficulty change flow. Test edge cases like changing difficulty multiple times in succession."
+        },
+        {
+          "id": 5,
+          "title": "Add Tooltips and Achievement Modifications",
+          "description": "Implement tooltips explaining difficulty impacts and modify achievements based on difficulty level.",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "1. Create tooltip components explaining the effects of each difficulty setting.\n2. Implement a TooltipService to manage tooltip content based on current difficulty.\n3. Update the achievement system to track which difficulty level was used.\n4. Modify achievement rewards based on difficulty (higher rewards for higher difficulty).\n5. Add visual indicators in the UI showing when achievements are modified by difficulty.\n6. Create special achievements for completing the game at specific difficulty levels.",
+          "status": "pending",
+          "testStrategy": "Test tooltip rendering and content accuracy. Verify achievement modifications work correctly at different difficulty levels. Create end-to-end tests for the complete difficulty-achievement interaction."
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Visual Differentiation of Ant Types",
+      "description": "Implement visual indicators for different ant roles and types as specified in ST-112.",
+      "details": "1. Design unique visual indicators for each ant role:\n   - Workers: distinct color/shape\n   - Soldiers: larger size, mandibles\n   - Scouts: antenna emphasis, lighter color\n2. Implement visual evolution changes based on upgrades\n3. Create status indicators (busy, idle, injured)\n4. Add animation differences between roles\n5. Implement colorblind-friendly indicators\n6. Create hover tooltips showing ant details\n7. Design level/experience visual indicators\n8. Optimize rendering for large numbers of ants",
+      "testStrategy": "Verify visual distinctions are clear between ant roles. Test colorblind mode for accessibility. Verify evolution changes are visually apparent. Test hover tooltips display correct information. Measure performance with large numbers of visually distinct ants.",
+      "priority": "low",
+      "dependencies": [
+        5,
+        7
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Ant Type Base Styling Components",
+          "description": "Develop the core styling components for different ant types (workers, soldiers, scouts) with distinct visual characteristics.",
+          "dependencies": [],
+          "details": "Create React components for each ant type with appropriate styling. Implement base CSS classes for each ant role with distinct colors, shapes, and sizes. For workers, use a standard size with a distinct color; for soldiers, implement larger size with visible mandibles; for scouts, emphasize antennae and use lighter coloration. Create a configuration file that maps ant types to their visual properties for easy maintenance.",
+          "status": "pending",
+          "testStrategy": "Write unit tests to ensure components render correctly with the appropriate styling for each ant type. Create visual regression tests to verify the visual differences between ant types."
+        },
+        {
+          "id": 2,
+          "title": "Implement Status and State Indicators",
+          "description": "Add visual indicators for ant status states (busy, idle, injured) and implement colorblind-friendly mode.",
+          "dependencies": [],
+          "details": "Extend the ant components to include status indicators. Create animated overlays or icon badges that show when ants are busy, idle, or injured. Implement a colorblind mode that uses patterns and shapes in addition to colors to differentiate states. Use SVG icons or CSS animations to represent different states. Store ant status in the game state and update visual indicators when status changes.",
+          "status": "pending",
+          "testStrategy": "Test status transitions and verify that indicators update correctly. Conduct accessibility testing to ensure colorblind mode effectively communicates ant states without relying solely on color."
+        },
+        {
+          "id": 3,
+          "title": "Develop Ant Evolution and Upgrade Visuals",
+          "description": "Create visual changes that reflect ant upgrades and evolution progress.",
+          "dependencies": [],
+          "details": "Implement progressive visual enhancements that correspond to ant upgrades. Create a system that modifies ant appearance based on their level or upgrades. Design subtle visual cues like size increases, color intensity changes, or additional details that appear as ants evolve. Create a mapping between upgrade levels and visual modifications in the configuration file. Ensure the upgrade visuals are consistent with the game's art style.",
+          "status": "pending",
+          "testStrategy": "Test the visual progression through multiple upgrade levels. Verify that visual changes are applied correctly when upgrades are purchased."
+        },
+        {
+          "id": 4,
+          "title": "Add Ant Detail Tooltips and Information Display",
+          "description": "Implement hover tooltips and information displays that show detailed information about each ant.",
+          "dependencies": [],
+          "details": "Create a tooltip component that appears when hovering over ants. Display relevant information such as ant type, current status, level, and special abilities. Implement a more detailed information panel that can be shown when an ant is selected. Use React portals for tooltips to avoid layout issues. Ensure tooltips are responsive and properly positioned on different screen sizes. Include both textual information and visual indicators in the tooltips.",
+          "status": "pending",
+          "testStrategy": "Test tooltip appearance and disappearance on hover events. Verify that correct information is displayed for different ant types and states. Test tooltip positioning to ensure they remain visible within the viewport."
+        },
+        {
+          "id": 5,
+          "title": "Optimize Ant Rendering for Performance",
+          "description": "Implement rendering optimizations to handle large numbers of ants with different visual indicators.",
+          "dependencies": [],
+          "details": "Optimize the rendering of multiple ants by implementing techniques like object pooling, canvas-based rendering for large numbers, or WebGL acceleration. Use React.memo or shouldComponentUpdate to prevent unnecessary re-renders. Implement level-of-detail rendering that simplifies ant visuals when zoomed out or when many ants are visible. Create a batching system for rendering similar ants together. Add configuration options to adjust visual detail based on device performance.",
+          "status": "pending",
+          "testStrategy": "Conduct performance testing with large numbers of ants. Measure and compare frame rates before and after optimization. Test on various devices to ensure consistent performance across different hardware capabilities."
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Save and Load System",
+      "description": "Implement a save/load system for game progress as described in ST-109.",
+      "details": "1. Design save data structure capturing all relevant game state\n2. Implement browser local storage save mechanism\n3. Create optional cloud save functionality using Supabase or Firebase\n4. Implement auto-save at regular intervals\n5. Design save/load UI with save slots\n6. Add save metadata (timestamp, colony stats summary)\n7. Implement save data validation and error recovery\n8. Create export/import functionality for save data",
+      "testStrategy": "Test saving and loading game state preserves all relevant data. Verify auto-save functions at specified intervals. Test cloud save synchronization. Verify save metadata is accurate. Test error recovery from corrupted save data. Test export/import functionality.",
+      "priority": "medium",
+      "dependencies": [
+        2,
+        4
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Design Save Data Structure and Local Storage Implementation",
+          "description": "Create a comprehensive save data structure that captures all game state and implement the local storage save mechanism.",
+          "dependencies": [],
+          "details": "1. Define a SaveGame interface in src/types/saveGame.ts that includes all necessary game state (colony resources, buildings, research, etc.)\n2. Create a SaveManager class in src/utils/saveManager.ts with methods for serializing and deserializing game state\n3. Implement localStorage.setItem() and localStorage.getItem() methods to save and retrieve game data\n4. Add data compression using a library like lz-string to reduce storage size\n5. Include version information in save data for future compatibility",
+          "status": "pending",
+          "testStrategy": "Write unit tests for serialization/deserialization, ensuring all game state is properly captured and restored. Test with mock game states of varying complexity."
+        },
+        {
+          "id": 2,
+          "title": "Implement Save/Load UI with Save Slots",
+          "description": "Create a user interface for managing save games with multiple save slots, timestamps, and colony information.",
+          "dependencies": [],
+          "details": "1. Create SaveGameModal component in src/components/SaveGame/\n2. Design UI with a grid of save slots (at least 5) showing thumbnails and metadata\n3. Implement manual save functionality with custom save names\n4. Add confirmation dialogs for overwriting saves\n5. Display save metadata including timestamp, colony name, population, and key resources\n6. Style the UI to match the game's aesthetic",
+          "status": "pending",
+          "testStrategy": "Create component tests verifying the UI renders correctly with various save states. Test user interactions like creating new saves, loading, and confirming overwrites."
+        },
+        {
+          "id": 3,
+          "title": "Implement Auto-Save and Save Data Validation",
+          "description": "Add automatic saving at regular intervals and implement validation to ensure save data integrity.",
+          "dependencies": [],
+          "details": "1. Create an AutoSave class in src/utils/autoSave.ts that triggers saves at configurable intervals\n2. Implement save triggers for important game events (end of day cycle, major construction, etc.)\n3. Add save data validation schema using a library like Zod or Joi\n4. Create error recovery mechanisms for corrupted saves\n5. Implement a backup system that keeps the previous save until a new one is successfully created",
+          "status": "pending",
+          "testStrategy": "Test auto-save timing with different intervals. Create corrupted save data scenarios and verify the validation and recovery mechanisms work correctly."
+        },
+        {
+          "id": 4,
+          "title": "Develop Cloud Save Functionality",
+          "description": "Implement cloud save functionality using Supabase to allow players to access their saves across devices.",
+          "dependencies": [],
+          "details": "1. Set up Supabase tables for storing save data with appropriate columns (user_id, save_name, save_data, timestamp)\n2. Create CloudSaveService in src/services/cloudSave.ts with methods for uploading and downloading saves\n3. Implement user authentication flow for cloud saves\n4. Add synchronization between local and cloud saves with conflict resolution\n5. Implement bandwidth-efficient delta updates when possible\n6. Add error handling for network issues and storage limits",
+          "status": "pending",
+          "testStrategy": "Test cloud save functionality with mock Supabase responses. Verify synchronization works correctly between devices and handles conflicts appropriately."
+        },
+        {
+          "id": 5,
+          "title": "Create Export/Import Functionality for Save Data",
+          "description": "Implement the ability to export saves as files and import them, allowing players to backup their progress or share colonies.",
+          "dependencies": [],
+          "details": "1. Create ExportImportService in src/services/exportImport.ts\n2. Implement save export as JSON files with optional encryption\n3. Add file import functionality with validation and error handling\n4. Create UI components for the export/import process in src/components/SaveGame/ExportImport/\n5. Add compatibility checks for imported saves from different game versions\n6. Implement save conversion for backwards compatibility when possible",
+          "status": "pending",
+          "testStrategy": "Test export/import with various save data sizes and formats. Verify the system correctly handles invalid files, older save versions, and potential security issues."
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Colony Statistics and History Timeline",
+      "description": "Implement the colony statistics and history timeline as specified in section 5.7 and ST-108.",
+      "details": "1. Design statistics tracking system for:\n   - Nest age\n   - Food harvested by type\n   - Battles won/lost\n   - Ants born/lost\n   - Structures built\n2. Create visual timeline of colony history\n3. Implement milestone markers on timeline\n4. Design statistics UI panel with graphs and numbers\n5. Add filtering options for different stat categories\n6. Implement export functionality for statistics\n7. Create comparative stats with previous game sessions\n8. Add tooltips with interesting facts based on stats",
+      "testStrategy": "Verify statistics are accurately tracked during gameplay. Test timeline visualization for clarity. Verify milestone markers appear correctly. Test filtering options for statistics. Verify export functionality produces correct data. Test comparative stats with multiple save files.",
+      "priority": "low",
+      "dependencies": [
+        4,
+        13
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Design and implement statistics tracking database schema",
+          "description": "Create the database schema to track all colony statistics including nest age, food harvested by type, battles, ant population changes, and structures built.",
+          "dependencies": [],
+          "details": "1. Create a new migration file for colony_statistics table with columns for colony_id, stat_type, value, and timestamp\n2. Create a separate colony_events table for timeline events with columns for colony_id, event_type, description, importance_level, and timestamp\n3. Add appropriate indexes for efficient querying\n4. Implement database functions for incrementing/updating statistics\n5. Create API endpoints in the backend for recording new statistics and events",
+          "status": "pending",
+          "testStrategy": "Write unit tests for database queries and API endpoints using Jest. Test with sample data to ensure proper recording and retrieval of statistics."
+        },
+        {
+          "id": 2,
+          "title": "Implement backend services for statistics collection and retrieval",
+          "description": "Create the backend services that will collect statistics during gameplay and provide endpoints for the frontend to retrieve historical data.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create a StatisticsService class to handle all statistics operations\n2. Implement methods to record various statistics (addFoodHarvested, recordBattle, updateAntPopulation, etc.)\n3. Create API endpoints for retrieving statistics with filtering options\n4. Implement data aggregation functions for generating summary statistics\n5. Add functionality to compare current session with previous sessions\n6. Create an endpoint for exporting statistics as JSON or CSV",
+          "status": "pending",
+          "testStrategy": "Create integration tests for the statistics service. Mock game events to ensure statistics are properly recorded and can be retrieved with various filters."
+        },
+        {
+          "id": 3,
+          "title": "Develop statistics UI panel with graphs and numbers",
+          "description": "Create the UI components to display colony statistics with various visualization options including graphs, charts and numerical displays.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Create a StatisticsPanel React component with tabs for different stat categories\n2. Implement data visualization components using Chart.js or D3.js for graphs\n3. Create numerical stat displays with appropriate formatting\n4. Add filtering controls for time periods and stat categories\n5. Implement the export functionality in the UI\n6. Style the components according to the game's visual design",
+          "status": "pending",
+          "testStrategy": "Write component tests using React Testing Library to ensure proper rendering of statistics. Test user interactions like filtering and exporting."
+        },
+        {
+          "id": 4,
+          "title": "Build colony history timeline with milestone markers",
+          "description": "Create a visual timeline component that displays the colony's history with important events and milestones.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Design a Timeline React component that displays events chronologically\n2. Implement milestone markers with different visual indicators based on importance\n3. Add interactive elements to show event details on hover/click\n4. Create a filtering system for different event types\n5. Implement zooming functionality to focus on specific time periods\n6. Add animations for timeline navigation",
+          "status": "pending",
+          "testStrategy": "Test the timeline component with various event datasets to ensure proper rendering and interaction. Verify that milestone markers appear correctly and that filtering works as expected."
+        },
+        {
+          "id": 5,
+          "title": "Implement tooltips and comparative statistics features",
+          "description": "Add contextual tooltips with interesting facts based on statistics and implement the comparative statistics feature to compare with previous game sessions.",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "1. Create a system for generating interesting facts based on colony statistics\n2. Implement a Tooltip component that displays these facts in context\n3. Build the comparative statistics view showing current vs. previous sessions\n4. Add visual indicators for improvements or declines in performance\n5. Implement data normalization for fair comparisons between sessions of different lengths\n6. Create a session selector for choosing which previous sessions to compare against",
+          "status": "pending",
+          "testStrategy": "Test tooltip content generation with various statistics scenarios. Verify comparative statistics calculations with sample data from multiple sessions to ensure accuracy."
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Achievement System",
+      "description": "Implement the achievement system as described in section 5.7.",
+      "details": "1. Design achievement categories:\n   - Colony growth (population milestones)\n   - Resource collection (amount thresholds)\n   - Battle achievements (victories, strategies)\n   - Evolution achievements (tech tree completion)\n   - Exploration achievements (map coverage)\n2. Implement achievement triggers and checks\n3. Create achievement notification system\n4. Design achievement UI with completion status\n5. Add achievement rewards (cosmetic upgrades)\n6. Implement achievement progress tracking\n7. Create achievement metadata (rarity, completion percentage)\n8. Add social sharing for achievements (optional)",
+      "testStrategy": "Test achievement triggers under various conditions. Verify notifications appear appropriately. Test achievement UI displays correct completion status. Verify rewards are granted for completed achievements. Test progress tracking for incremental achievements.",
+      "priority": "low",
+      "dependencies": [
+        4,
+        17
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Achievement Database Schema and API Endpoints",
+          "description": "Design and implement the database schema for achievements and create the necessary API endpoints for achievement management.",
+          "dependencies": [],
+          "details": "Create a PostgreSQL schema for achievements with tables for: 1) achievement_definitions (id, category, title, description, icon_path, rarity, reward_type, reward_value), 2) player_achievements (player_id, achievement_id, progress, completed, completion_date, reward_claimed). Implement RESTful API endpoints in Node.js/Express for: GET /api/achievements (list all), GET /api/achievements/:id (details), GET /api/players/:id/achievements (player progress), POST /api/players/:id/achievements/:achievementId/claim (claim rewards).",
+          "status": "pending",
+          "testStrategy": "Write unit tests for database models and API endpoints. Test achievement retrieval, progress updates, and reward claiming functionality."
+        },
+        {
+          "id": 2,
+          "title": "Achievement Trigger System",
+          "description": "Implement the core achievement trigger system that monitors game events and updates achievement progress.",
+          "dependencies": [],
+          "details": "Create an AchievementManager class that subscribes to game events using the Observer pattern. Implement event listeners for: colony growth events, resource collection events, battle outcomes, technology research completion, and map exploration updates. For each event type, add logic to check relevant achievements, calculate progress, and update the database. Include threshold checking to determine when achievements are completed. Implement a queue system for batching achievement updates to minimize database writes.",
+          "status": "pending",
+          "testStrategy": "Create mock game events to test each achievement trigger. Verify that progress is calculated correctly and completion is detected accurately."
+        },
+        {
+          "id": 3,
+          "title": "Achievement UI Components",
+          "description": "Design and implement the UI components for displaying achievements, progress, and rewards.",
+          "dependencies": [],
+          "details": "Create React components for: 1) AchievementList - displays all achievements grouped by category with filter/sort options, 2) AchievementCard - shows individual achievement with icon, title, description, progress bar, and completion status, 3) AchievementDetails - expanded view with full details and claim reward button, 4) AchievementNotification - toast notification for newly unlocked achievements. Implement responsive design for all components. Use CSS animations for achievement completion effects. Create a dedicated Achievements page accessible from the main menu.",
+          "status": "pending",
+          "testStrategy": "Write Jest tests for React components. Test rendering with different achievement states (locked, in-progress, completed, claimed). Verify responsive behavior and animation triggers."
+        },
+        {
+          "id": 4,
+          "title": "Achievement Notification and Reward System",
+          "description": "Implement the notification system for achievement completion and the reward distribution mechanism.",
+          "dependencies": [],
+          "details": "Create a notification service that displays toast messages when achievements are completed. Implement a WebSocket connection to push real-time achievement updates to the client. Design the reward claiming flow: 1) Player clicks claim button on completed achievement, 2) Frontend sends request to claim endpoint, 3) Backend validates eligibility, 4) Reward is added to player inventory (cosmetic items, badges, profile decorations), 5) Achievement status is updated to claimed. Create visual feedback for reward claiming with animations and sound effects.",
+          "status": "pending",
+          "testStrategy": "Test the notification system with simulated achievement completions. Verify that rewards are correctly added to player inventory and that claimed achievements cannot be claimed again."
+        },
+        {
+          "id": 5,
+          "title": "Achievement Analytics and Social Features",
+          "description": "Implement achievement statistics, rarity calculations, and social sharing functionality.",
+          "dependencies": [],
+          "details": "Create a background job that calculates achievement statistics daily: completion percentage across all players, average time to complete, and rarity tiers (common, uncommon, rare, epic, legendary). Update the achievement UI to display these statistics. Implement social sharing buttons that generate shareable images with achievement details and player name/avatar. Add an achievement leaderboard showing top players by achievement count or points. Create an achievement feed in the community section showing recent unlocks by friends or global players.",
+          "status": "pending",
+          "testStrategy": "Test the statistics calculation with sample player data. Verify that sharing functionality generates correct images and links. Test leaderboard sorting and filtering options."
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Cosmetic Upgrade System",
+      "description": "Implement unlockable cosmetic upgrades for the colony as mentioned in section 5.7.",
+      "details": "1. Design unlockable cosmetic options:\n   - Colony color schemes\n   - Ant appearance variations\n   - Structure visual styles\n   - UI themes\n   - Animation effects\n2. Implement unlock conditions (achievements, evolution points)\n3. Create cosmetic selection UI\n4. Add preview functionality for cosmetics\n5. Implement visual changes based on selected cosmetics\n6. Create persistence for cosmetic choices\n7. Design special event cosmetics\n8. Balance cosmetic unlock requirements",
+      "testStrategy": "Test unlock conditions trigger correctly. Verify cosmetic selection UI functions properly. Test preview functionality shows accurate representations. Verify visual changes apply correctly in-game. Test persistence of cosmetic choices across game sessions.",
+      "priority": "low",
+      "dependencies": [
+        11,
+        18
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Cosmetic Data Models and Database Schema",
+          "description": "Design and implement the database schema and data models for storing cosmetic options, unlock conditions, and player selections.",
+          "dependencies": [],
+          "details": "Create PostgreSQL tables for cosmetics (categories, items, unlock_conditions). Implement Sequelize models for CosmeticCategory (color schemes, ant appearances, etc.), CosmeticItem (specific items within categories), and PlayerCosmetics (tracking unlocked/selected items). Define relationships between models. Create API endpoints for fetching available cosmetics and updating player selections.",
+          "status": "pending",
+          "testStrategy": "Unit test model validations and relationships. Integration test API endpoints with sample cosmetic data."
+        },
+        {
+          "id": 2,
+          "title": "Implement Cosmetic Unlock System",
+          "description": "Create the logic for unlocking cosmetic items based on achievements, evolution points, or other game conditions.",
+          "dependencies": [],
+          "details": "Implement UnlockService class to handle checking unlock conditions. Create middleware to verify unlock requirements. Add event listeners for achievement completions that trigger cosmetic unlocks. Implement evolution point spending mechanism for purchasable cosmetics. Update player profile with newly unlocked cosmetics. Create notification system for new unlocks.",
+          "status": "pending",
+          "testStrategy": "Unit test unlock condition verification. Integration test the complete unlock flow from achievement to notification."
+        },
+        {
+          "id": 3,
+          "title": "Develop Cosmetic Selection UI",
+          "description": "Create the user interface for browsing, previewing, and selecting cosmetic options.",
+          "dependencies": [],
+          "details": "Implement React components: CosmeticBrowser (main container), CategorySelector (tabs for different cosmetic types), CosmeticGrid (displays available items), CosmeticItem (individual item with lock/unlock status), and SelectionControls (apply/cancel buttons). Style components according to game theme. Add filtering options for showing locked/unlocked items. Implement state management for selection process.",
+          "status": "pending",
+          "testStrategy": "Unit test React components with Jest and React Testing Library. Test UI state transitions between browsing, selecting, and applying cosmetics."
+        },
+        {
+          "id": 4,
+          "title": "Create Cosmetic Preview System",
+          "description": "Implement functionality to preview cosmetic changes before applying them.",
+          "dependencies": [],
+          "details": "Create PreviewRenderer component that displays colony with selected cosmetics. Implement temporary state for preview that doesn't affect actual game. Add camera controls to view colony from different angles during preview. Create comparison view to show before/after. Implement preview caching to improve performance when switching between options. Add animation preview for special effects.",
+          "status": "pending",
+          "testStrategy": "Test preview rendering with different cosmetic combinations. Verify preview state doesn't affect game state until applied."
+        },
+        {
+          "id": 5,
+          "title": "Implement Visual Application and Persistence",
+          "description": "Apply selected cosmetics to game elements and ensure selections persist between sessions.",
+          "dependencies": [],
+          "details": "Create CosmeticManager class to apply visual changes to game objects. Implement style application for colony elements (ants, structures, UI). Update game renderer to incorporate cosmetic choices. Create persistence layer to save/load cosmetic selections to/from database. Implement synchronization between client and server for cosmetic state. Add reset option to return to default appearance.",
+          "status": "pending",
+          "testStrategy": "Integration test the full flow from selection to application to persistence. Verify cosmetic choices remain after page reload. Test edge cases like applying cosmetics to newly created game elements."
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Main Game UI Layout Implementation",
+      "description": "Implement the main game UI layout as specified in section 8.2.",
+      "details": "1. Implement three-panel layout:\n   - Left panel: colony stats and ant assignments\n   - Center: interactive simulation view\n   - Right panel: evolution tree and resources\n2. Create responsive design for different screen sizes\n3. Implement modal overlays for battle results, upgrades, and discoveries\n4. Design navigation between different game screens\n5. Add collapsible panels for maximizing simulation view\n6. Implement UI themes (light/dark mode)\n7. Create smooth transitions between UI states\n8. Add keyboard shortcuts for common actions",
+      "testStrategy": "Test UI layout on various screen sizes. Verify panels display correct information. Test modal overlays appear and dismiss properly. Verify navigation between screens works correctly. Test collapsible panels. Verify UI themes apply correctly. Test keyboard shortcuts function as expected.",
+      "priority": "high",
+      "dependencies": [
+        3,
+        7,
+        10,
+        11
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Base Three-Panel Layout Structure",
+          "description": "Create the foundational three-panel layout structure with proper CSS Grid/Flexbox for the main game UI, including responsive breakpoints.",
+          "dependencies": [],
+          "details": "Create React components for the main layout container and three panels (LeftPanel, CenterPanel, RightPanel). Use CSS Grid for the overall layout with appropriate sizing. Implement media queries for responsive design at standard breakpoints (mobile, tablet, desktop). Set up the basic styling variables for theming support later. Create placeholder content for each panel to verify layout.",
+          "status": "pending",
+          "testStrategy": "Test layout rendering at different viewport sizes. Verify panel proportions match design specs. Ensure no overflow issues occur."
+        },
+        {
+          "id": 2,
+          "title": "Implement Left Panel Colony Stats and Ant Assignments",
+          "description": "Build the left panel UI components for displaying colony statistics and ant assignment controls.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create components for ColonyStats (displaying population, resources, territory) and AntAssignments (showing different ant types and allowing reassignment). Implement stat display with appropriate icons and numerical values. Create assignment controls with increment/decrement buttons and validation. Connect to the game state context/redux store. Style components according to the design system.",
+          "status": "pending",
+          "testStrategy": "Test stat display with various game state values. Verify assignment controls correctly increment/decrement values and respect minimum/maximum limits."
+        },
+        {
+          "id": 3,
+          "title": "Implement Center Panel Simulation View",
+          "description": "Create the interactive simulation view in the center panel with proper rendering of the colony, environment, and interactive elements.",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement the SimulationView component with canvas/SVG rendering. Create rendering logic for the colony, ants, resources, and territory. Add zoom and pan controls for navigation. Implement click/touch handlers for interaction with game elements. Add visual indicators for active/selected elements. Connect to the simulation state from the game engine.",
+          "status": "pending",
+          "testStrategy": "Test rendering performance with various colony sizes. Verify zoom/pan functionality works correctly. Ensure interactive elements respond appropriately to user input."
+        },
+        {
+          "id": 4,
+          "title": "Implement Right Panel Evolution Tree and Resources",
+          "description": "Build the right panel UI components for displaying the evolution tree and resource management.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create the EvolutionTree component with visual representation of available and locked upgrades. Implement ResourceDisplay component showing current resources and generation rates. Add interactive elements for selecting upgrades when requirements are met. Create tooltips for displaying upgrade details and requirements. Connect to the game state for resource and upgrade data.",
+          "status": "pending",
+          "testStrategy": "Test evolution tree rendering with various unlock states. Verify tooltips display correct information. Ensure upgrade selection works correctly when requirements are met."
+        },
+        {
+          "id": 5,
+          "title": "Implement Modal Overlays and Panel Controls",
+          "description": "Create modal overlay system for battle results, upgrades, and discoveries, plus implement collapsible panel controls.",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "details": "Create a Modal component system with different content types (BattleResult, UpgradeConfirmation, Discovery). Implement panel collapse/expand functionality with smooth animations. Add toggle buttons for each panel. Create keyboard shortcut system for common actions (panel toggle, zoom, etc.). Implement light/dark theme toggle with appropriate styling variables. Add transition animations between UI states.",
+          "status": "pending",
+          "testStrategy": "Test modal rendering and dismissal. Verify panel collapse/expand works correctly and maintains layout integrity. Test keyboard shortcuts function as expected. Ensure theme switching applies to all components."
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Accessibility Features",
+      "description": "Implement accessibility features as specified in section 8.3.",
+      "details": "1. Implement colorblind-friendly palette options\n2. Create mobile-responsive layout adjustments\n3. Add keyboard navigation support\n4. Implement screen reader compatibility\n5. Create clear tooltips for all game elements\n6. Add text size adjustment options\n7. Implement game speed controls for different player preferences\n8. Create onboarding tutorial with accessibility considerations\n9. Add captions/text alternatives for visual events",
+      "testStrategy": "Test colorblind mode with various types of color blindness. Verify mobile responsiveness on different devices. Test keyboard navigation for all game functions. Verify screen reader compatibility. Test tooltips for clarity and helpfulness. Verify text size adjustments work correctly.",
+      "priority": "medium",
+      "dependencies": [
+        20
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Color Palette Adjustments",
+          "description": "Create a system for colorblind-friendly palette options and text size adjustments in the game UI",
+          "dependencies": [],
+          "details": "Create a settings component that allows users to toggle between different color schemes (default, protanopia, deuteranopia, tritanopia). Implement CSS variables for all color values in the application. Create a color service that applies the selected palette to these variables. Add text size adjustment controls with at least three options (small, medium, large). Store user preferences in localStorage and apply them on application startup.",
+          "status": "pending",
+          "testStrategy": "Test with color blindness simulation tools. Verify that all UI elements maintain proper contrast ratios across all palette options. Test text readability at different sizes across devices."
+        },
+        {
+          "id": 2,
+          "title": "Implement Keyboard Navigation Support",
+          "description": "Add comprehensive keyboard navigation throughout the game interface",
+          "dependencies": [],
+          "details": "Implement focus management for all interactive elements. Add keyboard shortcuts for common game actions (documented in tooltips). Ensure logical tab order throughout the application. Create visible focus indicators that work across all color palettes. Implement arrow key navigation for game board interactions. Add keyboard trap prevention for modals and overlays. Document all keyboard shortcuts in the help section.",
+          "status": "pending",
+          "testStrategy": "Test navigation with keyboard-only usage. Verify all game functions are accessible without a mouse. Test focus management in modal dialogs and game state transitions."
+        },
+        {
+          "id": 3,
+          "title": "Implement Screen Reader Compatibility",
+          "description": "Ensure the game is fully compatible with screen readers through proper ARIA attributes and semantic HTML",
+          "dependencies": [],
+          "details": "Audit and update all HTML elements to use semantic tags where appropriate. Add ARIA labels, roles, and states to all interactive components. Implement live regions for game state changes and notifications. Create screen reader announcements for turn changes, game events, and error messages. Test with VoiceOver, NVDA, and JAWS. Add skip navigation links for screen reader users.",
+          "status": "pending",
+          "testStrategy": "Test with multiple screen readers on different browsers. Create test scenarios for core game flows. Verify all game state changes are properly announced."
+        },
+        {
+          "id": 4,
+          "title": "Create Responsive Layout and Game Speed Controls",
+          "description": "Implement mobile-responsive layouts and game speed adjustment controls",
+          "dependencies": [],
+          "details": "Create responsive breakpoints for different device sizes. Implement touch-friendly controls for mobile devices. Add game speed controls in settings (slow, normal, fast) that affect animation durations and turn timers. Ensure all UI elements scale appropriately on small screens. Implement alternative touch controls for game board interactions. Store speed preferences in user settings.",
+          "status": "pending",
+          "testStrategy": "Test on various device sizes and orientations. Verify touch interactions work correctly on mobile. Test game speed settings affect all relevant animations and timers."
+        },
+        {
+          "id": 5,
+          "title": "Implement Visual Alternatives and Onboarding",
+          "description": "Add tooltips, captions for visual events, and an accessible onboarding tutorial",
+          "dependencies": [],
+          "details": "Create a tooltip system for all game elements with clear, concise descriptions. Implement text captions for all visual game events that can be toggled on/off. Design an interactive onboarding tutorial with accessibility considerations built-in. Add skip tutorial option. Create text alternatives for all icons and visual indicators. Ensure tooltips work with keyboard navigation and screen readers.",
+          "status": "pending",
+          "testStrategy": "Test tooltip visibility and clarity. Verify captions accurately describe visual events. Test the tutorial with screen readers and keyboard-only navigation. Get feedback from users with different accessibility needs."
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Onboarding Tutorial System",
+      "description": "Implement an onboarding tutorial to guide new players through game mechanics.",
+      "details": "1. Design step-by-step tutorial flow covering:\n   - Colony creation\n   - Ant role assignment\n   - Food foraging\n   - Structure building\n   - Battle mechanics\n   - Evolution system\n2. Implement guided tooltips highlighting UI elements\n3. Create interactive tutorial tasks with rewards\n4. Add skip option for experienced players\n5. Implement context-sensitive help throughout gameplay\n6. Create tutorial progress tracking\n7. Design tutorial UI overlay\n8. Add tutorial replay option from settings",
+      "testStrategy": "Test tutorial flow for clarity and completeness. Verify guided tooltips appear correctly. Test interactive tasks can be completed as instructed. Verify skip option works properly. Test context-sensitive help triggers appropriately. Verify tutorial progress is tracked correctly.",
+      "priority": "medium",
+      "dependencies": [
+        3,
+        4,
+        6,
+        7,
+        10,
+        13,
+        20
+      ],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Tutorial State Management System",
+          "description": "Create a state management system to track tutorial progress, store completed steps, and manage the tutorial flow.",
+          "dependencies": [],
+          "details": "1. Create a TutorialContext using React Context API to manage global tutorial state\n2. Implement a TutorialReducer with actions for starting, progressing, completing, and skipping tutorial steps\n3. Create a database schema for storing user tutorial progress (users_tutorial_progress table with columns: user_id, completed_steps, last_step, completed_at, skipped)\n4. Implement API endpoints for fetching and updating tutorial progress (/api/tutorial/progress)\n5. Create utility functions for determining which tutorial step to show based on user actions",
+          "status": "pending",
+          "testStrategy": "Unit test the reducer logic with Jest. Create integration tests for API endpoints. Test persistence of tutorial state across page refreshes."
+        },
+        {
+          "id": 2,
+          "title": "Design and Implement Tutorial UI Components",
+          "description": "Create reusable UI components for the tutorial system including tooltips, highlight overlays, and instruction panels.",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create a TutorialOverlay component that dims the screen and highlights specific UI elements\n2. Implement a TutorialTooltip component that can be positioned relative to any game element\n3. Design a TutorialPanel component for displaying step instructions and progress\n4. Create a TutorialControls component with next/back/skip buttons\n5. Implement animations for smooth transitions between tutorial steps\n6. Style all components according to the game's design system",
+          "status": "pending",
+          "testStrategy": "Create component tests with React Testing Library. Test responsive behavior across different screen sizes. Verify accessibility compliance."
+        },
+        {
+          "id": 3,
+          "title": "Implement Tutorial Content and Flow Logic",
+          "description": "Define the step-by-step tutorial content, sequence logic, and conditions for progressing through each tutorial stage.",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "1. Create a tutorialSteps.js file defining all tutorial steps with content, target elements, and completion criteria\n2. Implement step sequencing logic in TutorialController.js to manage the flow between steps\n3. Create condition checkers for each tutorial step (e.g., verifyColonyCreated(), checkAntRoleAssigned())\n4. Implement event listeners to detect when a user completes a tutorial action\n5. Add logic to trigger contextual help based on user actions or inactivity\n6. Create tutorial reward system that grants in-game bonuses upon completion",
+          "status": "pending",
+          "testStrategy": "Test the tutorial flow with user scenarios. Verify that all completion conditions correctly trigger progression. Test edge cases like skipping steps or refreshing mid-tutorial."
+        },
+        {
+          "id": 4,
+          "title": "Implement Interactive Tutorial Tasks and Rewards",
+          "description": "Create the interactive tasks for each tutorial section with clear objectives, guidance, and reward system.",
+          "dependencies": [
+            3
+          ],
+          "details": "1. Implement guided tasks for each game mechanic (colony creation, ant roles, foraging, building, battles, evolution)\n2. Create a TutorialTask component that displays current objective and tracks completion\n3. Implement a reward distribution system that grants resources/bonuses upon task completion\n4. Add visual feedback for task completion (animations, sound effects)\n5. Create simplified versions of game mechanics specifically for tutorial mode\n6. Implement backend endpoints to track and store tutorial task completion (/api/tutorial/tasks)",
+          "status": "pending",
+          "testStrategy": "Test each tutorial task individually to ensure objectives can be completed. Verify rewards are correctly distributed. Test the tutorial with both new and experienced players."
+        },
+        {
+          "id": 5,
+          "title": "Implement Tutorial Settings and Accessibility Features",
+          "description": "Add options to skip, replay, or customize the tutorial experience, along with accessibility considerations.",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "details": "1. Create a TutorialSettings component in the game settings menu\n2. Implement skip functionality that marks all tutorial steps as complete\n3. Add tutorial replay option that resets progress and restarts the tutorial\n4. Create a help system that allows players to access specific tutorial sections on demand\n5. Implement keyboard shortcuts for navigating the tutorial\n6. Add accessibility features like screen reader support and alternative instruction methods\n7. Create analytics tracking to measure tutorial completion rates and identify pain points",
+          "status": "pending",
+          "testStrategy": "Test settings persistence across sessions. Verify tutorial can be properly skipped and replayed. Conduct accessibility testing with screen readers and keyboard-only navigation."
+        }
+      ]
+    }
+  ]
+}

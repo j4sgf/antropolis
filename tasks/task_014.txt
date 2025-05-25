@@ -1,0 +1,78 @@
+# Task ID: 14
+# Title: Game Difficulty Settings
+# Status: pending
+# Dependencies: 4, 12, 13
+# Priority: low
+# Description: Implement adjustable game difficulty settings as specified in ST-111.
+# Details:
+1. Design difficulty options (Easy, Normal, Hard, Custom)
+2. Implement difficulty effects on:
+   - Resource availability
+   - AI colony aggressiveness
+   - Evolution point costs
+   - Battle outcomes
+   - Environmental hazards
+3. Create UI for difficulty selection at game start
+4. Add custom difficulty option with individual parameter adjustment
+5. Implement difficulty change option during gameplay
+6. Create tooltips explaining difficulty impacts
+7. Add achievement modifications based on difficulty
+
+# Test Strategy:
+Test each difficulty setting affects gameplay appropriately. Verify custom difficulty parameter adjustments. Test difficulty change during gameplay. Verify tooltips accurately describe difficulty impacts. Test achievement modifications based on difficulty.
+
+# Subtasks:
+## 1. Create Difficulty Settings Data Model and Backend API [pending]
+### Dependencies: None
+### Description: Design and implement the data model for difficulty settings and create backend API endpoints to manage them.
+### Details:
+1. Create a new 'difficulty_settings' table in PostgreSQL with columns for difficulty level, resource_multiplier, ai_aggressiveness, evolution_cost_multiplier, battle_outcome_modifier, and hazard_frequency.
+2. Implement default values for Easy, Normal, Hard difficulty presets.
+3. Create a schema for custom difficulty settings storage.
+4. Develop RESTful API endpoints in Node.js/Express: GET /api/difficulty-settings, POST /api/difficulty-settings/custom, PUT /api/difficulty-settings/current.
+5. Implement service layer functions to retrieve and update difficulty settings.
+
+## 2. Implement Game Mechanics Difficulty Modifiers [pending]
+### Dependencies: 14.1
+### Description: Modify core game mechanics to respond to the selected difficulty settings.
+### Details:
+1. Update the resource generation system to apply the resource_multiplier from difficulty settings.
+2. Modify AI colony behavior to adjust aggressiveness based on difficulty.
+3. Implement evolution point cost scaling based on difficulty settings.
+4. Adjust battle outcome calculations to incorporate difficulty modifiers.
+5. Update environmental hazard frequency and intensity based on difficulty level.
+6. Create a DifficultyService class that provides current settings to all game systems.
+
+## 3. Develop Difficulty Selection UI for Game Start [pending]
+### Dependencies: 14.1
+### Description: Create the user interface for selecting difficulty at the start of a new game.
+### Details:
+1. Design and implement a DifficultySelector React component with options for Easy, Normal, Hard, and Custom.
+2. Create visual indicators showing the effects of each difficulty level.
+3. For Custom option, create sliders for adjusting individual parameters (resource availability, AI aggressiveness, etc.).
+4. Implement form validation to ensure custom settings are within allowed ranges.
+5. Connect the UI to the backend API to save selected difficulty settings.
+6. Add the DifficultySelector component to the NewGameScreen component.
+
+## 4. Implement In-Game Difficulty Adjustment [pending]
+### Dependencies: 14.2, 14.3
+### Description: Allow players to change difficulty settings during gameplay with appropriate game state adjustments.
+### Details:
+1. Create a DifficultyAdjustmentModal React component accessible from the game settings menu.
+2. Implement logic to calculate appropriate adjustments to current game state when difficulty changes.
+3. Add warnings for players about potential impacts of changing difficulty mid-game.
+4. Create transition effects for when difficulty changes (e.g., resource adjustments).
+5. Implement backend logic to safely update game state when difficulty changes.
+6. Add an event log entry when difficulty is changed.
+
+## 5. Add Tooltips and Achievement Modifications [pending]
+### Dependencies: 14.3, 14.4
+### Description: Implement tooltips explaining difficulty impacts and modify achievements based on difficulty level.
+### Details:
+1. Create tooltip components explaining the effects of each difficulty setting.
+2. Implement a TooltipService to manage tooltip content based on current difficulty.
+3. Update the achievement system to track which difficulty level was used.
+4. Modify achievement rewards based on difficulty (higher rewards for higher difficulty).
+5. Add visual indicators in the UI showing when achievements are modified by difficulty.
+6. Create special achievements for completing the game at specific difficulty levels.
+

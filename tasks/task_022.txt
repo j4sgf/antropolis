@@ -1,0 +1,81 @@
+# Task ID: 22
+# Title: Onboarding Tutorial System
+# Status: pending
+# Dependencies: 3, 4, 6, 7, 10, 13, 20
+# Priority: medium
+# Description: Implement an onboarding tutorial to guide new players through game mechanics.
+# Details:
+1. Design step-by-step tutorial flow covering:
+   - Colony creation
+   - Ant role assignment
+   - Food foraging
+   - Structure building
+   - Battle mechanics
+   - Evolution system
+2. Implement guided tooltips highlighting UI elements
+3. Create interactive tutorial tasks with rewards
+4. Add skip option for experienced players
+5. Implement context-sensitive help throughout gameplay
+6. Create tutorial progress tracking
+7. Design tutorial UI overlay
+8. Add tutorial replay option from settings
+
+# Test Strategy:
+Test tutorial flow for clarity and completeness. Verify guided tooltips appear correctly. Test interactive tasks can be completed as instructed. Verify skip option works properly. Test context-sensitive help triggers appropriately. Verify tutorial progress is tracked correctly.
+
+# Subtasks:
+## 1. Implement Tutorial State Management System [pending]
+### Dependencies: None
+### Description: Create a state management system to track tutorial progress, store completed steps, and manage the tutorial flow.
+### Details:
+1. Create a TutorialContext using React Context API to manage global tutorial state
+2. Implement a TutorialReducer with actions for starting, progressing, completing, and skipping tutorial steps
+3. Create a database schema for storing user tutorial progress (users_tutorial_progress table with columns: user_id, completed_steps, last_step, completed_at, skipped)
+4. Implement API endpoints for fetching and updating tutorial progress (/api/tutorial/progress)
+5. Create utility functions for determining which tutorial step to show based on user actions
+
+## 2. Design and Implement Tutorial UI Components [pending]
+### Dependencies: 22.1
+### Description: Create reusable UI components for the tutorial system including tooltips, highlight overlays, and instruction panels.
+### Details:
+1. Create a TutorialOverlay component that dims the screen and highlights specific UI elements
+2. Implement a TutorialTooltip component that can be positioned relative to any game element
+3. Design a TutorialPanel component for displaying step instructions and progress
+4. Create a TutorialControls component with next/back/skip buttons
+5. Implement animations for smooth transitions between tutorial steps
+6. Style all components according to the game's design system
+
+## 3. Implement Tutorial Content and Flow Logic [pending]
+### Dependencies: 22.1, 22.2
+### Description: Define the step-by-step tutorial content, sequence logic, and conditions for progressing through each tutorial stage.
+### Details:
+1. Create a tutorialSteps.js file defining all tutorial steps with content, target elements, and completion criteria
+2. Implement step sequencing logic in TutorialController.js to manage the flow between steps
+3. Create condition checkers for each tutorial step (e.g., verifyColonyCreated(), checkAntRoleAssigned())
+4. Implement event listeners to detect when a user completes a tutorial action
+5. Add logic to trigger contextual help based on user actions or inactivity
+6. Create tutorial reward system that grants in-game bonuses upon completion
+
+## 4. Implement Interactive Tutorial Tasks and Rewards [pending]
+### Dependencies: 22.3
+### Description: Create the interactive tasks for each tutorial section with clear objectives, guidance, and reward system.
+### Details:
+1. Implement guided tasks for each game mechanic (colony creation, ant roles, foraging, building, battles, evolution)
+2. Create a TutorialTask component that displays current objective and tracks completion
+3. Implement a reward distribution system that grants resources/bonuses upon task completion
+4. Add visual feedback for task completion (animations, sound effects)
+5. Create simplified versions of game mechanics specifically for tutorial mode
+6. Implement backend endpoints to track and store tutorial task completion (/api/tutorial/tasks)
+
+## 5. Implement Tutorial Settings and Accessibility Features [pending]
+### Dependencies: 22.1, 22.2, 22.3, 22.4
+### Description: Add options to skip, replay, or customize the tutorial experience, along with accessibility considerations.
+### Details:
+1. Create a TutorialSettings component in the game settings menu
+2. Implement skip functionality that marks all tutorial steps as complete
+3. Add tutorial replay option that resets progress and restarts the tutorial
+4. Create a help system that allows players to access specific tutorial sections on demand
+5. Implement keyboard shortcuts for navigating the tutorial
+6. Add accessibility features like screen reader support and alternative instruction methods
+7. Create analytics tracking to measure tutorial completion rates and identify pain points
+
