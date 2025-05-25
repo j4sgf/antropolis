@@ -1,0 +1,215 @@
+/* Confirmation Dialog Styles */
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  backdrop-filter: blur(4px);
+  padding: 20px;
+}
+
+.confirmation-dialog {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 20px;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(76, 175, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 450px;
+  border: 2px solid rgba(76, 175, 80, 0.3);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.confirmation-dialog.destructive {
+  border-color: rgba(244, 67, 54, 0.3);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(244, 67, 54, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Dialog Header */
+.dialog-header {
+  padding: 32px 32px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+}
+
+.dialog-icon {
+  font-size: 1.5rem;
+}
+
+.confirmation-dialog.destructive .dialog-title {
+  color: #ff6b6b;
+}
+
+/* Dialog Content */
+.dialog-content {
+  padding: 24px 32px;
+}
+
+.dialog-message {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+/* Dialog Footer */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 24px 32px 32px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons */
+.cancel-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.confirm-button {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.confirm-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.confirm-button.destructive {
+  background: linear-gradient(135deg, #f44336, #ef5350);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.confirm-button.destructive:hover {
+  box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+}
+
+/* Focus styles */
+.cancel-button:focus,
+.confirm-button:focus {
+  outline: 3px solid rgba(76, 175, 80, 0.5);
+  outline-offset: 2px;
+}
+
+.confirm-button.destructive:focus {
+  outline-color: rgba(244, 67, 54, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .confirmation-overlay {
+    padding: 16px;
+  }
+
+  .confirmation-dialog {
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .dialog-header {
+    padding: 24px 20px 16px;
+  }
+
+  .dialog-title {
+    font-size: 1.2rem;
+  }
+
+  .dialog-content {
+    padding: 20px;
+  }
+
+  .dialog-footer {
+    padding: 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cancel-button,
+  .confirm-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .confirmation-dialog,
+  .cancel-button,
+  .confirm-button {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .confirmation-dialog {
+    border: 3px solid #ffffff;
+    background: #000000;
+  }
+
+  .confirmation-dialog.destructive {
+    border-color: #ff0000;
+  }
+
+  .dialog-header {
+    border-color: #ffffff;
+  }
+
+  .cancel-button {
+    border: 2px solid #ffffff;
+    background: #000000;
+  }
+
+  .confirm-button {
+    background: #008800;
+    border: 2px solid #00ff00;
+  }
+
+  .confirm-button.destructive {
+    background: #880000;
+    border: 2px solid #ff0000;
+  }
+} 
