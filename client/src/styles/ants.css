@@ -1,0 +1,515 @@
+/**
+ * Ant Visual Styles
+ * Part of Task 15.1: Create Ant Type Base Styling Components
+ * CSS for ant body parts, roles, sizes, and animations
+ */
+
+/* Base Ant Visual Container */
+.ant-visual {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.ant-visual:hover {
+  transform: scale(1.05);
+}
+
+/* Ant Body Structure */
+.ant-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid;
+  transition: all 0.3s ease;
+}
+
+/* Head Styles */
+.ant-head {
+  position: relative;
+  width: 30%;
+  height: 70%;
+  border-radius: 50% 60% 50% 60%;
+  border: inherit;
+  background: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-head-medium { transform: scale(1.0); }
+.ant-head-large { transform: scale(1.2); }
+.ant-head-alert { transform: scale(0.9) scaleX(0.8); }
+.ant-head-gentle { transform: scale(0.95) scaleY(1.1); }
+.ant-head-focused { transform: scale(1.0) scaleX(1.1); }
+.ant-head-determined { transform: scale(1.1) scaleY(0.9); }
+.ant-head-crowned { 
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+/* Eyes */
+.ant-eyes {
+  position: absolute;
+  top: 20%;
+  width: 80%;
+  height: 40%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ant-eye {
+  width: 3px;
+  height: 3px;
+  background: #000;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+/* Antennae */
+.ant-antennae {
+  position: absolute;
+  top: -30%;
+  width: 100%;
+  height: 40%;
+}
+
+.antenna {
+  position: absolute;
+  width: 1px;
+  height: 8px;
+  background: #333;
+  border-radius: 1px;
+  transform-origin: bottom;
+}
+
+.antenna.left {
+  left: 25%;
+  transform: rotate(-30deg);
+}
+
+.antenna.right {
+  right: 25%;
+  transform: rotate(30deg);
+}
+
+.ant-antennae-prominent .antenna {
+  height: 12px;
+  width: 1.5px;
+  background: #2d5a2d;
+}
+
+/* Mandibles (for soldiers) */
+.ant-mandibles {
+  position: absolute;
+  bottom: -20%;
+  width: 100%;
+  height: 30%;
+}
+
+.mandible {
+  position: absolute;
+  width: 4px;
+  height: 2px;
+  background: #4a1515;
+  border-radius: 0 0 2px 2px;
+}
+
+.mandible.left {
+  left: 10%;
+  transform: rotate(-15deg);
+}
+
+.mandible.right {
+  right: 10%;
+  transform: rotate(15deg);
+}
+
+/* Thorax */
+.ant-thorax {
+  position: relative;
+  width: 40%;
+  height: 80%;
+  border-radius: 60% 40% 60% 40%;
+  border: inherit;
+  background: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-thorax-balanced { transform: scale(1.0); }
+.ant-thorax-muscular { transform: scale(1.2, 1.1); }
+.ant-thorax-agile { transform: scale(0.9, 1.0); }
+.ant-thorax-delicate { transform: scale(0.8, 0.9); }
+.ant-thorax-strong { transform: scale(1.1, 1.0); }
+.ant-thorax-powerful { transform: scale(1.3, 1.2); }
+.ant-thorax-regal { 
+  transform: scale(1.4, 1.3);
+  background: linear-gradient(45deg, inherit, rgba(255,255,255,0.2));
+}
+
+/* Legs */
+.ant-legs {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.leg-pair {
+  position: absolute;
+  width: 100%;
+  height: 20%;
+}
+
+.leg-pair.pair-1 { top: 20%; }
+.leg-pair.pair-2 { top: 50%; }
+.leg-pair.pair-3 { top: 80%; }
+
+.leg {
+  position: absolute;
+  width: 8px;
+  height: 1px;
+  background: #333;
+  border-radius: 1px;
+  transform-origin: center;
+}
+
+.leg.left {
+  left: -6px;
+  transform: rotate(-45deg);
+}
+
+.leg.right {
+  right: -6px;
+  transform: rotate(45deg);
+}
+
+/* Abdomen */
+.ant-abdomen {
+  position: relative;
+  width: 30%;
+  height: 90%;
+  border-radius: 40% 70% 40% 70%;
+  border: inherit;
+  background: inherit;
+}
+
+.ant-abdomen-medium { transform: scale(1.0); }
+.ant-abdomen-thick { transform: scale(1.2, 1.1); }
+.ant-abdomen-streamlined { transform: scale(0.8, 1.1); }
+.ant-abdomen-specialized { 
+  transform: scale(1.1, 1.2);
+  background: linear-gradient(90deg, inherit, rgba(255,182,193,0.3));
+}
+.ant-abdomen-expandable { transform: scale(1.1, 1.0); }
+.ant-abdomen-armored { 
+  transform: scale(1.2, 0.9);
+  border-width: 2px;
+}
+.ant-abdomen-royal { 
+  transform: scale(1.5, 1.4);
+  background: linear-gradient(135deg, inherit, rgba(255,255,255,0.3));
+}
+
+/* Special Role Features */
+.nurse-sac {
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 60%;
+  height: 40%;
+  background: rgba(255,182,193,0.6);
+  border-radius: 50%;
+  border: 1px solid rgba(219,39,119,0.4);
+}
+
+.forager-markings {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(161,98,7,0.3) 2px,
+    rgba(161,98,7,0.3) 4px
+  );
+  border-radius: inherit;
+}
+
+.builder-plates {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 70%;
+  height: 60%;
+  background: 
+    linear-gradient(90deg, rgba(194,65,12,0.4) 2px, transparent 2px),
+    linear-gradient(180deg, rgba(194,65,12,0.4) 2px, transparent 2px);
+  background-size: 6px 6px;
+  border-radius: inherit;
+}
+
+/* Body Type Variations */
+.ant-body-balanced { /* Default styling */ }
+
+.ant-body-robust {
+  border-width: 2px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.ant-body-sleek {
+  border-width: 1px;
+  filter: brightness(1.1);
+}
+
+.ant-body-caring {
+  border-radius: 60%;
+  filter: saturate(0.8) brightness(1.1);
+}
+
+.ant-body-sturdy {
+  border-width: 1.5px;
+  filter: contrast(1.1);
+}
+
+.ant-body-construction {
+  border-width: 2px;
+  border-style: double;
+}
+
+.ant-body-majestic {
+  border-width: 3px;
+  border-style: solid;
+  filter: brightness(1.2) saturate(1.2);
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+}
+
+/* Size Variations */
+.ant-size-tiny { font-size: 0.5rem; }
+.ant-size-small { font-size: 0.7rem; }
+.ant-size-medium { font-size: 1rem; }
+.ant-size-large { font-size: 1.3rem; }
+.ant-size-huge { font-size: 1.8rem; }
+
+/* Status Indicators */
+.ant-status-indicators {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.status-busy {
+  background: #dcfce7;
+  color: #059669;
+}
+
+.status-idle {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.status-tired {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-injured {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.status-carrying {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+/* Animated Elements */
+.busy-spinner {
+  width: 6px;
+  height: 6px;
+  border: 1px solid #059669;
+  border-top: 1px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.idle-dot {
+  width: 4px;
+  height: 4px;
+  background: #6b7280;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Level Indicators */
+.ant-level-indicator {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  z-index: 10;
+}
+
+.level-badge {
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.level-stars {
+  position: absolute;
+  top: -5px;
+  left: 18px;
+  display: flex;
+  gap: 1px;
+}
+
+.level-star {
+  font-size: 8px;
+  text-shadow: 0 0 2px rgba(255,255,0,0.8);
+}
+
+/* Evolution Effects */
+.subtle-glow {
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+}
+
+.glow {
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.strong-glow {
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.7);
+}
+
+.elite-aura {
+  box-shadow: 
+    0 0 12px rgba(59, 130, 246, 0.7),
+    0 0 20px rgba(147, 51, 234, 0.4);
+}
+
+.legendary-aura {
+  box-shadow: 
+    0 0 15px rgba(59, 130, 246, 0.8),
+    0 0 25px rgba(147, 51, 234, 0.6),
+    0 0 35px rgba(236, 72, 153, 0.4);
+  animation: legendary-pulse 3s ease-in-out infinite;
+}
+
+/* Injury Overlay */
+.ant-injury-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes legendary-pulse {
+  0%, 100% { 
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+  50% { 
+    filter: brightness(1.2) saturate(1.3);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes gentle-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  75% { transform: rotate(-1deg); }
+}
+
+@keyframes leg-movement {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+/* Hover Effects */
+.ant-visual:hover .ant-antennae .antenna {
+  animation: antenna-twitch 0.5s ease-in-out;
+}
+
+@keyframes antenna-twitch {
+  0%, 100% { transform: rotate(var(--initial-rotation, 0deg)); }
+  50% { transform: rotate(calc(var(--initial-rotation, 0deg) + 10deg)); }
+}
+
+/* Responsive Sizing */
+@media (max-width: 768px) {
+  .ant-visual {
+    transform: scale(0.8);
+  }
+  
+  .status-indicator {
+    width: 10px;
+    height: 10px;
+    font-size: 7px;
+  }
+  
+  .level-badge {
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ant-body {
+    border-width: 2px;
+    filter: contrast(1.5);
+  }
+  
+  .status-indicator {
+    border-width: 2px;
+  }
+} 
