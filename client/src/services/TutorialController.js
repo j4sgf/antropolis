@@ -1,4 +1,4 @@
-import { TUTORIAL_STEPS, TUTORIAL_GROUPS } from '../store/TutorialContext';
+import { TUTORIAL_STEPS, TUTORIAL_GROUPS } from '../constants/tutorialConstants';
 
 /**
  * TutorialController - Manages tutorial flow, step sequencing, and completion validation

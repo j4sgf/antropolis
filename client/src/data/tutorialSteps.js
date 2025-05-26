@@ -1,4 +1,4 @@
-import { TUTORIAL_STEPS } from '../store/TutorialContext';
+import { TUTORIAL_STEPS } from '../constants/tutorialConstants';
 
 /**
  * Comprehensive tutorial step definitions with enhanced content and completion criteria

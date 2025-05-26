@@ -158,18 +158,34 @@ class RoleAssignmentService {
    */
   async getRoleDistribution(colonyId) {
     const endpoint = `/api/colonies/${colonyId}/role-distribution`;
+    const url = `${API_BASE_URL}${endpoint}`;
+    
+    console.log('🔗 Making role distribution request:', {
+      colonyId,
+      url,
+      baseUrl: API_BASE_URL,
+      endpoint
+    });
     
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`);
+      const response = await fetch(url);
+      
+      console.log('📡 Role distribution response:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+        url: response.url
+      });
       
       if (!response.ok) {
         throw new Error(`Failed to fetch role distribution: ${response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('✅ Role distribution data:', data);
       return data.distribution || {};
     } catch (error) {
-      console.error('Error fetching role distribution:', error);
+      console.error('❌ Error fetching role distribution:', error);
       throw error;
     }
   }

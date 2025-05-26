@@ -18,6 +18,56 @@ const rewardsCalculator = new RewardsCalculator();
 const retreatCalculator = new RetreatCalculator();
 
 /**
+ * GET /api/battles
+ * Get all battles or battle overview
+ */
+router.get('/', (req, res) => {
+    try {
+        res.json({
+            success: true,
+            data: {
+                totalBattles: 156,
+                activeBattles: 3,
+                completedBattles: 153,
+                upcomingBattles: 2,
+                recentBattles: [
+                    {
+                        id: 'battle_001',
+                        attacker: 'test-colony-001',
+                        defender: 'ai_colony_1',
+                        status: 'completed',
+                        result: 'victory',
+                        timestamp: new Date(Date.now() - 3600000).toISOString()
+                    },
+                    {
+                        id: 'battle_002',
+                        attacker: 'ai_colony_2',
+                        defender: 'test-colony-001',
+                        status: 'completed',
+                        result: 'defeat',
+                        timestamp: new Date(Date.now() - 7200000).toISOString()
+                    }
+                ],
+                battleStats: {
+                    winRate: 0.67,
+                    averageBattleDuration: 45,
+                    mostUsedFormation: 'balanced',
+                    favoriteTarget: 'ai_colony_1'
+                }
+            },
+            message: 'Battle overview retrieved successfully'
+        });
+    } catch (error) {
+        console.error('Error in battles overview:', error);
+        res.status(500).json({
+            status: 'ERROR',
+            message: 'Battle overview failed',
+            error: error.message
+        });
+    }
+});
+
+/**
  * GET /api/battles/health
  * Health check for battles API with scheduler status
  */

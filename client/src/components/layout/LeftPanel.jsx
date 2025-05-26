@@ -35,13 +35,23 @@ const LeftPanel = ({ colonyId, colonyData, onCollapse, theme, onColonyUpdate }) 
   const loadColonyData = async () => {
     try {
       setError(null);
+      console.log('🔄 Loading colony data for:', colonyId);
       
       // Fetch colony stats, ant stats, and role distribution in parallel
       const [colonyResponse, antResponse, roleResponse] = await Promise.all([
         colonyService.getColony(colonyId, true),
         colonyService.getColonyAntStats(colonyId),
-        roleAssignmentService.getRoleDistribution(colonyId)
+        roleAssignmentService.getRoleDistribution(colonyId).catch(err => {
+          console.error('Role distribution error:', err);
+          return {}; // Return empty object on error to prevent breaking the UI
+        })
       ]);
+
+      console.log('✅ Colony data loaded:', {
+        colony: colonyResponse.data,
+        ants: antResponse.data,
+        roles: roleResponse
+      });
 
       setRealTimeStats(colonyResponse.data);
       setAntStats(antResponse.data);

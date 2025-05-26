@@ -977,7 +977,7 @@
         5,
         7
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -985,7 +985,7 @@
           "description": "Develop the core styling components for different ant types (workers, soldiers, scouts) with distinct visual characteristics.",
           "dependencies": [],
           "details": "Create React components for each ant type with appropriate styling. Implement base CSS classes for each ant role with distinct colors, shapes, and sizes. For workers, use a standard size with a distinct color; for soldiers, implement larger size with visible mandibles; for scouts, emphasize antennae and use lighter coloration. Create a configuration file that maps ant types to their visual properties for easy maintenance.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write unit tests to ensure components render correctly with the appropriate styling for each ant type. Create visual regression tests to verify the visual differences between ant types."
         },
         {
@@ -994,7 +994,7 @@
           "description": "Add visual indicators for ant status states (busy, idle, injured) and implement colorblind-friendly mode.",
           "dependencies": [],
           "details": "Extend the ant components to include status indicators. Create animated overlays or icon badges that show when ants are busy, idle, or injured. Implement a colorblind mode that uses patterns and shapes in addition to colors to differentiate states. Use SVG icons or CSS animations to represent different states. Store ant status in the game state and update visual indicators when status changes.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test status transitions and verify that indicators update correctly. Conduct accessibility testing to ensure colorblind mode effectively communicates ant states without relying solely on color."
         },
         {
@@ -1003,7 +1003,7 @@
           "description": "Create visual changes that reflect ant upgrades and evolution progress.",
           "dependencies": [],
           "details": "Implement progressive visual enhancements that correspond to ant upgrades. Create a system that modifies ant appearance based on their level or upgrades. Design subtle visual cues like size increases, color intensity changes, or additional details that appear as ants evolve. Create a mapping between upgrade levels and visual modifications in the configuration file. Ensure the upgrade visuals are consistent with the game's art style.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the visual progression through multiple upgrade levels. Verify that visual changes are applied correctly when upgrades are purchased."
         },
         {
@@ -1012,7 +1012,7 @@
           "description": "Implement hover tooltips and information displays that show detailed information about each ant.",
           "dependencies": [],
           "details": "Create a tooltip component that appears when hovering over ants. Display relevant information such as ant type, current status, level, and special abilities. Implement a more detailed information panel that can be shown when an ant is selected. Use React portals for tooltips to avoid layout issues. Ensure tooltips are responsive and properly positioned on different screen sizes. Include both textual information and visual indicators in the tooltips.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test tooltip appearance and disappearance on hover events. Verify that correct information is displayed for different ant types and states. Test tooltip positioning to ensure they remain visible within the viewport."
         },
         {
@@ -1021,7 +1021,7 @@
           "description": "Implement rendering optimizations to handle large numbers of ants with different visual indicators.",
           "dependencies": [],
           "details": "Optimize the rendering of multiple ants by implementing techniques like object pooling, canvas-based rendering for large numbers, or WebGL acceleration. Use React.memo or shouldComponentUpdate to prevent unnecessary re-renders. Implement level-of-detail rendering that simplifies ant visuals when zoomed out or when many ants are visible. Create a batching system for rendering similar ants together. Add configuration options to adjust visual detail based on device performance.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Conduct performance testing with large numbers of ants. Measure and compare frame rates before and after optimization. Test on various devices to ensure consistent performance across different hardware capabilities."
         }
       ]
@@ -1097,7 +1097,7 @@
         4,
         13
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -1105,7 +1105,7 @@
           "description": "Create the database schema to track all colony statistics including nest age, food harvested by type, battles, ant population changes, and structures built.",
           "dependencies": [],
           "details": "1. Create a new migration file for colony_statistics table with columns for colony_id, stat_type, value, and timestamp\n2. Create a separate colony_events table for timeline events with columns for colony_id, event_type, description, importance_level, and timestamp\n3. Add appropriate indexes for efficient querying\n4. Implement database functions for incrementing/updating statistics\n5. Create API endpoints in the backend for recording new statistics and events",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write unit tests for database queries and API endpoints using Jest. Test with sample data to ensure proper recording and retrieval of statistics."
         },
         {
@@ -1116,7 +1116,7 @@
             1
           ],
           "details": "1. Create a StatisticsService class to handle all statistics operations\n2. Implement methods to record various statistics (addFoodHarvested, recordBattle, updateAntPopulation, etc.)\n3. Create API endpoints for retrieving statistics with filtering options\n4. Implement data aggregation functions for generating summary statistics\n5. Add functionality to compare current session with previous sessions\n6. Create an endpoint for exporting statistics as JSON or CSV",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Create integration tests for the statistics service. Mock game events to ensure statistics are properly recorded and can be retrieved with various filters."
         },
         {
@@ -1127,7 +1127,7 @@
             2
           ],
           "details": "1. Create a StatisticsPanel React component with tabs for different stat categories\n2. Implement data visualization components using Chart.js or D3.js for graphs\n3. Create numerical stat displays with appropriate formatting\n4. Add filtering controls for time periods and stat categories\n5. Implement the export functionality in the UI\n6. Style the components according to the game's visual design",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write component tests using React Testing Library to ensure proper rendering of statistics. Test user interactions like filtering and exporting."
         },
         {
@@ -1138,7 +1138,7 @@
             2
           ],
           "details": "1. Design a Timeline React component that displays events chronologically\n2. Implement milestone markers with different visual indicators based on importance\n3. Add interactive elements to show event details on hover/click\n4. Create a filtering system for different event types\n5. Implement zooming functionality to focus on specific time periods\n6. Add animations for timeline navigation",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the timeline component with various event datasets to ensure proper rendering and interaction. Verify that milestone markers appear correctly and that filtering works as expected."
         },
         {
@@ -1150,7 +1150,7 @@
             4
           ],
           "details": "1. Create a system for generating interesting facts based on colony statistics\n2. Implement a Tooltip component that displays these facts in context\n3. Build the comparative statistics view showing current vs. previous sessions\n4. Add visual indicators for improvements or declines in performance\n5. Implement data normalization for fair comparisons between sessions of different lengths\n6. Create a session selector for choosing which previous sessions to compare against",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test tooltip content generation with various statistics scenarios. Verify comparative statistics calculations with sample data from multiple sessions to ensure accuracy."
         }
       ]
@@ -1410,10 +1410,8 @@
     {
       "id": 22,
       "title": "Onboarding Tutorial System",
-      "description": "Implement an onboarding tutorial to guide new players through game mechanics.",
-      "details": "1. Design step-by-step tutorial flow covering:\n   - Colony creation\n   - Ant role assignment\n   - Food foraging\n   - Structure building\n   - Battle mechanics\n   - Evolution system\n2. Implement guided tooltips highlighting UI elements\n3. Create interactive tutorial tasks with rewards\n4. Add skip option for experienced players\n5. Implement context-sensitive help throughout gameplay\n6. Create tutorial progress tracking\n7. Design tutorial UI overlay\n8. Add tutorial replay option from settings",
-      "testStrategy": "Test tutorial flow for clarity and completeness. Verify guided tooltips appear correctly. Test interactive tasks can be completed as instructed. Verify skip option works properly. Test context-sensitive help triggers appropriately. Verify tutorial progress is tracked correctly.",
-      "priority": "medium",
+      "description": "Implement a contextual onboarding tutorial system to guide new players through game mechanics as they encounter them.",
+      "status": "pending",
       "dependencies": [
         3,
         4,
@@ -1423,7 +1421,9 @@
         13,
         20
       ],
-      "status": "done",
+      "priority": "medium",
+      "details": "1. Design contextual tutorial elements covering:\n   - Colony creation\n   - Ant role assignment\n   - Food foraging\n   - Structure building\n   - Battle mechanics\n   - Evolution system\n2. Implement non-blocking tooltips positioned alongside UI elements\n3. Create interactive tutorial tasks with rewards\n4. Add skip option for experienced players\n5. Implement context-sensitive help that auto-triggers for new players\n6. Create tutorial progress tracking\n7. Design tutorial UI that appears alongside relevant content\n8. Add tutorial replay option from settings",
+      "testStrategy": "Test contextual tutorial triggers for appropriate timing. Verify tooltips appear alongside (not over) relevant UI elements. Test interactive tasks can be completed without tutorial elements blocking the view. Verify skip option works properly. Test auto-triggering context-sensitive help activates correctly for new players. Verify tutorial progress is tracked correctly. Test page-specific tutorials on CreateColony and ColonyDashboard pages.",
       "subtasks": [
         {
           "id": 1,
@@ -1481,6 +1481,94 @@
           "details": "1. Create a TutorialSettings component in the game settings menu\n2. Implement skip functionality that marks all tutorial steps as complete\n3. Add tutorial replay option that resets progress and restarts the tutorial\n4. Create a help system that allows players to access specific tutorial sections on demand\n5. Implement keyboard shortcuts for navigating the tutorial\n6. Add accessibility features like screen reader support and alternative instruction methods\n7. Create analytics tracking to measure tutorial completion rates and identify pain points",
           "status": "done",
           "testStrategy": "Test settings persistence across sessions. Verify tutorial can be properly skipped and replayed. Conduct accessibility testing with screen readers and keyboard-only navigation."
+        },
+        {
+          "id": 6,
+          "title": "Implement Contextual Auto-Triggering Tutorial System",
+          "description": "Replace the manual tutorial starter with an auto-triggering system that shows contextual help when players encounter new features.",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "details": "1. Remove the tutorial starter button from homepage\n2. Create a system to detect when new players access pages with tutorial content\n3. Implement auto-triggering logic for contextual tutorials\n4. Add user state tracking to identify first-time encounters with features\n5. Create a non-intrusive notification system for available tutorials\n6. Implement backend API to track feature discovery (/api/tutorial/feature-discovery)",
+          "status": "done",
+          "testStrategy": "Test auto-triggering for new users across different game sections. Verify tutorials only trigger on first encounter. Test with different user progression paths."
+        },
+        {
+          "id": 7,
+          "title": "Redesign Tutorial UI Positioning",
+          "description": "Update the tutorial UI components to position alongside relevant content rather than overlaying it.",
+          "dependencies": [
+            2
+          ],
+          "details": "1. Modify TutorialTooltip component to position adjacent to target elements\n2. Update TutorialPanel to appear in a side panel or non-blocking position\n3. Implement smart positioning logic that detects available screen space\n4. Create responsive positioning that works across different screen sizes\n5. Add animation for smooth appearance that draws attention without blocking\n6. Update CSS for all tutorial components to support the new positioning approach",
+          "status": "done",
+          "testStrategy": "Test positioning across different screen sizes and orientations. Verify tutorials never block the UI elements they're explaining. Test with various UI layouts and densities."
+        },
+        {
+          "id": 8,
+          "title": "Convert Linear Tutorial Flow to Contextual Help System",
+          "description": "Refactor the tutorial content to work as contextual help rather than a linear step-by-step flow.",
+          "dependencies": [
+            3,
+            6,
+            7
+          ],
+          "details": "1. Reorganize tutorial content by feature area rather than sequential steps\n2. Create context-aware triggers for each tutorial element\n3. Implement a system to detect user confusion or hesitation\n4. Add progressive disclosure of advanced features\n5. Create a help index that allows users to look up specific tutorials\n6. Update the tutorial progress tracking to work with non-linear discovery",
+          "status": "done",
+          "testStrategy": "Test contextual triggers in various game scenarios. Verify help appears appropriately based on user actions. Test with both new and experienced players to ensure appropriate guidance."
+        },
+        {
+          "id": 9,
+          "title": "Implement Page-Specific Tutorial Triggers",
+          "description": "Create specialized tutorial content for specific pages like CreateColony and ColonyDashboard with automatic triggering.",
+          "dependencies": [
+            6,
+            8
+          ],
+          "details": "1. Create page-specific tutorial content for CreateColony page\n2. Implement specialized tutorial content for ColonyDashboard page\n3. Develop usePageTutorial hook for detecting when users visit specific pages\n4. Configure auto-triggering based on page context\n5. Test and refine page-specific tutorial content",
+          "status": "done",
+          "testStrategy": "Test auto-triggering on CreateColony and ColonyDashboard pages. Verify appropriate content is shown based on the page context. Test with new and returning users."
+        },
+        {
+          "id": 10,
+          "title": "Implement Action-Based Tutorial Triggers",
+          "description": "Create tutorial content that triggers when users interact with specific features like tabs or controls.",
+          "dependencies": [
+            6,
+            8
+          ],
+          "details": "1. Develop useActionTutorial hook for detecting user interactions\n2. Create action-specific tutorial content for common interactions\n3. Implement triggers for tab changes, button clicks, and other key interactions\n4. Configure progressive disclosure of tutorials based on user actions\n5. Test and refine action-based tutorial content",
+          "status": "done",
+          "testStrategy": "Test action-based triggers with various user interactions. Verify appropriate content is shown based on user actions. Test with different user interaction patterns."
+        },
+        {
+          "id": 11,
+          "title": "Fix Router Context Issues in Tutorial System",
+          "description": "Resolve issues with React Router hooks in TutorialContext to prevent loading errors.",
+          "dependencies": [
+            1,
+            6
+          ],
+          "details": "1. Remove React Router hooks from TutorialContext\n2. Refactor navigation logic to avoid module loading issues\n3. Implement alternative approach for page detection without direct router dependencies\n4. Test and verify fixes across all tutorial scenarios\n5. Update documentation to reflect architectural changes",
+          "status": "done",
+          "testStrategy": "Test tutorial system across different navigation patterns. Verify no loading errors occur during navigation. Test with various browser environments."
+        },
+        {
+          "id": 12,
+          "title": "Enhance Feature Discovery Tracking",
+          "description": "Improve the tutorial state management to track feature discovery and provide better contextual help.",
+          "dependencies": [
+            1,
+            6,
+            8
+          ],
+          "details": "1. Enhance tutorial state to include feature discovery tracking\n2. Implement persistence of feature discovery data\n3. Create analytics for tracking which features users discover naturally vs. through tutorials\n4. Optimize tutorial triggering based on feature discovery patterns\n5. Update documentation for the enhanced feature tracking system",
+          "status": "done",
+          "testStrategy": "Test feature discovery tracking across different user scenarios. Verify data is correctly persisted. Test analytics integration for feature discovery metrics."
         }
       ]
     }

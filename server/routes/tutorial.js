@@ -96,6 +96,42 @@ const logAnalytics = (userId, eventType, tutorialStep, eventData = {}) => {
   console.log('📊 Tutorial analytics logged:', eventType, tutorialStep);
 };
 
+// GET /api/tutorial - Get tutorial overview
+router.get('/', (req, res) => {
+  try {
+    const totalUsers = mockTutorialProgress.size;
+    const completedUsers = Array.from(mockTutorialProgress.values()).filter(p => p.is_completed).length;
+    const activeUsers = Array.from(mockTutorialProgress.values()).filter(p => !p.is_completed && !p.is_skipped).length;
+
+    res.json({
+      success: true,
+      data: {
+        overview: {
+          totalUsers,
+          completedUsers,
+          activeUsers,
+          completionRate: totalUsers > 0 ? (completedUsers / totalUsers) * 100 : 0,
+          averageStepsCompleted: totalUsers > 0 ? 
+            Array.from(mockTutorialProgress.values())
+              .reduce((sum, p) => sum + p.completed_steps.length, 0) / totalUsers : 0
+        },
+        availableSteps: Object.values(TUTORIAL_STEPS),
+        totalSteps: Object.keys(TUTORIAL_STEPS).length,
+        defaultRewards: DEFAULT_STEP_REWARDS,
+        recentAnalytics: mockTutorialAnalytics.slice(-10)
+      },
+      message: 'Tutorial system overview retrieved successfully'
+    });
+  } catch (error) {
+    console.error('Error getting tutorial overview:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to get tutorial overview',
+      details: error.message 
+    });
+  }
+});
+
 // Get tutorial progress for a user
 router.get('/progress/:userId', async (req, res) => {
   try {

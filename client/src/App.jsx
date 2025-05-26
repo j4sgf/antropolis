@@ -1,18 +1,58 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import CreateColony from './pages/CreateColony'
 import ColonyDashboard from './pages/ColonyDashboard'
 import GameLayout from './components/layout/GameLayout'
 import { AccessibilityProvider } from './store/AccessibilityContext'
 import { TutorialProvider } from './store/TutorialContext'
 import ScreenReaderSupport from './components/accessibility/ScreenReaderSupport'
-import { TutorialOverlay, TutorialTooltip, TutorialControls, TutorialStarter } from './components/tutorial'
+import { TutorialOverlay, TutorialTooltip, TutorialControls } from './components/tutorial'
+import colonyService from './services/colonyService'
 
 // Home page component
 function HomePage() {
   const navigate = useNavigate()
   const [count, setCount] = useState(0)
+  const [colonies, setColonies] = useState([])
+  const [coloniesLoading, setColoniesLoading] = useState(true)
+  const [coloniesError, setColoniesError] = useState(null)
+
+  // Load user's colonies on component mount
+  useEffect(() => {
+    const loadColonies = async () => {
+      try {
+        setColoniesLoading(true)
+        
+        // Add cache-busting parameter to force fresh request
+        const timestamp = new Date().getTime()
+        const response = await fetch(`http://localhost:3001/api/colonies?user_id=00000000-0000-0000-0000-000000000001&_t=${timestamp}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        })
+        
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        setColonies(result.data || [])
+      } catch (err) {
+        console.error('Error loading colonies:', err)
+        setColoniesError(err.message)
+      } finally {
+        setColoniesLoading(false)
+      }
+    }
+
+    loadColonies()
+  }, [])
 
   const handleCreateColony = () => {
     navigate('/create-colony')
@@ -22,6 +62,14 @@ function HomePage() {
     console.log('Colony created successfully:', colony)
     // Navigate to the colony dashboard
     navigate(`/colony/${colony.id}`)
+  }
+
+  const handleViewColony = (colonyId) => {
+    navigate(`/colony/${colonyId}`)
+  }
+
+  const handlePlayColony = (colonyId) => {
+    navigate(`/game/${colonyId}`)
   }
 
   return (
@@ -108,16 +156,124 @@ function HomePage() {
               <div className="text-sm text-earth-500">✅ Now Available!</div>
             </motion.div>
 
-            {/* Tutorial Card */}
+            {/* Community Card */}
             <motion.div
               whileHover={{ scale: 1.05, y: -10 }}
-              className="md:col-span-2 lg:col-span-1"
+              className="bg-white rounded-lg p-6 shadow-lg border border-earth-200 md:col-span-2 lg:col-span-1"
             >
-              <TutorialStarter variant="card">
-                Perfect for new players who want to learn the game mechanics step by step.
-              </TutorialStarter>
+              <div className="text-4xl mb-4">🌍</div>
+              <h3 className="text-xl font-semibold text-forest-800 mb-3">Join the Community</h3>
+              <p className="text-earth-600 mb-4">
+                Connect with other players, share strategies, and learn from the community. Don't worry - helpful tutorials will guide you as you explore!
+              </p>
+              <div className="text-sm text-earth-500">Coming Soon</div>
             </motion.div>
           </div>
+
+          {/* My Colonies Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mb-12"
+          >
+            <h2 className="text-3xl font-bold text-forest-800 mb-6 text-center">My Colonies</h2>
+            
+            {coloniesLoading ? (
+              <div className="bg-white rounded-lg p-8 shadow-lg border border-earth-200 text-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="text-4xl mb-4"
+                >
+                  🐜
+                </motion.div>
+                <p className="text-earth-600">Loading your colonies...</p>
+              </div>
+            ) : coloniesError ? (
+              <div className="bg-white rounded-lg p-8 shadow-lg border border-red-200 text-center">
+                <div className="text-4xl mb-4">⚠️</div>
+                <h3 className="text-lg font-semibold text-red-800 mb-2">Error Loading Colonies</h3>
+                <p className="text-red-600">{coloniesError}</p>
+              </div>
+            ) : colonies.length === 0 ? (
+              <div className="bg-white rounded-lg p-8 shadow-lg border border-earth-200 text-center">
+                <div className="text-4xl mb-4">🏗️</div>
+                <h3 className="text-lg font-semibold text-earth-800 mb-2">No Colonies Yet</h3>
+                <p className="text-earth-600 mb-4">Create your first colony to begin your ant empire!</p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleCreateColony}
+                  className="bg-forest-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-forest-700 transition-colors"
+                >
+                  Create First Colony
+                </motion.button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {colonies.map((colony, index) => (
+                  <motion.div
+                    key={colony.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    className="bg-white rounded-lg p-6 shadow-lg border border-earth-200"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-semibold text-forest-800">{colony.name}</h3>
+                      <div className="text-2xl">
+                        {colony.type === 'warrior' ? '⚔️' : colony.type === 'builder' ? '🏗️' : '🌿'}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-earth-600">Population:</span>
+                        <span className="font-medium">{colony.population}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-earth-600">Species:</span>
+                        <span className="font-medium capitalize">{colony.species}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-earth-600">Environment:</span>
+                        <span className="font-medium capitalize">{colony.environment}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-earth-600">Founded:</span>
+                        <span className="font-medium">{new Date(colony.created_at).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-earth-600 text-sm mb-4 line-clamp-2">
+                      {colony.description}
+                    </p>
+
+                    <div className="flex space-x-2">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleViewColony(colony.id)}
+                        className="flex-1 bg-blue-600 text-white py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+                      >
+                        📊 Dashboard
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handlePlayColony(colony.id)}
+                        className="flex-1 bg-forest-600 text-white py-2 px-3 rounded-md text-sm font-medium hover:bg-forest-700 transition-colors"
+                      >
+                        🎮 Play
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.div>
 
           {/* Development Status */}
           <motion.div
@@ -176,50 +332,150 @@ function HomePage() {
   )
 }
 
+// Game page component that fetches colony data and renders GameLayout
+function GamePage() {
+  const { colonyId } = useParams();
+  const navigate = useNavigate();
+  const [colonyData, setColonyData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch colony data on mount
+  useEffect(() => {
+    const fetchColonyData = async () => {
+      try {
+        setLoading(true);
+        console.log('GamePage: Fetching colony data for ID:', colonyId);
+        
+        // Add cache-busting parameter to force fresh request
+        const timestamp = new Date().getTime();
+        const response = await fetch(`http://localhost:3001/api/colonies/${colonyId}?details=true&_t=${timestamp}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        console.log('GamePage: Colony data received:', result.data);
+        setColonyData(result.data);
+      } catch (err) {
+        console.error('GamePage: Error fetching colony data:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (colonyId) {
+      fetchColonyData();
+    }
+  }, [colonyId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-earth-50 to-forest-50 flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="text-6xl"
+        >
+          🐜
+        </motion.div>
+        <div className="ml-4 text-xl text-forest-700">Loading colony...</div>
+      </div>
+    );
+  }
+
+  if (error || !colonyData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-earth-50 to-forest-50 flex items-center justify-center">
+        <div className="bg-white rounded-lg p-8 shadow-lg border border-red-200 text-center max-w-md">
+          <div className="text-4xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold text-red-800 mb-3">Error Loading Game</h2>
+          <p className="text-red-600 mb-4">{error || 'Colony not found'}</p>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => navigate('/')}
+              className="bg-forest-600 text-white py-2 px-4 rounded-md hover:bg-forest-700 transition-colors"
+            >
+              Back to Home
+            </button>
+            <button
+              onClick={() => navigate(`/colony/${colonyId}`)}
+              className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Colony Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return <GameLayout colonyId={colonyId} colonyData={colonyData} />;
+}
+
+// Tutorial Provider wrapper that needs Router context
+function TutorialWrapper({ children }) {
+  return (
+    <TutorialProvider>
+      <ScreenReaderSupport>
+        <TutorialOverlay>
+          {children}
+          {/* Tutorial UI Components */}
+          <TutorialTooltip />
+          <TutorialControls />
+        </TutorialOverlay>
+      </ScreenReaderSupport>
+    </TutorialProvider>
+  );
+}
+
 // Main App component with routing
 function App() {
   return (
     <AccessibilityProvider>
-      <TutorialProvider>
-        <ScreenReaderSupport>
-          <TutorialOverlay>
-            <Router>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route 
-                  path="/create-colony" 
-                  element={
-                    <CreateColony 
-                      onColonyCreated={(colony) => {
-                        console.log('Colony created:', colony)
-                        // Navigate directly to game (Task 20 implementation)
-                        window.location.href = `/game/${colony.id}`
-                      }}
-                      onCancel={() => {
-                        console.log('Colony creation cancelled')
-                        // Navigate back to home
-                        window.location.href = '/'
-                      }}
-                    />
-                  } 
+      <Router>
+        <TutorialWrapper>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route 
+              path="/create-colony" 
+              element={
+                <CreateColony 
+                  onColonyCreated={(colony) => {
+                    console.log('Colony created:', colony)
+                    // Navigate directly to game (Task 20 implementation)
+                    window.location.href = `/game/${colony.id}`
+                  }}
+                  onCancel={() => {
+                    console.log('Colony creation cancelled')
+                    // Navigate back to home
+                    window.location.href = '/'
+                  }}
                 />
-                <Route 
-                  path="/colony/:colonyId" 
-                  element={<ColonyDashboard />} 
-                />
-                <Route 
-                  path="/game/:colonyId" 
-                  element={<GameLayout />} 
-                />
-              </Routes>
-              
-              {/* Tutorial UI Components */}
-              <TutorialTooltip />
-              <TutorialControls />
-            </Router>
-          </TutorialOverlay>
-        </ScreenReaderSupport>
-      </TutorialProvider>
+              } 
+            />
+            <Route 
+              path="/colony/:colonyId" 
+              element={<ColonyDashboard />} 
+            />
+            <Route 
+              path="/game/:colonyId" 
+              element={<GamePage />} 
+            />
+          </Routes>
+        </TutorialWrapper>
+      </Router>
     </AccessibilityProvider>
   )
 }

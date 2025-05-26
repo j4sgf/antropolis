@@ -1,27 +1,27 @@
 # Task ID: 22
 # Title: Onboarding Tutorial System
-# Status: done
+# Status: pending
 # Dependencies: 3, 4, 6, 7, 10, 13, 20
 # Priority: medium
-# Description: Implement an onboarding tutorial to guide new players through game mechanics.
+# Description: Implement a contextual onboarding tutorial system to guide new players through game mechanics as they encounter them.
 # Details:
-1. Design step-by-step tutorial flow covering:
+1. Design contextual tutorial elements covering:
    - Colony creation
    - Ant role assignment
    - Food foraging
    - Structure building
    - Battle mechanics
    - Evolution system
-2. Implement guided tooltips highlighting UI elements
+2. Implement non-blocking tooltips positioned alongside UI elements
 3. Create interactive tutorial tasks with rewards
 4. Add skip option for experienced players
-5. Implement context-sensitive help throughout gameplay
+5. Implement context-sensitive help that auto-triggers for new players
 6. Create tutorial progress tracking
-7. Design tutorial UI overlay
+7. Design tutorial UI that appears alongside relevant content
 8. Add tutorial replay option from settings
 
 # Test Strategy:
-Test tutorial flow for clarity and completeness. Verify guided tooltips appear correctly. Test interactive tasks can be completed as instructed. Verify skip option works properly. Test context-sensitive help triggers appropriately. Verify tutorial progress is tracked correctly.
+Test contextual tutorial triggers for appropriate timing. Verify tooltips appear alongside (not over) relevant UI elements. Test interactive tasks can be completed without tutorial elements blocking the view. Verify skip option works properly. Test auto-triggering context-sensitive help activates correctly for new players. Verify tutorial progress is tracked correctly. Test page-specific tutorials on CreateColony and ColonyDashboard pages.
 
 # Subtasks:
 ## 1. Implement Tutorial State Management System [done]
@@ -78,4 +78,77 @@ Test tutorial flow for clarity and completeness. Verify guided tooltips appear c
 5. Implement keyboard shortcuts for navigating the tutorial
 6. Add accessibility features like screen reader support and alternative instruction methods
 7. Create analytics tracking to measure tutorial completion rates and identify pain points
+
+## 6. Implement Contextual Auto-Triggering Tutorial System [done]
+### Dependencies: 22.1, 22.2, 22.3, 22.4, 22.5
+### Description: Replace the manual tutorial starter with an auto-triggering system that shows contextual help when players encounter new features.
+### Details:
+1. Remove the tutorial starter button from homepage
+2. Create a system to detect when new players access pages with tutorial content
+3. Implement auto-triggering logic for contextual tutorials
+4. Add user state tracking to identify first-time encounters with features
+5. Create a non-intrusive notification system for available tutorials
+6. Implement backend API to track feature discovery (/api/tutorial/feature-discovery)
+
+## 7. Redesign Tutorial UI Positioning [done]
+### Dependencies: 22.2
+### Description: Update the tutorial UI components to position alongside relevant content rather than overlaying it.
+### Details:
+1. Modify TutorialTooltip component to position adjacent to target elements
+2. Update TutorialPanel to appear in a side panel or non-blocking position
+3. Implement smart positioning logic that detects available screen space
+4. Create responsive positioning that works across different screen sizes
+5. Add animation for smooth appearance that draws attention without blocking
+6. Update CSS for all tutorial components to support the new positioning approach
+
+## 8. Convert Linear Tutorial Flow to Contextual Help System [done]
+### Dependencies: 22.3, 22.6, 22.7
+### Description: Refactor the tutorial content to work as contextual help rather than a linear step-by-step flow.
+### Details:
+1. Reorganize tutorial content by feature area rather than sequential steps
+2. Create context-aware triggers for each tutorial element
+3. Implement a system to detect user confusion or hesitation
+4. Add progressive disclosure of advanced features
+5. Create a help index that allows users to look up specific tutorials
+6. Update the tutorial progress tracking to work with non-linear discovery
+
+## 9. Implement Page-Specific Tutorial Triggers [done]
+### Dependencies: 22.6, 22.8
+### Description: Create specialized tutorial content for specific pages like CreateColony and ColonyDashboard with automatic triggering.
+### Details:
+1. Create page-specific tutorial content for CreateColony page
+2. Implement specialized tutorial content for ColonyDashboard page
+3. Develop usePageTutorial hook for detecting when users visit specific pages
+4. Configure auto-triggering based on page context
+5. Test and refine page-specific tutorial content
+
+## 10. Implement Action-Based Tutorial Triggers [done]
+### Dependencies: 22.6, 22.8
+### Description: Create tutorial content that triggers when users interact with specific features like tabs or controls.
+### Details:
+1. Develop useActionTutorial hook for detecting user interactions
+2. Create action-specific tutorial content for common interactions
+3. Implement triggers for tab changes, button clicks, and other key interactions
+4. Configure progressive disclosure of tutorials based on user actions
+5. Test and refine action-based tutorial content
+
+## 11. Fix Router Context Issues in Tutorial System [done]
+### Dependencies: 22.1, 22.6
+### Description: Resolve issues with React Router hooks in TutorialContext to prevent loading errors.
+### Details:
+1. Remove React Router hooks from TutorialContext
+2. Refactor navigation logic to avoid module loading issues
+3. Implement alternative approach for page detection without direct router dependencies
+4. Test and verify fixes across all tutorial scenarios
+5. Update documentation to reflect architectural changes
+
+## 12. Enhance Feature Discovery Tracking [done]
+### Dependencies: 22.1, 22.6, 22.8
+### Description: Improve the tutorial state management to track feature discovery and provide better contextual help.
+### Details:
+1. Enhance tutorial state to include feature discovery tracking
+2. Implement persistence of feature discovery data
+3. Create analytics for tracking which features users discover naturally vs. through tutorials
+4. Optimize tutorial triggering based on feature discovery patterns
+5. Update documentation for the enhanced feature tracking system
 

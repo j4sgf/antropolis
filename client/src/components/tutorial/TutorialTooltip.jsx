@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTutorial } from '../../store/TutorialContext';
 
@@ -12,40 +12,103 @@ const TutorialTooltip = () => {
     skipTutorial,
     getProgressPercentage,
     getCurrentGroupSteps,
-    completedSteps
+    completedSteps,
+    settings
   } = useTutorial();
 
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  const stepData = currentStep ? getStepData(currentStep) : null;
+  // Memoize stepData to prevent unnecessary re-renders
+  const stepData = useMemo(() => {
+    if (!currentStep) return null;
+    const data = getStepData(currentStep);
+    if (!data && currentStep) {
+      console.log('🎓 TutorialTooltip: No step data for', currentStep);
+    }
+    return data;
+  }, [currentStep]);
+  
+  // Debug render issues only
+  if (isActive && currentStep && !stepData) {
+    console.log('🎓 TutorialTooltip: Active tutorial but no step data for', currentStep);
+  }
+  
+  // Log tutorial activation status
+  console.log('🎓 TutorialTooltip render check:', {
+    isActive,
+    currentStep,
+    hasStepData: !!stepData,
+    stepDataType: typeof stepData
+  });
+  
+  // Safety check to ensure stepData exists and has required properties
+  if (!isActive || !currentStep || !stepData || typeof stepData !== 'object') {
+    if (isActive && !currentStep) {
+      console.warn('Tutorial is active but no current step defined');
+    }
+    if (isActive && currentStep && !stepData) {
+      console.warn('Tutorial step data not available for step:', currentStep);
+    }
+    console.log('🎓 TutorialTooltip: Not rendering - safety check failed');
+    return null;
+  }
   const progressPercentage = getProgressPercentage();
   const currentGroupSteps = getCurrentGroupSteps();
   const currentStepIndex = currentGroupSteps.indexOf(currentStep);
 
   // Calculate tooltip position based on target element and preferred position
   useEffect(() => {
+    
     if (!isActive || !stepData) {
       setTooltipVisible(false);
       return;
     }
 
     const calculatePosition = () => {
+      
       if (!stepData.target) {
-        // Center position for steps without targets
+        // Always use non-blocking position at the bottom right for better UX
         setTooltipPosition({
-          top: window.innerHeight / 2 - 200,
-          left: window.innerWidth / 2 - 200
+          bottom: 20,
+          right: 20,
+          top: 'auto',
+          left: 'auto'
         });
         setTooltipVisible(true);
         return;
       }
 
-      const targetElement = document.querySelector(stepData.target);
-      if (!targetElement) {
-        setTooltipVisible(false);
-        return;
-      }
+              const targetElement = document.querySelector(stepData.target);
+        if (!targetElement) {
+          // Try again after a short delay (page might still be loading)
+          setTimeout(() => {
+            const retryElement = document.querySelector(stepData.target);
+            if (!retryElement) {
+              // Use non-blocking position instead of center
+              setTooltipPosition({
+                bottom: 20,
+                right: 20,
+                top: 'auto',
+                left: 'auto'
+              });
+              setTooltipVisible(true);
+            } else {
+              // Recalculate position with found element
+              calculatePosition();
+            }
+          }, 1000);
+          
+          // Show non-blocking tooltip immediately instead of centered
+          setTooltipPosition({
+            bottom: 20,
+            right: 20,
+            top: 'auto',
+            left: 'auto'
+          });
+          setTooltipVisible(true);
+          return;
+        }
 
       const rect = targetElement.getBoundingClientRect();
       const tooltipWidth = 400;
@@ -54,36 +117,79 @@ const TutorialTooltip = () => {
 
       let top, left;
 
-      switch (stepData.position) {
-        case 'top':
-          top = rect.top - tooltipHeight - margin;
-          left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-          break;
-        case 'bottom':
-          top = rect.bottom + margin;
-          left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-          break;
-        case 'left':
-          top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
-          left = rect.left - tooltipWidth - margin;
-          break;
-        case 'right':
-          top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+      // In non-blocking mode, intelligently position to avoid blocking the target
+      if (settings?.nonBlocking) {
+        // Try to position to the side first, then above/below
+        const spaceRight = window.innerWidth - rect.right;
+        const spaceLeft = rect.left;
+        const spaceBottom = window.innerHeight - rect.bottom;
+        const spaceTop = rect.top;
+        
+        if (spaceRight >= tooltipWidth + margin) {
+          // Position to the right
+          top = rect.top;
           left = rect.right + margin;
-          break;
-        default:
-          // Auto-position based on available space
-          if (rect.bottom + tooltipHeight + margin < window.innerHeight) {
-            top = rect.bottom + margin;
-          } else {
+        } else if (spaceLeft >= tooltipWidth + margin) {
+          // Position to the left
+          top = rect.top;
+          left = rect.left - tooltipWidth - margin;
+        } else if (spaceBottom >= tooltipHeight + margin) {
+          // Position below
+          top = rect.bottom + margin;
+          left = Math.max(margin, Math.min(rect.left, window.innerWidth - tooltipWidth - margin));
+        } else if (spaceTop >= tooltipHeight + margin) {
+          // Position above
+          top = rect.top - tooltipHeight - margin;
+          left = Math.max(margin, Math.min(rect.left, window.innerWidth - tooltipWidth - margin));
+        } else {
+          // Not enough space anywhere, position at bottom right corner
+          top = window.innerHeight - tooltipHeight - margin;
+          left = window.innerWidth - tooltipWidth - margin;
+        }
+      } else {
+        // Legacy blocking positioning
+        switch (stepData.position) {
+          case 'top':
             top = rect.top - tooltipHeight - margin;
-          }
-          
-          if (rect.left + tooltipWidth < window.innerWidth) {
-            left = rect.left;
-          } else {
-            left = rect.right - tooltipWidth;
-          }
+            left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+            break;
+          case 'bottom':
+            top = rect.bottom + margin;
+            left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+            break;
+          case 'left':
+            top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+            left = rect.left - tooltipWidth - margin;
+            break;
+          case 'right':
+            top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+            left = rect.right + margin;
+            break;
+          default:
+            // Smart non-blocking positioning: prefer right side, then bottom right corner
+            const hasSpaceRight = rect.right + tooltipWidth + margin < window.innerWidth;
+            const hasSpaceBottom = rect.bottom + tooltipHeight + margin < window.innerHeight;
+            
+            if (hasSpaceRight) {
+              // Position to the right of the target
+              top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+              left = rect.right + margin;
+            } else if (hasSpaceBottom) {
+              // Position below and to the right
+              top = rect.bottom + margin;
+              left = Math.min(rect.left, window.innerWidth - tooltipWidth - margin);
+            } else {
+              // Fallback to bottom right corner
+              setTooltipPosition({
+                bottom: 20,
+                right: 20,
+                top: 'auto',
+                left: 'auto'
+              });
+              setTooltipVisible(true);
+              return;
+            }
+        }
       }
 
       // Ensure tooltip stays within viewport
@@ -104,7 +210,7 @@ const TutorialTooltip = () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleResize);
     };
-  }, [isActive, stepData, currentStep]);
+  }, [isActive, currentStep, stepData?.target, stepData?.position]);
 
   if (!isActive || !stepData || !tooltipVisible) {
     return null;
@@ -119,12 +225,14 @@ const TutorialTooltip = () => {
         initial={{ opacity: 0, scale: 0.8, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.8, y: 20 }}
-        className="fixed z-50 bg-white rounded-lg shadow-2xl border border-gray-200 max-w-md"
+        className="fixed z-50 bg-white rounded-lg shadow-xl border border-gray-200 max-w-sm"
         style={{
-          top: tooltipPosition.top,
-          left: tooltipPosition.left,
-          minWidth: '320px',
-          maxWidth: '400px'
+          top: tooltipPosition.top !== 'auto' ? tooltipPosition.top : undefined,
+          left: tooltipPosition.left !== 'auto' ? tooltipPosition.left : undefined,
+          bottom: tooltipPosition.bottom !== 'auto' ? tooltipPosition.bottom : undefined,
+          right: tooltipPosition.right !== 'auto' ? tooltipPosition.right : undefined,
+          minWidth: '280px',
+          maxWidth: '320px'
         }}
       >
         {/* Header */}
@@ -169,38 +277,73 @@ const TutorialTooltip = () => {
           <p className="text-gray-700 mb-4 leading-relaxed">
             {stepData.content}
           </p>
+          
+          {/* Show helpful message if target element isn't found */}
+          {stepData.target && !document.querySelector(stepData.target) && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <div className="flex items-center mb-2">
+                <span className="text-blue-600 mr-2">ℹ️</span>
+                <span className="text-sm font-medium text-blue-800">Navigation Hint</span>
+              </div>
+              <p className="text-sm text-blue-700">
+                This step is designed for a specific page or element. The tutorial will guide you there automatically when you click "Next".
+              </p>
+            </div>
+          )}
 
           {/* Rewards preview */}
-          {stepData.rewards && (
+          {stepData.rewards && typeof stepData.rewards === 'object' && (
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
               <div className="flex items-center mb-2">
                 <span className="text-yellow-600 mr-2">🎁</span>
                 <span className="text-sm font-medium text-yellow-800">Rewards</span>
               </div>
               <div className="flex flex-wrap gap-2">
-                {Object.entries(stepData.rewards).map(([key, value]) => (
-                  <span
-                    key={key}
-                    className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full"
-                  >
-                    +{value} {key}
-                  </span>
-                ))}
+                {Object.entries(stepData.rewards).map(([key, value]) => {
+                  // Handle different reward value types
+                  let displayValue;
+                  if (typeof value === 'object' && value !== null) {
+                    // If it's an object like {food: 100, materials: 50}, show as multiple rewards
+                    return Object.entries(value).map(([subKey, subValue]) => (
+                      <span
+                        key={`reward-${key}-${subKey}`}
+                        className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full"
+                      >
+                        +{subValue} {subKey}
+                      </span>
+                    ));
+                  } else if (typeof value === 'boolean') {
+                    // Handle boolean rewards (like bonuses)
+                    displayValue = value ? '✓' : '✗';
+                  } else {
+                    // Handle numeric or string values
+                    displayValue = value;
+                  }
+                  
+                  return (
+                    <span
+                      key={`reward-${key}`}
+                      className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full"
+                    >
+                      {typeof value === 'boolean' ? `${displayValue} ${key}` : `+${displayValue} ${key}`}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           )}
 
           {/* Step indicator */}
-          {currentGroupSteps.length > 1 && (
+          {currentGroupSteps && currentGroupSteps.length > 1 && (
             <div className="flex items-center justify-center mb-4">
               <div className="flex space-x-2">
                 {currentGroupSteps.map((step, index) => (
                   <div
-                    key={step}
+                    key={`step-indicator-${step}-${index}`}
                     className={`w-2 h-2 rounded-full transition-colors ${
                       index === currentStepIndex
                         ? 'bg-blue-500'
-                        : completedSteps.includes(step)
+                        : completedSteps && completedSteps.includes(step)
                         ? 'bg-green-500'
                         : 'bg-gray-300'
                     }`}

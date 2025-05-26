@@ -9,6 +9,8 @@ import StructuresDashboard from '../components/structures/StructuresDashboard'
 import ResourceDashboard from '../components/resources/ResourceDashboard'
 import PopulationDashboard from '../components/ants/PopulationDashboard'
 import { useResourceEvents } from '../hooks/useResourceEvents'
+// import { usePageTutorial, useActionTutorial } from '../hooks/useContextualTutorial'
+// import { TUTORIAL_STEPS } from '../constants/tutorialConstants'
 
 function ColonyDashboard() {
   const { colonyId } = useParams()
@@ -25,6 +27,16 @@ function ColonyDashboard() {
     enableNotifications: true,
     autoProcessDecay: false // Don't auto-process decay, let user control it
   })
+
+  // Auto-trigger contextual tutorial for new players visiting colony dashboard
+  // usePageTutorial('ColonyDashboard', TUTORIAL_STEPS.FIRST_VIEW, {
+  //   delay: 2000 // Give page time to load completely
+  // })
+  
+  // Trigger specific tutorials when users interact with different tabs
+  // useActionTutorial('hasViewedStructures', TUTORIAL_STEPS.BUILDING_INTRO, activeTab === 'structures')
+  // useActionTutorial('hasViewedStorage', TUTORIAL_STEPS.RESOURCE_MANAGEMENT, activeTab === 'storage')
+  // useActionTutorial('hasViewedPopulation', TUTORIAL_STEPS.ANT_ROLES_INTRO, activeTab === 'population')
 
   useEffect(() => {
     if (colonyId) {

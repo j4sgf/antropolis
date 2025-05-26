@@ -46,13 +46,17 @@ const TutorialRewards = () => {
   }, []);
 
   const getStepRewardData = (step) => {
-    // Import step definitions dynamically to avoid circular imports
+    // Import step definitions - fixed circular import by using constants
     try {
       const { TUTORIAL_STEP_DEFINITIONS } = require('../../data/tutorialSteps');
       return TUTORIAL_STEP_DEFINITIONS[step];
     } catch (error) {
       console.warn('Could not load step definitions:', error);
-      return null;
+      // Return minimal reward data as fallback
+      return {
+        title: 'Tutorial Step',
+        rewards: { evolutionPoints: 10 }
+      };
     }
   };
 
@@ -155,40 +159,65 @@ const TutorialRewards = () => {
   const formatRewardText = (rewards) => {
     const rewardTexts = [];
     
+    // Helper function to safely get numeric value
+    const getNumericValue = (value) => {
+      if (typeof value === 'number') return value;
+      if (typeof value === 'string' && !isNaN(value)) return Number(value);
+      return 0;
+    };
+    
     if (rewards.evolutionPoints) {
-      rewardTexts.push(`+${rewards.evolutionPoints} Evolution Points`);
+      const points = getNumericValue(rewards.evolutionPoints);
+      if (points > 0) rewardTexts.push(`+${points} Evolution Points`);
     }
     
     if (rewards.food) {
-      rewardTexts.push(`+${rewards.food} Food`);
+      const food = getNumericValue(rewards.food);
+      if (food > 0) rewardTexts.push(`+${food} Food`);
     }
     
     if (rewards.materials) {
-      rewardTexts.push(`+${rewards.materials} Materials`);
+      const materials = getNumericValue(rewards.materials);
+      if (materials > 0) rewardTexts.push(`+${materials} Materials`);
     }
     
     if (rewards.water) {
-      rewardTexts.push(`+${rewards.water} Water`);
+      const water = getNumericValue(rewards.water);
+      if (water > 0) rewardTexts.push(`+${water} Water`);
     }
 
-    if (rewards.starterResources) {
+    // Handle starter resources object safely
+    if (rewards.starterResources && typeof rewards.starterResources === 'object') {
       Object.entries(rewards.starterResources).forEach(([resource, amount]) => {
-        rewardTexts.push(`+${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1)}`);
+        const numAmount = getNumericValue(amount);
+        if (numAmount > 0) {
+          rewardTexts.push(`+${numAmount} ${resource.charAt(0).toUpperCase() + resource.slice(1)}`);
+        }
       });
     }
 
-    // Add special bonuses
-    if (rewards.welcomeBonus) {
+    // Handle special bonuses safely
+    if (rewards.welcomeBonus === true) {
       rewardTexts.push('Welcome Bonus Unlocked');
     }
     
-    if (rewards.roleBonus) {
+    if (rewards.roleBonus === true) {
       rewardTexts.push('Role Management Bonus');
     }
     
-    if (rewards.visionRange) {
+    if (rewards.visionRange === true) {
       rewardTexts.push('Enhanced Vision Range');
     }
+
+    // Handle any other boolean bonuses
+    Object.entries(rewards).forEach(([key, value]) => {
+      if (typeof value === 'boolean' && value === true && 
+          !['welcomeBonus', 'roleBonus', 'visionRange'].includes(key)) {
+        // Convert camelCase to readable text
+        const readableKey = key.replace(/([A-Z])/g, ' $1').toLowerCase();
+        rewardTexts.push(`${readableKey.charAt(0).toUpperCase() + readableKey.slice(1)} Unlocked`);
+      }
+    });
 
     return rewardTexts;
   };

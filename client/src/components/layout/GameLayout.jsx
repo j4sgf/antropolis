@@ -5,6 +5,8 @@ import CenterPanel from './CenterPanel';
 import RightPanel from './RightPanel';
 import AccessibilityPanel from '../accessibility/AccessibilityPanel';
 import AccessibilityGuide from '../accessibility/AccessibilityGuide';
+import StatisticsPanel from '../statistics/StatisticsPanel';
+import statisticsService from '../../services/statisticsService';
 import { useAccessibility } from '../../store/AccessibilityContext';
 import useKeyboardNavigation from '../../hooks/useKeyboardNavigation';
 import './GameLayout.css';
@@ -33,6 +35,30 @@ const GameLayout = ({ colonyId, colonyData }) => {
   const handleColonyUpdate = (updatedColonyData) => {
     setRealTimeColonyData(updatedColonyData);
   };
+
+  // Initialize statistics tracking
+  useEffect(() => {
+    if (colonyId && colonyData) {
+      // Start statistics tracking with initial colony data
+      const initialData = {
+        population: colonyData.population || 0,
+        food_harvested: 0,
+        battles_won: 0,
+        structures_built: 0
+      };
+      
+      statisticsService.startTracking(colonyId, initialData).catch(error => {
+        console.warn('Failed to start statistics tracking:', error);
+      });
+
+      // Cleanup on unmount
+      return () => {
+        statisticsService.stopTracking(colonyId).catch(error => {
+          console.warn('Failed to stop statistics tracking:', error);
+        });
+      };
+    }
+  }, [colonyId, colonyData]);
   
   // Handle accessibility panel custom event
   useEffect(() => {
@@ -294,59 +320,7 @@ const GameLayout = ({ colonyId, colonyData }) => {
     </motion.div>
   );
 
-  // Stats Modal Component
-  const StatsModal = () => (
-    <motion.div
-      className="modal-overlay"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={() => setShowStatsModal(false)}
-    >
-      <motion.div
-        className="modal-content stats-modal"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="modal-header">
-          <h2>Colony Statistics</h2>
-          <button onClick={() => setShowStatsModal(false)}>×</button>
-        </div>
-        <div className="modal-body">
-          {realTimeColonyData && (
-            <div className="stats-grid">
-              <div className="stat-card">
-                <h4>Population</h4>
-                <div className="stat-value">{realTimeColonyData.population || 0}</div>
-              </div>
-              <div className="stat-card">
-                <h4>Efficiency</h4>
-                <div className="stat-value">{Math.round((realTimeColonyData.efficiency || 0.8) * 100)}%</div>
-              </div>
-              <div className="stat-card">
-                <h4>Territory</h4>
-                <div className="stat-value">75%</div>
-              </div>
-              <div className="stat-card">
-                <h4>Resources</h4>
-                <div className="stat-value">5 nodes</div>
-              </div>
-              <div className="stat-card">
-                <h4>Structures</h4>
-                <div className="stat-value">3 built</div>
-              </div>
-              <div className="stat-card">
-                <h4>Growth Rate</h4>
-                <div className="stat-value">+2.3%</div>
-              </div>
-            </div>
-          )}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
+
 
   return (
     <div className={`game-layout ${theme}`} data-testid="game-layout">
@@ -518,7 +492,12 @@ const GameLayout = ({ colonyId, colonyData }) => {
       <AnimatePresence>
         {showSettingsModal && <SettingsModal />}
         {showHelpModal && <HelpModal />}
-        {showStatsModal && <StatsModal />}
+        {showStatsModal && (
+          <StatisticsPanel 
+            colonyId={colonyId}
+            onClose={() => setShowStatsModal(false)}
+          />
+        )}
         {showAccessibilityPanel && (
           <AccessibilityPanel 
             isOpen={showAccessibilityPanel}

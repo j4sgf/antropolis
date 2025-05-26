@@ -11,7 +11,10 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: [
+    process.env.CLIENT_URL || 'http://localhost:5173',
+    'http://localhost:5174'
+  ],
   credentials: true
 }));
 app.use(express.json());
@@ -63,10 +66,12 @@ const antsRouter = require('./routes/ants');
 const evolutionRouter = require('./routes/evolutionRoutes');
 const techtreeRouter = require('./routes/techtree');
 const tutorialRouter = require('./routes/tutorial');
+const statisticsRouter = require('./routes/statistics');
 
 // Import services
 const ConstructionManager = require('./services/ConstructionManager');
 const StructureEventManager = require('./services/StructureEventManager');
+const { populateTestMilestones } = require('./scripts/populate-test-milestones');
 
 // API routes
 app.use('/api/colonies', coloniesRouter);
@@ -83,6 +88,7 @@ app.use('/api', antsRouter);
 app.use('/api/evolution', evolutionRouter);
 app.use('/api', techtreeRouter);
 app.use('/api/tutorial', tutorialRouter);
+app.use('/api/statistics', statisticsRouter);
 
 app.get('/api/test', (req, res) => {
   res.json({
@@ -125,6 +131,11 @@ app.listen(PORT, async () => {
   
   // Test database connection
   await testConnection();
+  
+  // Populate test data for development
+  if (process.env.NODE_ENV !== 'production') {
+    populateTestMilestones();
+  }
   
   // Initialize services
   ConstructionManager.startProcessing();

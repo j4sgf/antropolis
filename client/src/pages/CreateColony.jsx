@@ -1,9 +1,46 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ColonyCreationForm from '../components/colony/ColonyCreationForm';
+// import { useTutorial } from '../store/TutorialContext';
+// import { usePageTutorial } from '../hooks/useContextualTutorial';
+// import { TUTORIAL_STEPS } from '../constants/tutorialConstants';
 
 const CreateColony = ({ onColonyCreated, onCancel }) => {
   const [showForm, setShowForm] = useState(false);
+  // const { startTutorial, isActive, resetTutorial, isSkipped, completedSteps, featureDiscovery } = useTutorial();
+  
+  // TEMPORARY: Tutorial system disabled
+  // // Auto-trigger contextual tutorial for new users
+  // usePageTutorial('CreateColony', TUTORIAL_STEPS.COLONY_CREATION, {
+  //   delay: 1500 // Give page time to load and render
+  // });
+
+  // // Manual tutorial trigger (for testing/debugging)
+  // const handleStartTutorial = () => {
+  //   console.log('🎓 Manual tutorial trigger clicked');
+  //   startTutorial(TUTORIAL_STEPS.COLONY_CREATION);
+  // };
+
+  // // Reset tutorial progress to test contextual triggers
+  // const handleResetTutorial = () => {
+  //   console.log('🎓 Resetting tutorial progress');
+  //   localStorage.removeItem('tutorial-progress');
+  //   resetTutorial();
+  //   console.log('🎓 Tutorial reset complete');
+  //   // Force page reload to ensure clean state
+  //   setTimeout(() => window.location.reload(), 500);
+  // };
+
+  // // Debug current tutorial state
+  // const handleDebugState = () => {
+  //   console.log('🎓 Current Tutorial State:', {
+  //     isActive,
+  //     isSkipped,
+  //     completedSteps,
+  //     featureDiscovery,
+  //     localStorage: localStorage.getItem('tutorial-progress')
+  //   });
+  // };
 
   const handleStartCreation = () => {
     setShowForm(true);
@@ -104,14 +141,46 @@ const CreateColony = ({ onColonyCreated, onCancel }) => {
           </motion.div>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleStartCreation}
-          className="bg-forest-600 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-forest-700 transition-colors"
-        >
-          Create Your Colony
-        </motion.button>
+        <div className="flex flex-col space-y-4 items-center">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleStartCreation}
+            className="bg-forest-600 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-forest-700 transition-colors"
+          >
+            Create Your Colony
+          </motion.button>
+          
+          {/* Test Tutorial Button */}
+          {/* <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleStartTutorial}
+            className="bg-blue-600 text-white px-6 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors text-sm"
+          >
+            🎓 Test Tutorial {isActive ? '(Active)' : ''}
+          </motion.button>
+
+          {/* Reset Tutorial Button */}
+          {/* <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleResetTutorial}
+            className="bg-red-600 text-white px-6 py-2 rounded-md font-medium hover:bg-red-700 transition-colors text-sm"
+          >
+            🎓 Reset Tutorial
+          </motion.button>
+
+          {/* Debug Tutorial State Button */}
+          {/* <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleDebugState}
+            className="bg-yellow-600 text-white px-6 py-2 rounded-md font-medium hover:bg-yellow-700 transition-colors text-sm"
+          >
+            🎓 Debug Tutorial State
+          </motion.button> */}
+        </div>
 
         <div className="mt-8 text-sm text-earth-500">
           The creation process takes about 2-3 minutes and covers all aspects of your colony setup

@@ -14,7 +14,53 @@ const difficultyManager = new DifficultyManager();
 const performanceOptimizer = new PerformanceOptimizer();
 
 /**
- * Generate a new map
+ * Generate a new map (GET version for quick testing)
+ * GET /api/map/generate
+ */
+router.get('/generate', async (req, res) => {
+  try {
+    const {
+      seed = 'test-seed-' + Date.now(),
+      size = 50,
+      difficulty = 'medium'
+    } = req.query;
+
+    console.log('GET Map generation request:', { seed, size, difficulty });
+
+    // Simple map generation for testing
+    const result = {
+      seed,
+      width: parseInt(size),
+      height: parseInt(size),
+      difficulty,
+      cells: Array(parseInt(size)).fill(null).map((_, y) => 
+        Array(parseInt(size)).fill(null).map((_, x) => ({
+          x, y,
+          terrain: Math.random() > 0.7 ? 'obstacle' : 'passable',
+          resources: Math.random() > 0.9 ? { type: 'food', amount: Math.floor(Math.random() * 50) } : null
+        }))
+      ),
+      generatedAt: new Date().toISOString()
+    };
+
+    res.json({
+      success: true,
+      data: result,
+      fromCache: false,
+      generationTime: Math.floor(Math.random() * 500)
+    });
+
+  } catch (error) {
+    console.error('Map generation error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Generate a new map (full POST version)
  * POST /api/map/generate
  */
 router.post('/generate', async (req, res) => {

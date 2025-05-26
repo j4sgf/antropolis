@@ -11,6 +11,54 @@ let isDevelopmentMode = false;
 const mockData = {
   buildings: [],
   ants: [],
+  colony_statistics: [],
+  colony_events: [],
+  colony_milestones: [],
+  colony_sessions: [],
+  ai_colonies: [
+    {
+      id: 'ai_colony_001',
+      name: 'Crimson Swarm',
+      population: 85,
+      type: 'aggressive',
+      is_active: true,
+      personality: 'aggressive',
+      difficulty_level: 'medium',
+      threat_level: 0.6,
+      ai_state: 'expanding',
+      aggression_level: 0.8,
+      last_ai_update: new Date().toISOString(),
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 'ai_colony_002',
+      name: 'Stone Builders',
+      population: 120,
+      type: 'defensive',
+      is_active: true,
+      personality: 'defensive',
+      difficulty_level: 'hard',
+      threat_level: 0.3,
+      ai_state: 'building',
+      aggression_level: 0.2,
+      last_ai_update: new Date().toISOString(),
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 'ai_colony_003',
+      name: 'Swift Raiders',
+      population: 65,
+      type: 'scout',
+      is_active: true,
+      personality: 'opportunist',
+      difficulty_level: 'easy',
+      threat_level: 0.4,
+      ai_state: 'raiding',
+      aggression_level: 0.9,
+      last_ai_update: new Date().toISOString(),
+      created_at: new Date().toISOString()
+    }
+  ],
   colonies: [
     {
       id: 'mock-id',
@@ -183,6 +231,26 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || s
       return this;
     }
 
+    gte(field, value) {
+      this.conditions.push({ field, operator: 'gte', value });
+      return this;
+    }
+
+    lte(field, value) {
+      this.conditions.push({ field, operator: 'lte', value });
+      return this;
+    }
+
+    gt(field, value) {
+      this.conditions.push({ field, operator: 'gt', value });
+      return this;
+    }
+
+    lt(field, value) {
+      this.conditions.push({ field, operator: 'lt', value });
+      return this;
+    }
+
     order(field, options = { ascending: true }) {
       this.orderField = field;
       this.orderAsc = options.ascending;
@@ -207,11 +275,21 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || s
       
       return this.conditions.every(condition => {
         const { field, operator, value } = condition;
+        const itemValue = item[field];
+        
         switch (operator) {
           case 'eq':
-            return item[field] === value;
+            return itemValue === value;
           case 'neq':
-            return item[field] !== value;
+            return itemValue !== value;
+          case 'gte':
+            return itemValue >= value;
+          case 'lte':
+            return itemValue <= value;
+          case 'gt':
+            return itemValue > value;
+          case 'lt':
+            return itemValue < value;
           default:
             return true;
         }
@@ -352,7 +430,16 @@ async function testConnection() {
 // Helper function to handle database errors
 function handleDatabaseError(error, operation = 'database operation') {
   if (isDevelopmentMode) {
-    console.log(`Mock database operation: ${operation}`);
+    // In development mode, only return mock data for actual database-specific errors
+    // Don't mask real application logic errors
+    console.error(`Development mode error during ${operation}:`, error);
+    
+    // If it's an actual application error (not database), re-throw it
+    if (error && error.message && !error.code) {
+      return { success: false, error: error.message };
+    }
+    
+    console.log(`Mock database fallback for: ${operation}`);
     return { success: true, data: { id: 'mock-id' } };
   }
 
@@ -374,5 +461,6 @@ module.exports = {
   supabase,
   testConnection,
   handleDatabaseError,
-  isDevelopmentMode
+  isDevelopmentMode,
+  mockData
 }; 
