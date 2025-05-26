@@ -1,6 +1,6 @@
 # Task ID: 22
 # Title: Onboarding Tutorial System
-# Status: pending
+# Status: done
 # Dependencies: 3, 4, 6, 7, 10, 13, 20
 # Priority: medium
 # Description: Implement an onboarding tutorial to guide new players through game mechanics.
@@ -24,7 +24,7 @@
 Test tutorial flow for clarity and completeness. Verify guided tooltips appear correctly. Test interactive tasks can be completed as instructed. Verify skip option works properly. Test context-sensitive help triggers appropriately. Verify tutorial progress is tracked correctly.
 
 # Subtasks:
-## 1. Implement Tutorial State Management System [pending]
+## 1. Implement Tutorial State Management System [done]
 ### Dependencies: None
 ### Description: Create a state management system to track tutorial progress, store completed steps, and manage the tutorial flow.
 ### Details:
@@ -34,7 +34,7 @@ Test tutorial flow for clarity and completeness. Verify guided tooltips appear c
 4. Implement API endpoints for fetching and updating tutorial progress (/api/tutorial/progress)
 5. Create utility functions for determining which tutorial step to show based on user actions
 
-## 2. Design and Implement Tutorial UI Components [pending]
+## 2. Design and Implement Tutorial UI Components [done]
 ### Dependencies: 22.1
 ### Description: Create reusable UI components for the tutorial system including tooltips, highlight overlays, and instruction panels.
 ### Details:
@@ -45,7 +45,7 @@ Test tutorial flow for clarity and completeness. Verify guided tooltips appear c
 5. Implement animations for smooth transitions between tutorial steps
 6. Style all components according to the game's design system
 
-## 3. Implement Tutorial Content and Flow Logic [pending]
+## 3. Implement Tutorial Content and Flow Logic [done]
 ### Dependencies: 22.1, 22.2
 ### Description: Define the step-by-step tutorial content, sequence logic, and conditions for progressing through each tutorial stage.
 ### Details:
@@ -56,7 +56,7 @@ Test tutorial flow for clarity and completeness. Verify guided tooltips appear c
 5. Add logic to trigger contextual help based on user actions or inactivity
 6. Create tutorial reward system that grants in-game bonuses upon completion
 
-## 4. Implement Interactive Tutorial Tasks and Rewards [pending]
+## 4. Implement Interactive Tutorial Tasks and Rewards [done]
 ### Dependencies: 22.3
 ### Description: Create the interactive tasks for each tutorial section with clear objectives, guidance, and reward system.
 ### Details:
@@ -67,7 +67,7 @@ Test tutorial flow for clarity and completeness. Verify guided tooltips appear c
 5. Create simplified versions of game mechanics specifically for tutorial mode
 6. Implement backend endpoints to track and store tutorial task completion (/api/tutorial/tasks)
 
-## 5. Implement Tutorial Settings and Accessibility Features [pending]
+## 5. Implement Tutorial Settings and Accessibility Features [done]
 ### Dependencies: 22.1, 22.2, 22.3, 22.4
 ### Description: Add options to skip, replay, or customize the tutorial experience, along with accessibility considerations.
 ### Details:

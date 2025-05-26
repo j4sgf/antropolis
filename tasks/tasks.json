@@ -1423,7 +1423,7 @@
         13,
         20
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -1431,7 +1431,7 @@
           "description": "Create a state management system to track tutorial progress, store completed steps, and manage the tutorial flow.",
           "dependencies": [],
           "details": "1. Create a TutorialContext using React Context API to manage global tutorial state\n2. Implement a TutorialReducer with actions for starting, progressing, completing, and skipping tutorial steps\n3. Create a database schema for storing user tutorial progress (users_tutorial_progress table with columns: user_id, completed_steps, last_step, completed_at, skipped)\n4. Implement API endpoints for fetching and updating tutorial progress (/api/tutorial/progress)\n5. Create utility functions for determining which tutorial step to show based on user actions",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Unit test the reducer logic with Jest. Create integration tests for API endpoints. Test persistence of tutorial state across page refreshes."
         },
         {
@@ -1442,7 +1442,7 @@
             1
           ],
           "details": "1. Create a TutorialOverlay component that dims the screen and highlights specific UI elements\n2. Implement a TutorialTooltip component that can be positioned relative to any game element\n3. Design a TutorialPanel component for displaying step instructions and progress\n4. Create a TutorialControls component with next/back/skip buttons\n5. Implement animations for smooth transitions between tutorial steps\n6. Style all components according to the game's design system",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Create component tests with React Testing Library. Test responsive behavior across different screen sizes. Verify accessibility compliance."
         },
         {
@@ -1454,7 +1454,7 @@
             2
           ],
           "details": "1. Create a tutorialSteps.js file defining all tutorial steps with content, target elements, and completion criteria\n2. Implement step sequencing logic in TutorialController.js to manage the flow between steps\n3. Create condition checkers for each tutorial step (e.g., verifyColonyCreated(), checkAntRoleAssigned())\n4. Implement event listeners to detect when a user completes a tutorial action\n5. Add logic to trigger contextual help based on user actions or inactivity\n6. Create tutorial reward system that grants in-game bonuses upon completion",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the tutorial flow with user scenarios. Verify that all completion conditions correctly trigger progression. Test edge cases like skipping steps or refreshing mid-tutorial."
         },
         {
@@ -1465,7 +1465,7 @@
             3
           ],
           "details": "1. Implement guided tasks for each game mechanic (colony creation, ant roles, foraging, building, battles, evolution)\n2. Create a TutorialTask component that displays current objective and tracks completion\n3. Implement a reward distribution system that grants resources/bonuses upon task completion\n4. Add visual feedback for task completion (animations, sound effects)\n5. Create simplified versions of game mechanics specifically for tutorial mode\n6. Implement backend endpoints to track and store tutorial task completion (/api/tutorial/tasks)",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test each tutorial task individually to ensure objectives can be completed. Verify rewards are correctly distributed. Test the tutorial with both new and experienced players."
         },
         {
@@ -1479,7 +1479,7 @@
             4
           ],
           "details": "1. Create a TutorialSettings component in the game settings menu\n2. Implement skip functionality that marks all tutorial steps as complete\n3. Add tutorial replay option that resets progress and restarts the tutorial\n4. Create a help system that allows players to access specific tutorial sections on demand\n5. Implement keyboard shortcuts for navigating the tutorial\n6. Add accessibility features like screen reader support and alternative instruction methods\n7. Create analytics tracking to measure tutorial completion rates and identify pain points",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test settings persistence across sessions. Verify tutorial can be properly skipped and replayed. Conduct accessibility testing with screen readers and keyboard-only navigation."
         }
       ]

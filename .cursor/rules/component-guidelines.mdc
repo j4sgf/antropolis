@@ -5,6 +5,9 @@ alwaysApply: false
 ---
 # Component & Project Guidelines
 
+
+## IMPORTANT RULES
+- **UPDATE INFO** Always update TaskMaster Task statuses, Project_status_reference.md after every subtask. Push all modified, uncomitted, staged changes to github after every subtask. This is importan so that when I lose our chat history, you could easily be reminded of our progress.
 ## Tech Stack & Library Versions
 - **Frontend:** React 18, Vite, Zustand, React Router, Framer Motion, TailwindCSS 3
 - **Backend:** Node.js, Express 4, PostgreSQL, Supabase, dotenv, cors

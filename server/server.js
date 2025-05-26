@@ -62,6 +62,7 @@ const explorationRouter = require('./routes/exploration');
 const antsRouter = require('./routes/ants');
 const evolutionRouter = require('./routes/evolutionRoutes');
 const techtreeRouter = require('./routes/techtree');
+const tutorialRouter = require('./routes/tutorial');
 
 // Import services
 const ConstructionManager = require('./services/ConstructionManager');
@@ -81,6 +82,7 @@ app.use('/api/exploration', explorationRouter);
 app.use('/api', antsRouter);
 app.use('/api/evolution', evolutionRouter);
 app.use('/api', techtreeRouter);
+app.use('/api/tutorial', tutorialRouter);
 
 app.get('/api/test', (req, res) => {
   res.json({

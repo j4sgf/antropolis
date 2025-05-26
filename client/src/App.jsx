@@ -5,7 +5,9 @@ import CreateColony from './pages/CreateColony'
 import ColonyDashboard from './pages/ColonyDashboard'
 import GameLayout from './components/layout/GameLayout'
 import { AccessibilityProvider } from './store/AccessibilityContext'
+import { TutorialProvider } from './store/TutorialContext'
 import ScreenReaderSupport from './components/accessibility/ScreenReaderSupport'
+import { TutorialOverlay, TutorialTooltip, TutorialControls, TutorialStarter } from './components/tutorial'
 
 // Home page component
 function HomePage() {
@@ -105,6 +107,16 @@ function HomePage() {
               </p>
               <div className="text-sm text-earth-500">✅ Now Available!</div>
             </motion.div>
+
+            {/* Tutorial Card */}
+            <motion.div
+              whileHover={{ scale: 1.05, y: -10 }}
+              className="md:col-span-2 lg:col-span-1"
+            >
+              <TutorialStarter variant="card">
+                Perfect for new players who want to learn the game mechanics step by step.
+              </TutorialStarter>
+            </motion.div>
           </div>
 
           {/* Development Status */}
@@ -168,38 +180,46 @@ function HomePage() {
 function App() {
   return (
     <AccessibilityProvider>
-      <ScreenReaderSupport>
-        <Router>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route 
-              path="/create-colony" 
-              element={
-                <CreateColony 
-                  onColonyCreated={(colony) => {
-                    console.log('Colony created:', colony)
-                    // Navigate directly to game (Task 20 implementation)
-                    window.location.href = `/game/${colony.id}`
-                  }}
-                  onCancel={() => {
-                    console.log('Colony creation cancelled')
-                    // Navigate back to home
-                    window.location.href = '/'
-                  }}
+      <TutorialProvider>
+        <ScreenReaderSupport>
+          <TutorialOverlay>
+            <Router>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route 
+                  path="/create-colony" 
+                  element={
+                    <CreateColony 
+                      onColonyCreated={(colony) => {
+                        console.log('Colony created:', colony)
+                        // Navigate directly to game (Task 20 implementation)
+                        window.location.href = `/game/${colony.id}`
+                      }}
+                      onCancel={() => {
+                        console.log('Colony creation cancelled')
+                        // Navigate back to home
+                        window.location.href = '/'
+                      }}
+                    />
+                  } 
                 />
-              } 
-            />
-            <Route 
-              path="/colony/:colonyId" 
-              element={<ColonyDashboard />} 
-            />
-            <Route 
-              path="/game/:colonyId" 
-              element={<GameLayout />} 
-            />
-          </Routes>
-        </Router>
-      </ScreenReaderSupport>
+                <Route 
+                  path="/colony/:colonyId" 
+                  element={<ColonyDashboard />} 
+                />
+                <Route 
+                  path="/game/:colonyId" 
+                  element={<GameLayout />} 
+                />
+              </Routes>
+              
+              {/* Tutorial UI Components */}
+              <TutorialTooltip />
+              <TutorialControls />
+            </Router>
+          </TutorialOverlay>
+        </ScreenReaderSupport>
+      </TutorialProvider>
     </AccessibilityProvider>
   )
 }
