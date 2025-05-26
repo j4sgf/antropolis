@@ -48,7 +48,7 @@ class ScoutService {
    * Initialize exploration system for colony
    */
   async initializeExploration(colonyId) {
-    const response = await fetch(`${API_BASE_URL}/api/exploration/${colonyId}/initialize`, {
+    const response = await fetch(`${API_BASE_URL}/exploration/${colonyId}/initialize`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -200,7 +200,7 @@ class ScoutService {
       const scoutPositions = this.getScoutPositions();
       
       const response = await fetch(
-        `${API_BASE_URL}/api/exploration/${this.activeColony}/update-scouts`,
+        `${API_BASE_URL}/exploration/${this.activeColony}/update-scouts`,
         {
           method: 'POST',
           headers: {
@@ -257,7 +257,7 @@ class ScoutService {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/exploration/${this.activeColony}/status?includeDetails=true`
+        `${API_BASE_URL}/exploration/${this.activeColony}/status?includeDetails=true`
       );
 
       if (!response.ok) {
@@ -281,7 +281,7 @@ class ScoutService {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/exploration/${this.activeColony}/explore-tiles`,
+        `${API_BASE_URL}/exploration/${this.activeColony}/explore-tiles`,
         {
           method: 'POST',
           headers: {
@@ -312,7 +312,7 @@ class ScoutService {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/exploration/${this.activeColony}/explore-area`,
+        `${API_BASE_URL}/exploration/${this.activeColony}/explore-area`,
         {
           method: 'POST',
           headers: {
@@ -343,7 +343,7 @@ class ScoutService {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/exploration/${this.activeColony}/process-decay`,
+        `${API_BASE_URL}/exploration/${this.activeColony}/process-decay`,
         {
           method: 'POST'
         }

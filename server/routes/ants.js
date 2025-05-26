@@ -19,13 +19,9 @@ router.put('/ants/batch-assign', antController.batchUpdateAntRoles);
 // Get detailed statistics for a specific ant
 router.get('/ants/:antId/stats', antController.getAntStatistics);
 
-// Get role distribution for a colony
-router.get('/colonies/:colonyId/role-distribution', antController.getRoleDistribution);
-
 // Validate role assignment
 router.post('/ants/validate-assignment', antController.validateRoleAssignment);
 
-// Get role recommendations based on colony state
-router.get('/colonies/:colonyId/role-recommendations', antController.getRoleRecommendations);
+// Note: role-distribution and role-recommendations endpoints are now handled in colonies.js
 
 module.exports = router; 

@@ -53,6 +53,7 @@ const LeftPanel = ({ colonyId, colonyData, onCollapse, theme, onColonyUpdate }) 
         roles: roleResponse
       });
 
+      console.log('🔍 Setting realTimeStats with population:', colonyResponse.data?.population);
       setRealTimeStats(colonyResponse.data);
       setAntStats(antResponse.data);
       setRoleDistribution(roleResponse);
@@ -171,6 +172,13 @@ const LeftPanel = ({ colonyId, colonyData, onCollapse, theme, onColonyUpdate }) 
       larvae: antStats?.egg_count || 0
     }
   } : null;
+
+  // Debug logging for population display
+  console.log('🐜 Colony stats calculated:', {
+    realTimeStats: realTimeStats,
+    population: colonyStats?.population,
+    hasRealTimeStats: !!realTimeStats
+  });
 
   if (loading) {
     return (
@@ -321,7 +329,7 @@ const LeftPanel = ({ colonyId, colonyData, onCollapse, theme, onColonyUpdate }) 
           
           <div className="roles-list">
             {Object.entries(roleConfig).map(([roleType, config], index) => {
-              const count = roleDistribution[roleType] || 0;
+              const count = roleDistribution[roleType]?.count || 0;
               const maxCount = Math.floor((colonyStats?.population || 0) * 0.3); // Max 30% per role
               const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
 

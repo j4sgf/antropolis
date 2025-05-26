@@ -1,6 +1,6 @@
 # Task ID: 22
 # Title: Onboarding Tutorial System
-# Status: pending
+# Status: done
 # Dependencies: 3, 4, 6, 7, 10, 13, 20
 # Priority: medium
 # Description: Implement a contextual onboarding tutorial system to guide new players through game mechanics as they encounter them.

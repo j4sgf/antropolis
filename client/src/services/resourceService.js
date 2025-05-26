@@ -13,7 +13,7 @@ class ResourceService {
    */
   async getResourceTypes() {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/types`);
+      const response = await fetch(`${API_BASE_URL}/resources/types`);
       if (!response.ok) throw new Error('Failed to fetch resource types');
       return await response.json();
     } catch (error) {
@@ -27,7 +27,7 @@ class ResourceService {
    */
   async getColonyStorage(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/storage`);
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/storage`);
       if (!response.ok) throw new Error('Failed to fetch colony storage');
       return await response.json();
     } catch (error) {
@@ -45,7 +45,7 @@ class ResourceService {
       if (filters.type) params.append('type', filters.type);
       if (filters.zone) params.append('zone', filters.zone);
       
-      const url = `${API_BASE_URL}/api/resources/colony/${colonyId}${params.toString() ? `?${params}` : ''}`;
+      const url = `${API_BASE_URL}/resources/colony/${colonyId}${params.toString() ? `?${params}` : ''}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch colony resources');
       return await response.json();
@@ -60,7 +60,7 @@ class ResourceService {
    */
   async addResourcesToColony(colonyId, resourceData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(resourceData)
@@ -78,7 +78,7 @@ class ResourceService {
    */
   async transferResources(colonyId, transferData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/transfer`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/transfer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(transferData)
@@ -96,7 +96,7 @@ class ResourceService {
    */
   async reserveResources(colonyId, reservationData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/reserve`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/reserve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reservationData)
@@ -116,7 +116,7 @@ class ResourceService {
    */
   async getConversionRecipes() {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/conversions/recipes`);
+      const response = await fetch(`${API_BASE_URL}/resources/conversions/recipes`);
       if (!response.ok) throw new Error('Failed to fetch conversion recipes');
       return await response.json();
     } catch (error) {
@@ -130,7 +130,7 @@ class ResourceService {
    */
   async startConversion(colonyId, conversionData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/conversions/start`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/conversions/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(conversionData)
@@ -148,7 +148,7 @@ class ResourceService {
    */
   async getActiveConversions(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/conversions/active`);
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/conversions/active`);
       if (!response.ok) throw new Error('Failed to fetch active conversions');
       return await response.json();
     } catch (error) {
@@ -164,7 +164,7 @@ class ResourceService {
    */
   async getRandomEventTypes() {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/events/types`);
+      const response = await fetch(`${API_BASE_URL}/resources/events/types`);
       if (!response.ok) throw new Error('Failed to fetch event types');
       return await response.json();
     } catch (error) {
@@ -178,7 +178,7 @@ class ResourceService {
    */
   async getActiveEvents(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/events/active`);
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/events/active`);
       if (!response.ok) throw new Error('Failed to fetch active events');
       return await response.json();
     } catch (error) {
@@ -192,7 +192,7 @@ class ResourceService {
    */
   async triggerRandomEvent(colonyId, eventType) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/events/trigger`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/events/trigger`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventType })
@@ -206,11 +206,11 @@ class ResourceService {
   }
 
   /**
-   * Get resource event manager statistics
+   * Get event statistics
    */
   async getEventStats() {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/events/stats`);
+      const response = await fetch(`${API_BASE_URL}/resources/events/stats`);
       if (!response.ok) throw new Error('Failed to fetch event stats');
       return await response.json();
     } catch (error) {
@@ -222,12 +222,12 @@ class ResourceService {
   // ===== MAP RESOURCES =====
 
   /**
-   * Get resources in a map area
+   * Get map resources in a specific area
    */
   async getMapResources(x, y, radius = 50) {
     try {
       const params = new URLSearchParams({ x, y, radius });
-      const response = await fetch(`${API_BASE_URL}/api/resources/map?${params}`);
+      const response = await fetch(`${API_BASE_URL}/resources/map?${params}`);
       if (!response.ok) throw new Error('Failed to fetch map resources');
       return await response.json();
     } catch (error) {
@@ -237,11 +237,11 @@ class ResourceService {
   }
 
   /**
-   * Harvest resource from map
+   * Harvest a map resource
    */
   async harvestMapResource(resourceId, harvestData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/map/${resourceId}/harvest`, {
+      const response = await fetch(`${API_BASE_URL}/resources/map/${resourceId}/harvest`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(harvestData)
@@ -255,11 +255,11 @@ class ResourceService {
   }
 
   /**
-   * Generate random resources in an area
+   * Generate new map resources
    */
   async generateMapResources(generationData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/map/generate`, {
+      const response = await fetch(`${API_BASE_URL}/resources/map/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(generationData)
@@ -275,11 +275,11 @@ class ResourceService {
   // ===== RESOURCE DECAY =====
 
   /**
-   * Process decay for colony resources
+   * Process resource decay for a colony
    */
   async processResourceDecay(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/decay`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/decay`, {
         method: 'POST'
       });
       if (!response.ok) throw new Error('Failed to process decay');
@@ -291,12 +291,14 @@ class ResourceService {
   }
 
   /**
-   * Force decay processing for a colony
+   * Force decay processing (for testing)
    */
   async forceDecayProcessing(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/decay/process`, {
-        method: 'POST'
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/decay/process`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ force: true })
       });
       if (!response.ok) throw new Error('Failed to force decay processing');
       return await response.json();
@@ -306,14 +308,14 @@ class ResourceService {
     }
   }
 
-  // ===== UTILITY METHODS =====
+  // ===== SIMULATION =====
 
   /**
-   * Simulate events for testing
+   * Simulate resource events for testing
    */
   async simulateEvents(colonyId, duration = 60) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/resources/colony/${colonyId}/events/simulate`, {
+      const response = await fetch(`${API_BASE_URL}/resources/colony/${colonyId}/events/simulate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ duration })

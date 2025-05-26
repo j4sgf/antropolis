@@ -4,7 +4,7 @@ import colonyService from '../../services/colonyService';
 import './CenterPanel.css';
 
 const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullscreen }) => {
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const [zoomLevel, setZoomLevel] = useState(2.5);
   const [isPanning, setIsPanning] = useState(false);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [selectedElement, setSelectedElement] = useState(null);
@@ -16,6 +16,8 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
   const [loading, setLoading] = useState(true);
   const canvasRef = useRef(null);
   const panStartRef = useRef({ x: 0, y: 0 });
+  const mouseStartRef = useRef({ x: 0, y: 0 });
+  const hasPannedRef = useRef(false);
 
   // Load simulation data
   useEffect(() => {
@@ -32,6 +34,28 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
     }
   }, [colonyId, isPlaying, simulationSpeed]);
 
+  // Auto-center when simulation data is first loaded (only once)
+  const [hasAutocentered, setHasAutocentered] = useState(false);
+  
+  useEffect(() => {
+    if (simulationData && canvasRef.current && !hasAutocentered) {
+      // Use multiple attempts to ensure centering works
+      const attemptCenter = () => {
+        const viewport = canvasRef.current?.getBoundingClientRect();
+        if (viewport && viewport.width > 0 && viewport.height > 0) {
+          console.log('🎯 Auto-centering to colony on initial data load');
+          centerToColony();
+          setHasAutocentered(true); // Prevent repeated auto-centering
+        } else {
+          // Retry if viewport not ready
+          setTimeout(attemptCenter, 50);
+        }
+      };
+      
+      setTimeout(attemptCenter, 100);
+    }
+  }, [simulationData, hasAutocentered]);
+
   const loadSimulationData = async () => {
     try {
       setLoading(true);
@@ -43,7 +67,28 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
 
       // Generate simulation layout
       const colony = colonyResponse.data;
-      const ants = antsResponse.data?.ants || [];
+      // Fix: API returns ants directly in data array, not in data.ants
+      const ants = antsResponse.data || [];
+      
+      console.log('🏛️ Colony data received:', {
+        colonyId: colonyId,
+        colony: colony,
+        population: colony?.population
+      });
+      
+      console.log('🐜 Processing ants for simulation:', {
+        colonyId: colonyId,
+        antCount: ants.length,
+        antsResponse: antsResponse.data,
+        ants: ants.map(ant => ({
+          id: ant.id,
+          name: ant.name,
+          role: ant.role,
+          position: ant.position,
+          health: ant.health,
+          energy: ant.energy
+        }))
+      });
       
       setSimulationData({
         colony: {
@@ -54,20 +99,55 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
           name: colony.name,
           efficiency: colony.efficiency || 0.8
         },
-        ants: ants.slice(0, Math.min(50, ants.length)).map((ant, index) => ({
-          id: ant.id,
-          x: 280 + (Math.random() - 0.5) * 100,
-          y: 280 + (Math.random() - 0.5) * 100,
-          type: ant.role,
-          activity: getActivityForRole(ant.role),
-          energy: Math.random() * 100,
-          targetX: 280 + (Math.random() - 0.5) * 200,
-          targetY: 280 + (Math.random() - 0.5) * 200,
-          speed: getRoleSpeed(ant.role)
-        })),
+        ants: ants.slice(0, Math.min(50, ants.length)).map((ant, index) => {
+          // Convert ant grid positions to simulation coordinates
+          // Grid positions are small integers, scale them to simulation space
+          const baseX = 300; // Colony center X
+          const baseY = 300; // Colony center Y
+          const scale = 20; // Scale factor for grid positions
+          
+          const processedAnt = {
+            id: ant.id,
+            x: baseX + (ant.position?.x || 0) * scale,
+            y: baseY + (ant.position?.y || 0) * scale,
+            type: ant.role,
+            activity: getActivityForRole(ant.role),
+            energy: ant.energy || Math.random() * 100,
+            targetX: baseX + (ant.position?.x || 0) * scale + (Math.random() - 0.5) * 40,
+            targetY: baseY + (ant.position?.y || 0) * scale + (Math.random() - 0.5) * 40,
+            speed: getRoleSpeed(ant.role),
+            health: ant.health || 100,
+            name: ant.name,
+            state: ant.state || 'idle'
+          };
+          
+          console.log(`🐜 Processed ant ${index + 1}:`, {
+            original: { id: ant.id, name: ant.name, position: ant.position },
+            processed: { id: processedAnt.id, x: processedAnt.x, y: processedAnt.y, type: processedAnt.type }
+          });
+          
+          return processedAnt;
+        }),
         resources: generateResources(),
         territory: generateTerritory(colony),
         structures: generateStructures()
+      });
+      
+      console.log('✅ Simulation data set with processed ants:', {
+        antCount: ants.length,
+        processedAnts: ants.slice(0, Math.min(50, ants.length)).map((ant, index) => {
+          const baseX = 300;
+          const baseY = 300;
+          const scale = 20;
+          return {
+            id: ant.id,
+            name: ant.name,
+            originalPosition: ant.position,
+            simulationX: baseX + (ant.position?.x || 0) * scale,
+            simulationY: baseY + (ant.position?.y || 0) * scale,
+            role: ant.role
+          };
+        })
       });
     } catch (error) {
       console.error('Error loading simulation data:', error);
@@ -171,23 +251,83 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
   });
 
   // Event handlers
-  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.2, 3));
-  const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.2, 0.3));
+  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.2, 5));
+  const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.2, 0.5));
+  
+  const centerToColony = () => {
+    if (!simulationData?.colony) {
+      console.log('❌ Cannot center: no simulation data or colony');
+      return;
+    }
+    
+    // Get viewport dimensions
+    const viewport = canvasRef.current?.getBoundingClientRect();
+    if (!viewport) {
+      console.log('❌ Cannot center: no viewport');
+      return;
+    }
+    
+    // Calculate offset to center colony in viewport
+    // With transform order: translate(panX, panY) scale(zoom)
+    // Screen point = pan + (world point * zoom)
+    // So: pan = screen point - (world point * zoom)
+    const centerX = viewport.width / 2;
+    const centerY = viewport.height / 2;
+    const colonyWorldX = simulationData.colony.x;
+    const colonyWorldY = simulationData.colony.y;
+    
+    // Set pan offset so that colony appears at center of viewport
+    const newPanOffset = {
+      x: centerX - (colonyWorldX * zoomLevel),
+      y: centerY - (colonyWorldY * zoomLevel)
+    };
+    
+    console.log('🎯 Centering to colony:', {
+      viewport: { width: viewport.width, height: viewport.height },
+      center: { x: centerX, y: centerY },
+      colonyWorld: { x: colonyWorldX, y: colonyWorldY },
+      zoomLevel,
+      currentPanOffset: panOffset,
+      newPanOffset,
+      transformOrder: 'translate(pan) scale(zoom)',
+      colonyScreenPosition: {
+        x: newPanOffset.x + (colonyWorldX * zoomLevel),
+        y: newPanOffset.y + (colonyWorldY * zoomLevel)
+      }
+    });
+    
+    setPanOffset(newPanOffset);
+  };
+
   const handleResetView = () => {
-    setZoomLevel(1);
-    setPanOffset({ x: 0, y: 0 });
+    setZoomLevel(2.5);
     setSelectedElement(null);
+    // Center after zoom is set
+    setTimeout(() => {
+      centerToColony();
+    }, 50);
   };
 
   const handleMouseDown = (event) => {
-    if (event.button === 1 || event.shiftKey) { // Middle mouse or Shift+click for panning
+    if (event.button === 0) { // Left mouse button for panning
       setIsPanning(true);
       panStartRef.current = { x: event.clientX - panOffset.x, y: event.clientY - panOffset.y };
+      mouseStartRef.current = { x: event.clientX, y: event.clientY };
+      hasPannedRef.current = false;
+      event.preventDefault(); // Prevent text selection
     }
   };
 
   const handleMouseMove = (event) => {
     if (isPanning) {
+      const deltaX = Math.abs(event.clientX - mouseStartRef.current.x);
+      const deltaY = Math.abs(event.clientY - mouseStartRef.current.y);
+      
+      // If mouse has moved more than 5 pixels, consider it panning
+      if (deltaX > 5 || deltaY > 5) {
+        hasPannedRef.current = true;
+      }
+      
       setPanOffset({
         x: event.clientX - panStartRef.current.x,
         y: event.clientY - panStartRef.current.y
@@ -197,10 +337,45 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
 
   const handleMouseUp = () => setIsPanning(false);
 
-  const handleCanvasClick = (event) => {
-    if (isPanning) return;
+  const handleWheel = (event) => {
+    event.preventDefault();
     
     const rect = canvasRef.current.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    
+    const delta = event.deltaY > 0 ? -0.15 : 0.15;
+    const newZoomLevel = Math.max(0.5, Math.min(5.0, zoomLevel + delta));
+    
+    if (newZoomLevel !== zoomLevel) {
+      // Google Maps style zoom: keep the point under the mouse cursor fixed
+      // With transform order: translate(panX, panY) scale(zoom)
+      // Screen point = pan + (world point * zoom)
+      // So: world point = (screen point - pan) / zoom
+      
+      const worldX = (mouseX - panOffset.x) / zoomLevel;
+      const worldY = (mouseY - panOffset.y) / zoomLevel;
+      
+      // Calculate new pan offset to keep the same world point under the mouse
+      // mouseX = newPanX + (worldX * newZoom)
+      // newPanX = mouseX - (worldX * newZoom)
+      const newPanX = mouseX - (worldX * newZoomLevel);
+      const newPanY = mouseY - (worldY * newZoomLevel);
+      
+      setZoomLevel(newZoomLevel);
+      setPanOffset({ x: newPanX, y: newPanY });
+    }
+  };
+
+  const handleCanvasClick = (event) => {
+    // Don't handle clicks if we were panning
+    if (hasPannedRef.current) return;
+    
+    const rect = canvasRef.current.getBoundingClientRect();
+    // Convert screen coordinates to world coordinates
+    // With transform: translate(panX, panY) scale(zoom)
+    // Screen point = pan + (world point * zoom)
+    // So: world point = (screen point - pan) / zoom
     const x = (event.clientX - rect.left - panOffset.x) / zoomLevel;
     const y = (event.clientY - rect.top - panOffset.y) / zoomLevel;
     
@@ -261,6 +436,11 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
         case 'R':
           handleResetView();
           break;
+        case 'c':
+        case 'C':
+          console.log('🎯 Manual center keyboard shortcut pressed');
+          centerToColony();
+          break;
         case ' ':
           event.preventDefault();
           setIsPlaying(!isPlaying);
@@ -284,8 +464,8 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
   const renderSimulation = () => {
     if (!simulationData) return null;
 
-    const scale = zoomLevel;
-    const transform = `scale(${scale}) translate(${panOffset.x / scale}px, ${panOffset.y / scale}px)`;
+    // Proper transform order: translate first, then scale
+    const transform = `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoomLevel})`;
     
     return (
       <div className="simulation-content" style={{ transform }}>
@@ -483,10 +663,20 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
           <div className="view-controls">
             <button 
               className="control-button"
-              onClick={handleResetView}
-              title="Reset View (R)"
+              onClick={() => {
+                console.log('🎯 Manual center button clicked');
+                centerToColony();
+              }}
+              title="Center to Colony (C)"
             >
               🎯
+            </button>
+            <button 
+              className="control-button"
+              onClick={handleResetView}
+              title="Reset View & Center (R)"
+            >
+              🔄
             </button>
             <button 
               className={`control-button ${showGrid ? 'active' : ''}`}
@@ -522,6 +712,7 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onWheel={handleWheel}
         style={{ cursor: isPanning ? 'grabbing' : 'grab' }}
       >
         {renderSimulation()}
@@ -592,7 +783,7 @@ const CenterPanel = ({ colonyId, colonyData, isFullscreen, theme, onToggleFullsc
           <>
             <div className="stat-item">
               <span className="stat-label">Ants:</span>
-              <span className="stat-value">{simulationData.ants.length}</span>
+              <span className="stat-value">{simulationData.colony.population}</span>
             </div>
             <div className="stat-item">
               <span className="stat-label">Resources:</span>

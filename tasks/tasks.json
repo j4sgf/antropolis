@@ -907,7 +907,7 @@
         12,
         13
       ],
-      "status": "pending",
+      "status": "done",
       "subtasks": [
         {
           "id": 1,
@@ -915,7 +915,7 @@
           "description": "Design and implement the data model for difficulty settings and create backend API endpoints to manage them.",
           "dependencies": [],
           "details": "1. Create a new 'difficulty_settings' table in PostgreSQL with columns for difficulty level, resource_multiplier, ai_aggressiveness, evolution_cost_multiplier, battle_outcome_modifier, and hazard_frequency.\n2. Implement default values for Easy, Normal, Hard difficulty presets.\n3. Create a schema for custom difficulty settings storage.\n4. Develop RESTful API endpoints in Node.js/Express: GET /api/difficulty-settings, POST /api/difficulty-settings/custom, PUT /api/difficulty-settings/current.\n5. Implement service layer functions to retrieve and update difficulty settings.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write unit tests for the API endpoints using Jest. Test each endpoint with valid and invalid inputs. Create integration tests to verify database interactions."
         },
         {
@@ -926,7 +926,7 @@
             1
           ],
           "details": "1. Update the resource generation system to apply the resource_multiplier from difficulty settings.\n2. Modify AI colony behavior to adjust aggressiveness based on difficulty.\n3. Implement evolution point cost scaling based on difficulty settings.\n4. Adjust battle outcome calculations to incorporate difficulty modifiers.\n5. Update environmental hazard frequency and intensity based on difficulty level.\n6. Create a DifficultyService class that provides current settings to all game systems.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Create unit tests for each modified game system. Test boundary conditions (min/max difficulty values). Implement integration tests that verify systems work together correctly under different difficulty settings."
         },
         {
@@ -937,7 +937,7 @@
             1
           ],
           "details": "1. Design and implement a DifficultySelector React component with options for Easy, Normal, Hard, and Custom.\n2. Create visual indicators showing the effects of each difficulty level.\n3. For Custom option, create sliders for adjusting individual parameters (resource availability, AI aggressiveness, etc.).\n4. Implement form validation to ensure custom settings are within allowed ranges.\n5. Connect the UI to the backend API to save selected difficulty settings.\n6. Add the DifficultySelector component to the NewGameScreen component.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Write Jest/React Testing Library tests for the DifficultySelector component. Test user interactions like selecting different difficulties and adjusting custom sliders. Verify API calls are made correctly."
         },
         {
@@ -949,7 +949,7 @@
             3
           ],
           "details": "1. Create a DifficultyAdjustmentModal React component accessible from the game settings menu.\n2. Implement logic to calculate appropriate adjustments to current game state when difficulty changes.\n3. Add warnings for players about potential impacts of changing difficulty mid-game.\n4. Create transition effects for when difficulty changes (e.g., resource adjustments).\n5. Implement backend logic to safely update game state when difficulty changes.\n6. Add an event log entry when difficulty is changed.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test the DifficultyAdjustmentModal component with React Testing Library. Create integration tests for the full difficulty change flow. Test edge cases like changing difficulty multiple times in succession."
         },
         {
@@ -961,7 +961,7 @@
             4
           ],
           "details": "1. Create tooltip components explaining the effects of each difficulty setting.\n2. Implement a TooltipService to manage tooltip content based on current difficulty.\n3. Update the achievement system to track which difficulty level was used.\n4. Modify achievement rewards based on difficulty (higher rewards for higher difficulty).\n5. Add visual indicators in the UI showing when achievements are modified by difficulty.\n6. Create special achievements for completing the game at specific difficulty levels.",
-          "status": "pending",
+          "status": "done",
           "testStrategy": "Test tooltip rendering and content accuracy. Verify achievement modifications work correctly at different difficulty levels. Create end-to-end tests for the complete difficulty-achievement interaction."
         }
       ]
@@ -1411,7 +1411,7 @@
       "id": 22,
       "title": "Onboarding Tutorial System",
       "description": "Implement a contextual onboarding tutorial system to guide new players through game mechanics as they encounter them.",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         3,
         4,
@@ -1571,6 +1571,19 @@
           "testStrategy": "Test feature discovery tracking across different user scenarios. Verify data is correctly persisted. Test analytics integration for feature discovery metrics."
         }
       ]
+    },
+    {
+      "id": 23,
+      "title": "Implement Google Maps-style Zoom and Pan for Simulation View",
+      "description": "Implement intuitive zoom and pan functionality for the simulation view in CenterPanel, allowing users to navigate the ant colony simulation with precise control similar to Google Maps. Also fix critical rendering issues with ants not displaying and stats showing incorrect values.",
+      "status": "pending",
+      "dependencies": [
+        20
+      ],
+      "priority": "medium",
+      "details": "Implementation steps:\n\n1. Modify the mouse event handlers in the CenterPanel component:\n   - Change panning from middle-click to left-click+drag\n   - Implement event listeners for mousedown, mousemove, and mouseup\n   - Store initial mouse position and current view offset\n\n2. Debug and fix scroll wheel zoom functionality:\n   - Fix the zoom toward cursor position implementation\n   - Ensure zoom is applied toward mouse cursor position, not center\n   - Debug and correct the coordinate transformation math:\n     ```javascript\n     // Zoom toward cursor position - NEEDS DEBUGGING\n     function zoomTowardCursor(event, zoomDelta) {\n       const rect = viewRef.current.getBoundingClientRect();\n       const mouseX = event.clientX - rect.left;\n       const mouseY = event.clientY - rect.top;\n       \n       // Convert mouse position to world coordinates before zoom\n       const worldX = (mouseX - panOffset.x) / currentZoom;\n       const worldY = (mouseY - panOffset.y) / currentZoom;\n       \n       // Calculate new zoom level\n       const newZoom = Math.max(0.5, Math.min(5.0, currentZoom + zoomDelta));\n       \n       // Calculate new pan offset to keep mouse position fixed in world space\n       const newPanX = mouseX - worldX * newZoom;\n       const newPanY = mouseY - worldY * newZoom;\n       \n       setCurrentZoom(newZoom);\n       setPanOffset({ x: newPanX, y: newPanY });\n     }\n     ```\n   - Verify the math with test cases to ensure correct behavior\n   - Add additional logging to debug why zoom is still centering on viewport instead of cursor\n\n3. Fix auto-centering when simulation loads:\n   - Debug the centerView function that positions the colony at the center\n   - Ensure the viewport calculations account for the current container dimensions\n   - Verify the transform order (translate then scale) is applied correctly\n   - Test with console logging to track coordinate transformations\n   - Apply the new 250% baseline zoom (2.5x) as the default\n   - Add detailed logging to diagnose why auto-centering is failing\n\n4. Add keyboard shortcuts:\n   - Implement key event listeners for the simulation view\n   - 'C' key to center the view on the colony\n   - 'R' key to reset view to default zoom and position\n\n5. Add UI controls:\n   - Create center and reset buttons in the simulation view UI\n   - Style buttons to match the existing UI design\n   - Connect buttons to the corresponding functions\n\n6. Fix coordinate transformation order:\n   - Debug and correct the transform order (translate then scale)\n   - Update the rendering code to use the correct transformation matrix\n   - Fix centering calculations with proper transform order\n   - Add debug visualization to show transformation origin points\n\n7. Adjust zoom range:\n   - Set 250% as the new 100% zoom baseline\n   - Configure zoom limits from 50% to 500% (instead of 30%-300%)\n   - Add visual indicator of current zoom level\n\n8. Debug coordinate conversion utilities:\n   - Test and fix worldToScreen and screenToWorld conversion functions\n   - Add validation to ensure these functions work correctly\n   - Example implementation with debugging:\n     ```javascript\n     function worldToScreen(worldX, worldY) {\n       // Debug log the inputs and outputs\n       const result = {\n         x: worldX * currentZoom + panOffset.x,\n         y: worldY * currentZoom + panOffset.y\n       };\n       console.debug(`worldToScreen: (${worldX}, ${worldY}) -> (${result.x}, ${result.y})`);\n       return result;\n     }\n     \n     function screenToWorld(screenX, screenY) {\n       // Debug log the inputs and outputs\n       const result = {\n         x: (screenX - panOffset.x) / currentZoom,\n         y: (screenY - panOffset.y) / currentZoom\n       };\n       console.debug(`screenToWorld: (${screenX}, ${screenY}) -> (${result.x}, ${result.y})`);\n       return result;\n     }\n     ```\n   - Create test cases to verify coordinate conversions are working correctly\n\n9. Optimize performance:\n   - Use requestAnimationFrame for smooth animations\n   - Implement debouncing for zoom operations\n   - Consider using CSS transforms for better performance\n\n10. Fix ant rendering issues:\n    - Debug why ants are not visible in the simulation view despite API returning data\n    - Add console logging to track ant data flow from API to rendering\n    - Verify ant positions are being correctly transformed to screen coordinates\n    - Check if ant sprites or CSS styles are properly applied\n    - Inspect DOM to ensure ant elements are being created\n\n11. Fix stats overlay and LeftPanel population count:\n    - Debug why stats overlay shows 0 ants when API returns 5 ants\n    - Add logging to track data flow between API responses and stats display\n    - Verify the state management for ant population is working correctly\n    - Check if there's a disconnect between the API data and the UI state\n    - Ensure the stats component is subscribed to the correct state updates\n\n12. Implement comprehensive data flow debugging:\n    - Add logging at each step of the data pipeline from API to UI\n    - Create a debug panel that shows raw API data vs. displayed data\n    - Verify that data transformations maintain integrity throughout the app\n    - Check for timing issues where UI might render before data is available",
+      "testStrategy": "1. Manual Testing:\n   - Verify left-click+drag panning works smoothly in all directions\n   - Test scroll wheel zooming at different positions on screen\n   - Confirm zoom centers on mouse cursor position, not viewport center\n   - Verify auto-centering works when simulation loads\n   - Test keyboard shortcuts (C for center, R for reset)\n   - Verify center and reset buttons function correctly\n   - Test zoom range limits (50%-500%)\n   - Verify the default zoom is set to 250% (2.5x)\n   - Verify ants are visible and correctly positioned in the simulation view\n   - Confirm stats overlay shows correct ant population count\n\n2. Coordinate Transformation Tests:\n   - Create unit tests for worldToScreen and screenToWorld functions\n   - Verify transformations are reversible (converting from world to screen and back returns original coordinates)\n   - Test edge cases (extreme zoom levels, large pan offsets)\n   - Verify proper transform order (translate then scale)\n   - Add visual debugging to show transformation points and vectors\n\n3. Debugging Tests:\n   - Add console logging at key points in the transformation process\n   - Create a visual debug mode that shows coordinate system origins and axes\n   - Test auto-centering with different viewport sizes\n   - Verify zoom behavior with slow-motion testing (small incremental changes)\n   - Add logging to track ant data from API to rendering\n   - Create test cases with mock API data to verify rendering logic\n\n4. Performance Testing:\n   - Test on low-end devices to ensure smooth performance\n   - Verify no noticeable lag during rapid zoom/pan operations\n   - Use Chrome DevTools Performance tab to identify any bottlenecks\n\n5. Cross-browser Testing:\n   - Verify functionality works consistently across Chrome, Firefox, Safari, and Edge\n   - Test on mobile devices to ensure touch-based zoom/pan works correctly\n\n6. Integration Testing:\n   - Verify zoom/pan doesn't interfere with other simulation interactions\n   - Test that ant and structure positions update correctly during zoom/pan\n   - Ensure UI elements maintain proper positioning relative to simulation view\n   - Verify stats overlay updates correctly when simulation state changes\n   - Test that LeftPanel population count matches actual ant count\n\n7. Automated Tests:\n   - Write Jest tests for coordinate conversion functions\n   - Create React Testing Library tests for component behavior\n   - Example test with debugging:\n     ```javascript\n     test('worldToScreen and screenToWorld are inverse operations', () => {\n       const worldCoord = { x: 100, y: 200 };\n       const screenCoord = worldToScreen(worldCoord.x, worldCoord.y);\n       console.log('Test conversion:', { worldCoord, screenCoord });\n       const backToWorld = screenToWorld(screenCoord.x, screenCoord.y);\n       console.log('Back to world:', backToWorld);\n       expect(backToWorld.x).toBeCloseTo(worldCoord.x);\n       expect(backToWorld.y).toBeCloseTo(worldCoord.y);\n     });\n     ```\n\n8. Data Flow Testing:\n   - Create tests that mock API responses and verify UI updates correctly\n   - Test the entire data pipeline from API to state management to UI rendering\n   - Verify that ant data is correctly processed and displayed in all components\n   - Add time-sequenced tests to ensure components update in the correct order",
+      "subtasks": []
     }
   ]
 }

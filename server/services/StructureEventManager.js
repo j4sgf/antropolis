@@ -262,12 +262,34 @@ class StructureEventManager extends EventEmitter {
   }
 
   /**
-   * Get all active colony IDs (mock implementation)
+   * Get all active colony IDs from database
    * @returns {Array} Array of colony IDs
    */
   async getAllActiveColonies() {
-    // In a real implementation, this would query the database
-    return ['mock-id']; // For development/testing
+    try {
+      const { supabase, isDevelopmentMode } = require('../config/database');
+      
+      if (isDevelopmentMode) {
+        // In mock mode, return the test colony ID
+        return ['test-colony-001'];
+      }
+      
+      // Query real database for active colonies
+      const { data, error } = await supabase
+        .from('colonies')
+        .select('id')
+        .eq('is_active', true);
+      
+      if (error) {
+        console.error('Error fetching active colonies:', error);
+        return [];
+      }
+      
+      return data.map(colony => colony.id);
+    } catch (error) {
+      console.error('Error in getAllActiveColonies:', error);
+      return [];
+    }
   }
 
   /**

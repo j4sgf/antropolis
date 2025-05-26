@@ -19,7 +19,7 @@ class RoleAssignmentService {
    * @returns {Promise<Object>} Response data
    */
   async updateAntRole(colonyId, antId, newRole) {
-    const endpoint = `/api/ants/${antId}/role`;
+    const endpoint = `/ants/${antId}/role`;
     
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -57,7 +57,7 @@ class RoleAssignmentService {
    * @returns {Promise<Object>} Response data
    */
   async batchUpdateAntRoles(colonyId, antIds, newRole) {
-    const endpoint = '/api/ants/batch-assign';
+    const endpoint = '/ants/batch-assign';
     
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -104,7 +104,7 @@ class RoleAssignmentService {
       }
     }
 
-    const endpoint = `/api/colonies/${colonyId}/ants`;
+    const endpoint = `/colonies/${colonyId}/ants`;
     
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`);
@@ -117,11 +117,11 @@ class RoleAssignmentService {
       
       // Cache the result
       this.cache.set(cacheKey, {
-        data: data.ants || [],
+        data: data.data || [],
         timestamp: Date.now()
       });
       
-      return data.ants || [];
+      return data.data || [];
     } catch (error) {
       console.error('Error fetching colony ants:', error);
       throw error;
@@ -134,7 +134,7 @@ class RoleAssignmentService {
    * @returns {Promise<Object>} Ant statistics
    */
   async getAntStatistics(antId) {
-    const endpoint = `/api/ants/${antId}/stats`;
+    const endpoint = `/ants/${antId}/stats`;
     
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`);
@@ -157,7 +157,7 @@ class RoleAssignmentService {
    * @returns {Promise<Object>} Role distribution data
    */
   async getRoleDistribution(colonyId) {
-    const endpoint = `/api/colonies/${colonyId}/role-distribution`;
+    const endpoint = `/colonies/${colonyId}/role-distribution`;
     const url = `${API_BASE_URL}${endpoint}`;
     
     console.log('🔗 Making role distribution request:', {
@@ -198,7 +198,7 @@ class RoleAssignmentService {
    * @returns {Promise<Object>} Validation result
    */
   async validateRoleAssignment(colonyId, antIds, newRole) {
-    const endpoint = '/api/ants/validate-assignment';
+    const endpoint = '/ants/validate-assignment';
     
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -231,7 +231,7 @@ class RoleAssignmentService {
    * @returns {Promise<Object>} Role recommendations
    */
   async getRoleRecommendations(colonyId) {
-    const endpoint = `/api/colonies/${colonyId}/role-recommendations`;
+    const endpoint = `/colonies/${colonyId}/role-recommendations`;
     
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`);

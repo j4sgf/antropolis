@@ -1,10 +1,12 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 class ColonyService {
   // Create a new colony
   async createColony(colonyData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/colonies`, {
+      const endpoint = '/colonies';
+      const url = `${API_BASE_URL}${endpoint}`;
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +29,8 @@ class ColonyService {
   // Get all colonies for a user
   async getColonies(userId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/colonies?user_id=${userId}`);
+      const endpoint = `/colonies?user_id=${userId}`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`);
       
       if (!response.ok) {
         const error = await response.json();
@@ -44,8 +47,8 @@ class ColonyService {
   // Get a specific colony with details
   async getColony(colonyId, includeDetails = false) {
     try {
-      const url = `${API_BASE_URL}/colonies/${colonyId}${includeDetails ? '?details=true' : ''}`;
-      const response = await fetch(url);
+      const endpoint = `/colonies/${colonyId}${includeDetails ? '?details=true' : ''}`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`);
       
       if (!response.ok) {
         const error = await response.json();
@@ -62,7 +65,8 @@ class ColonyService {
   // Update a colony
   async updateColony(colonyId, updateData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/colonies/${colonyId}`, {
+      const endpoint = `/colonies/${colonyId}`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +89,8 @@ class ColonyService {
   // Delete a colony
   async deleteColony(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/colonies/${colonyId}`, {
+      const endpoint = `/colonies/${colonyId}`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'DELETE',
       });
 
@@ -105,7 +110,8 @@ class ColonyService {
   async getColonyAnts(colonyId, filters = {}) {
     try {
       const params = new URLSearchParams(filters);
-      const response = await fetch(`${API_BASE_URL}/colonies/${colonyId}/ants?${params}`);
+      const endpoint = `/colonies/${colonyId}/ants?${params}`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`);
       
       if (!response.ok) {
         const error = await response.json();
@@ -122,7 +128,8 @@ class ColonyService {
   // Get ant statistics for a colony
   async getColonyAntStats(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/colonies/${colonyId}/ants/stats`);
+      const endpoint = `/colonies/${colonyId}/ants/stats`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`);
       
       if (!response.ok) {
         const error = await response.json();
@@ -139,7 +146,8 @@ class ColonyService {
   // Simulate a colony tick
   async simulateColonyTick(colonyId) {
     try {
-      const response = await fetch(`${API_BASE_URL}/colonies/${colonyId}/tick`, {
+      const endpoint = `/colonies/${colonyId}/tick`;
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
       });
 

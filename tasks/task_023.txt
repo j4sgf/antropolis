@@ -1,0 +1,189 @@
+# Task ID: 23
+# Title: Implement Google Maps-style Zoom and Pan for Simulation View
+# Status: pending
+# Dependencies: 20
+# Priority: medium
+# Description: Implement intuitive zoom and pan functionality for the simulation view in CenterPanel, allowing users to navigate the ant colony simulation with precise control similar to Google Maps. Also fix critical rendering issues with ants not displaying and stats showing incorrect values.
+# Details:
+Implementation steps:
+
+1. Modify the mouse event handlers in the CenterPanel component:
+   - Change panning from middle-click to left-click+drag
+   - Implement event listeners for mousedown, mousemove, and mouseup
+   - Store initial mouse position and current view offset
+
+2. Debug and fix scroll wheel zoom functionality:
+   - Fix the zoom toward cursor position implementation
+   - Ensure zoom is applied toward mouse cursor position, not center
+   - Debug and correct the coordinate transformation math:
+     ```javascript
+     // Zoom toward cursor position - NEEDS DEBUGGING
+     function zoomTowardCursor(event, zoomDelta) {
+       const rect = viewRef.current.getBoundingClientRect();
+       const mouseX = event.clientX - rect.left;
+       const mouseY = event.clientY - rect.top;
+       
+       // Convert mouse position to world coordinates before zoom
+       const worldX = (mouseX - panOffset.x) / currentZoom;
+       const worldY = (mouseY - panOffset.y) / currentZoom;
+       
+       // Calculate new zoom level
+       const newZoom = Math.max(0.5, Math.min(5.0, currentZoom + zoomDelta));
+       
+       // Calculate new pan offset to keep mouse position fixed in world space
+       const newPanX = mouseX - worldX * newZoom;
+       const newPanY = mouseY - worldY * newZoom;
+       
+       setCurrentZoom(newZoom);
+       setPanOffset({ x: newPanX, y: newPanY });
+     }
+     ```
+   - Verify the math with test cases to ensure correct behavior
+   - Add additional logging to debug why zoom is still centering on viewport instead of cursor
+
+3. Fix auto-centering when simulation loads:
+   - Debug the centerView function that positions the colony at the center
+   - Ensure the viewport calculations account for the current container dimensions
+   - Verify the transform order (translate then scale) is applied correctly
+   - Test with console logging to track coordinate transformations
+   - Apply the new 250% baseline zoom (2.5x) as the default
+   - Add detailed logging to diagnose why auto-centering is failing
+
+4. Add keyboard shortcuts:
+   - Implement key event listeners for the simulation view
+   - 'C' key to center the view on the colony
+   - 'R' key to reset view to default zoom and position
+
+5. Add UI controls:
+   - Create center and reset buttons in the simulation view UI
+   - Style buttons to match the existing UI design
+   - Connect buttons to the corresponding functions
+
+6. Fix coordinate transformation order:
+   - Debug and correct the transform order (translate then scale)
+   - Update the rendering code to use the correct transformation matrix
+   - Fix centering calculations with proper transform order
+   - Add debug visualization to show transformation origin points
+
+7. Adjust zoom range:
+   - Set 250% as the new 100% zoom baseline
+   - Configure zoom limits from 50% to 500% (instead of 30%-300%)
+   - Add visual indicator of current zoom level
+
+8. Debug coordinate conversion utilities:
+   - Test and fix worldToScreen and screenToWorld conversion functions
+   - Add validation to ensure these functions work correctly
+   - Example implementation with debugging:
+     ```javascript
+     function worldToScreen(worldX, worldY) {
+       // Debug log the inputs and outputs
+       const result = {
+         x: worldX * currentZoom + panOffset.x,
+         y: worldY * currentZoom + panOffset.y
+       };
+       console.debug(`worldToScreen: (${worldX}, ${worldY}) -> (${result.x}, ${result.y})`);
+       return result;
+     }
+     
+     function screenToWorld(screenX, screenY) {
+       // Debug log the inputs and outputs
+       const result = {
+         x: (screenX - panOffset.x) / currentZoom,
+         y: (screenY - panOffset.y) / currentZoom
+       };
+       console.debug(`screenToWorld: (${screenX}, ${screenY}) -> (${result.x}, ${result.y})`);
+       return result;
+     }
+     ```
+   - Create test cases to verify coordinate conversions are working correctly
+
+9. Optimize performance:
+   - Use requestAnimationFrame for smooth animations
+   - Implement debouncing for zoom operations
+   - Consider using CSS transforms for better performance
+
+10. Fix ant rendering issues:
+    - Debug why ants are not visible in the simulation view despite API returning data
+    - Add console logging to track ant data flow from API to rendering
+    - Verify ant positions are being correctly transformed to screen coordinates
+    - Check if ant sprites or CSS styles are properly applied
+    - Inspect DOM to ensure ant elements are being created
+
+11. Fix stats overlay and LeftPanel population count:
+    - Debug why stats overlay shows 0 ants when API returns 5 ants
+    - Add logging to track data flow between API responses and stats display
+    - Verify the state management for ant population is working correctly
+    - Check if there's a disconnect between the API data and the UI state
+    - Ensure the stats component is subscribed to the correct state updates
+
+12. Implement comprehensive data flow debugging:
+    - Add logging at each step of the data pipeline from API to UI
+    - Create a debug panel that shows raw API data vs. displayed data
+    - Verify that data transformations maintain integrity throughout the app
+    - Check for timing issues where UI might render before data is available
+
+# Test Strategy:
+1. Manual Testing:
+   - Verify left-click+drag panning works smoothly in all directions
+   - Test scroll wheel zooming at different positions on screen
+   - Confirm zoom centers on mouse cursor position, not viewport center
+   - Verify auto-centering works when simulation loads
+   - Test keyboard shortcuts (C for center, R for reset)
+   - Verify center and reset buttons function correctly
+   - Test zoom range limits (50%-500%)
+   - Verify the default zoom is set to 250% (2.5x)
+   - Verify ants are visible and correctly positioned in the simulation view
+   - Confirm stats overlay shows correct ant population count
+
+2. Coordinate Transformation Tests:
+   - Create unit tests for worldToScreen and screenToWorld functions
+   - Verify transformations are reversible (converting from world to screen and back returns original coordinates)
+   - Test edge cases (extreme zoom levels, large pan offsets)
+   - Verify proper transform order (translate then scale)
+   - Add visual debugging to show transformation points and vectors
+
+3. Debugging Tests:
+   - Add console logging at key points in the transformation process
+   - Create a visual debug mode that shows coordinate system origins and axes
+   - Test auto-centering with different viewport sizes
+   - Verify zoom behavior with slow-motion testing (small incremental changes)
+   - Add logging to track ant data from API to rendering
+   - Create test cases with mock API data to verify rendering logic
+
+4. Performance Testing:
+   - Test on low-end devices to ensure smooth performance
+   - Verify no noticeable lag during rapid zoom/pan operations
+   - Use Chrome DevTools Performance tab to identify any bottlenecks
+
+5. Cross-browser Testing:
+   - Verify functionality works consistently across Chrome, Firefox, Safari, and Edge
+   - Test on mobile devices to ensure touch-based zoom/pan works correctly
+
+6. Integration Testing:
+   - Verify zoom/pan doesn't interfere with other simulation interactions
+   - Test that ant and structure positions update correctly during zoom/pan
+   - Ensure UI elements maintain proper positioning relative to simulation view
+   - Verify stats overlay updates correctly when simulation state changes
+   - Test that LeftPanel population count matches actual ant count
+
+7. Automated Tests:
+   - Write Jest tests for coordinate conversion functions
+   - Create React Testing Library tests for component behavior
+   - Example test with debugging:
+     ```javascript
+     test('worldToScreen and screenToWorld are inverse operations', () => {
+       const worldCoord = { x: 100, y: 200 };
+       const screenCoord = worldToScreen(worldCoord.x, worldCoord.y);
+       console.log('Test conversion:', { worldCoord, screenCoord });
+       const backToWorld = screenToWorld(screenCoord.x, screenCoord.y);
+       console.log('Back to world:', backToWorld);
+       expect(backToWorld.x).toBeCloseTo(worldCoord.x);
+       expect(backToWorld.y).toBeCloseTo(worldCoord.y);
+     });
+     ```
+
+8. Data Flow Testing:
+   - Create tests that mock API responses and verify UI updates correctly
+   - Test the entire data pipeline from API to state management to UI rendering
+   - Verify that ant data is correctly processed and displayed in all components
+   - Add time-sequenced tests to ensure components update in the correct order

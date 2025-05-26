@@ -1,6 +1,6 @@
 # Task ID: 14
 # Title: Game Difficulty Settings
-# Status: pending
+# Status: done
 # Dependencies: 4, 12, 13
 # Priority: low
 # Description: Implement adjustable game difficulty settings as specified in ST-111.
@@ -22,7 +22,7 @@
 Test each difficulty setting affects gameplay appropriately. Verify custom difficulty parameter adjustments. Test difficulty change during gameplay. Verify tooltips accurately describe difficulty impacts. Test achievement modifications based on difficulty.
 
 # Subtasks:
-## 1. Create Difficulty Settings Data Model and Backend API [pending]
+## 1. Create Difficulty Settings Data Model and Backend API [done]
 ### Dependencies: None
 ### Description: Design and implement the data model for difficulty settings and create backend API endpoints to manage them.
 ### Details:
@@ -32,7 +32,7 @@ Test each difficulty setting affects gameplay appropriately. Verify custom diffi
 4. Develop RESTful API endpoints in Node.js/Express: GET /api/difficulty-settings, POST /api/difficulty-settings/custom, PUT /api/difficulty-settings/current.
 5. Implement service layer functions to retrieve and update difficulty settings.
 
-## 2. Implement Game Mechanics Difficulty Modifiers [pending]
+## 2. Implement Game Mechanics Difficulty Modifiers [done]
 ### Dependencies: 14.1
 ### Description: Modify core game mechanics to respond to the selected difficulty settings.
 ### Details:
@@ -43,7 +43,7 @@ Test each difficulty setting affects gameplay appropriately. Verify custom diffi
 5. Update environmental hazard frequency and intensity based on difficulty level.
 6. Create a DifficultyService class that provides current settings to all game systems.
 
-## 3. Develop Difficulty Selection UI for Game Start [pending]
+## 3. Develop Difficulty Selection UI for Game Start [done]
 ### Dependencies: 14.1
 ### Description: Create the user interface for selecting difficulty at the start of a new game.
 ### Details:
@@ -54,7 +54,7 @@ Test each difficulty setting affects gameplay appropriately. Verify custom diffi
 5. Connect the UI to the backend API to save selected difficulty settings.
 6. Add the DifficultySelector component to the NewGameScreen component.
 
-## 4. Implement In-Game Difficulty Adjustment [pending]
+## 4. Implement In-Game Difficulty Adjustment [done]
 ### Dependencies: 14.2, 14.3
 ### Description: Allow players to change difficulty settings during gameplay with appropriate game state adjustments.
 ### Details:
@@ -65,7 +65,7 @@ Test each difficulty setting affects gameplay appropriately. Verify custom diffi
 5. Implement backend logic to safely update game state when difficulty changes.
 6. Add an event log entry when difficulty is changed.
 
-## 5. Add Tooltips and Achievement Modifications [pending]
+## 5. Add Tooltips and Achievement Modifications [done]
 ### Dependencies: 14.3, 14.4
 ### Description: Implement tooltips explaining difficulty impacts and modify achievements based on difficulty level.
 ### Details:

@@ -1,0 +1,8 @@
+{
+  "name": "Database Test Colony 2",
+  "description": "Testing ants creation in database",
+  "color": "#2196F3",
+  "difficulty_level": "hard",
+  "population": 10,
+  "evolution_points": 50
+} 

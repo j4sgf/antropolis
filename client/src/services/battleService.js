@@ -11,7 +11,7 @@ class BattleService {
      */
     async getHealth() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/health`);
+            const response = await fetch(`${API_BASE_URL}/battles/health`);
             return await response.json();
         } catch (error) {
             console.error('Error fetching battle API health:', error);
@@ -24,7 +24,7 @@ class BattleService {
      */
     async getAvailableTargets(colonyId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/targets/${colonyId}`);
+            const response = await fetch(`${API_BASE_URL}/battles/targets/${colonyId}`);
             const data = await response.json();
             
             if (!response.ok) {
@@ -43,7 +43,7 @@ class BattleService {
      */
     async executeRaid(raidData) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/execute`, {
+            const response = await fetch(`${API_BASE_URL}/battles/execute`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ class BattleService {
      */
     async simulateBattle(attackerArmy, defenderArmy, battleConditions = {}) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/simulate`, {
+            const response = await fetch(`${API_BASE_URL}/battles/simulate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ class BattleService {
      */
     async getIncomingAttacks(colonyId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/incoming?colonyId=${colonyId}`);
+            const response = await fetch(`${API_BASE_URL}/battles/incoming?colonyId=${colonyId}`);
             const data = await response.json();
             
             if (!response.ok) {
@@ -119,7 +119,7 @@ class BattleService {
     async getBattleHistory(colonyId, limit = 20, offset = 0) {
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/battles/history/${colonyId}?limit=${limit}&offset=${offset}`
+                `${API_BASE_URL}/battles/history/${colonyId}?limit=${limit}&offset=${offset}`
             );
             const data = await response.json();
             
@@ -139,7 +139,7 @@ class BattleService {
      */
     async getBattleStats(colonyId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/stats/${colonyId}`);
+            const response = await fetch(`${API_BASE_URL}/battles/stats/${colonyId}`);
             const data = await response.json();
             
             if (!response.ok) {
@@ -158,7 +158,7 @@ class BattleService {
      */
     async retreatFromBattle(battleId, colonyId, remainingArmy) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/retreat/${battleId}`, {
+            const response = await fetch(`${API_BASE_URL}/battles/retreat/${battleId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ class BattleService {
      */
     async getSchedulerStatus() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/scheduler/status`);
+            const response = await fetch(`${API_BASE_URL}/battles/scheduler/status`);
             const data = await response.json();
             
             if (!response.ok) {
@@ -206,7 +206,7 @@ class BattleService {
      */
     async startScheduler() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/scheduler/start`, {
+            const response = await fetch(`${API_BASE_URL}/battles/scheduler/start`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ class BattleService {
      */
     async stopScheduler() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/scheduler/stop`, {
+            const response = await fetch(`${API_BASE_URL}/battles/scheduler/stop`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -256,7 +256,7 @@ class BattleService {
      */
     async getBattleResults(battleId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/results/${battleId}`);
+            const response = await fetch(`${API_BASE_URL}/battles/results/${battleId}`);
             const data = await response.json();
             
             if (!response.ok) {
@@ -275,7 +275,7 @@ class BattleService {
      */
     async distributeRewards(battleId, colonyId, rewards) {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/battles/rewards/${battleId}`, {
+            const response = await fetch(`${API_BASE_URL}/battles/rewards/${battleId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -103,9 +103,11 @@ class Ant {
   constructor(data = {}) {
     this.id = data.id;
     this.colony_id = data.colony_id;
+    this.name = data.name;
     this.type = data.type || 'worker';
-    this.x = data.x || 0;
-    this.y = data.y || 0;
+    this.role = data.role || 'worker';
+    this.x = data.x || data.position_x || 0;
+    this.y = data.y || data.position_y || 0;
     this.target_x = data.target_x;
     this.target_y = data.target_y;
     this.state = data.state || ANT_STATES.IDLE;
@@ -832,7 +834,9 @@ class Ant {
     return {
       id: this.id,
       colonyId: this.colony_id,
+      name: this.name,
       type: this.type,
+      role: this.role,
       position: { x: this.x, y: this.y },
       target: this.target_x ? { x: this.target_x, y: this.target_y } : null,
       state: this.state,

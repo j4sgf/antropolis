@@ -1,5 +1,16 @@
 const { createClient } = require('@supabase/supabase-js');
 
+// Ensure environment variables are loaded from root directory
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+
+// Debug environment loading
+console.log('🔍 Environment Variables Debug:');
+console.log('  SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+console.log('  SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+console.log('  NODE_ENV:', process.env.NODE_ENV);
+console.log('  Actual URL value (first 20 chars):', process.env.SUPABASE_URL ? process.env.SUPABASE_URL.substring(0, 20) + '...' : 'undefined');
+
 // Supabase configuration
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
@@ -453,7 +464,8 @@ function handleDatabaseError(error, operation = 'database operation') {
     return { error: 'Database table not found. Please run the database schema setup.' };
   }
   
-  return { error: 'Database operation failed. Please try again.' };
+  // Temporarily show actual error details for debugging
+  return { error: `Database operation failed: ${error.message || error}` };
 }
 
 // Export the client and utilities

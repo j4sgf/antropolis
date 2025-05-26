@@ -13,7 +13,12 @@
         "build": "npm run build --workspace client",
         "start": "npm run start --workspace server",
         "dev:client": "npm run dev --workspace client",
-        "dev:server": "npm run dev --workspace server"
+        "dev:server": "npm run dev --workspace server",
+        "test:supabase": "node scripts/test-supabase-connection.js",
+        "test:db": "node scripts/test-supabase-connection.js",
+        "migrate:test": "node scripts/test-supabase-connection.js",
+        "db:populate": "node scripts/populate-production-data.js",
+        "setup:production": "npm run migrate:test && npm run db:populate"
     },
     "keywords": [
         "game",
